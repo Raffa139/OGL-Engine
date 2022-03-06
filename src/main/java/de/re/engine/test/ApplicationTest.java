@@ -12,7 +12,7 @@ public class ApplicationTest extends GLApplication {
     new ApplicationTest(1080, 720, "GL Test").run();
   }
 
-  public ApplicationTest(int width, int height, String title) {
+  public ApplicationTest(int width, int height, String title) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
     super(width, height, title);
   }
 
@@ -34,8 +34,6 @@ public class ApplicationTest extends GLApplication {
     };
 
     ecs.addSystem(TestRenderingSystem.class);
-    ecs.addSystem(LoadingSystem.class);
-    ecs.registerEntityListener(ecs.getSystem(LoadingSystem.class));
     ecs.addEntity(new TestEntity(triangleVertices));
     TestEntity square = new TestEntity(squareVertices);
     ecs.addEntity(square);

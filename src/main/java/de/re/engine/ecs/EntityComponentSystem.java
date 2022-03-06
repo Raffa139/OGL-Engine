@@ -3,7 +3,7 @@ package de.re.engine.ecs;
 import de.re.engine.GLApplication;
 import de.re.engine.ecs.entity.Entity;
 import de.re.engine.ecs.system.ApplicationSystem;
-import de.re.engine.test.EntityListener;
+import de.re.engine.ecs.entity.EntityListener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;

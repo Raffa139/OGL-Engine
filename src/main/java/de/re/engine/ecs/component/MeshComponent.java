@@ -1,7 +1,7 @@
-package de.re.engine.test;
+package de.re.engine.ecs.component;
 
-import de.re.engine.ecs.component.Component;
 import de.re.engine.ecs.entity.Entity;
+import de.re.engine.test.Viewable;
 
 public class MeshComponent extends Component {
   private Viewable viewable;

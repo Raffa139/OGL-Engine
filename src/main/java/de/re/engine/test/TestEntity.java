@@ -1,5 +1,6 @@
 package de.re.engine.test;
 
+import de.re.engine.ecs.component.MeshComponent;
 import de.re.engine.ecs.entity.Entity;
 
 import java.lang.reflect.InvocationTargetException;

@@ -1,6 +1,7 @@
 package de.re.engine;
 
 import de.re.engine.ecs.EntityComponentSystem;
+import de.re.engine.ecs.system.LoadingSystem;
 import de.re.engine.objects.GLVertexArrayManager;
 import de.re.engine.objects.sampler.GLSamplerManager;
 import de.re.engine.objects.shader.GLShaderManager;
@@ -8,6 +9,7 @@ import de.re.engine.objects.shader.Shader;
 import org.joml.Matrix4f;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +35,14 @@ public abstract class GLApplication {
 
   private final List<Shader> shaders;
 
-  public GLApplication(int width, int height, String title) {
+  public GLApplication(int width, int height, String title) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
     context = GLContext.init(width, height, title);
     shaderManager = GLShaderManager.get();
     samplerManager = GLSamplerManager.get();
     vaoManager = GLVertexArrayManager.get();
     ecs = EntityComponentSystem.get(this);
     shaders = new ArrayList<>();
+    setupStandardSystems();
   }
 
   public EntityComponentSystem getEcs() {
@@ -102,6 +105,11 @@ public abstract class GLApplication {
       view = camera.getViewMatrix();
       projection = new Matrix4f().perspective((float) Math.toRadians(camera.getFov()), context.getAspectRatio(), 0.01f, 1000.0f);
     }
+  }
+
+  private void setupStandardSystems() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    ecs.addSystem(LoadingSystem.class);
+    ecs.registerEntityListener(ecs.getSystem(LoadingSystem.class));
   }
 
   private boolean cameraInUse() {

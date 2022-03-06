@@ -2,6 +2,7 @@ package de.re.engine.test;
 
 import de.re.engine.GLApplication;
 import de.re.engine.ecs.EntityComponentSystem;
+import de.re.engine.ecs.component.MeshComponent;
 import de.re.engine.ecs.system.ApplicationSystem;
 
 import java.io.IOException;
