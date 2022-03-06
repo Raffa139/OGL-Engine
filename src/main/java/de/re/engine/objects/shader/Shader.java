@@ -16,11 +16,11 @@ import static org.lwjgl.opengl.GL20.*;
 public class Shader {
   private final int id;
 
-  public Shader(Path vertexFile, Path fragmentFile) throws IOException {
+  protected Shader(Path vertexFile, Path fragmentFile) throws IOException {
     this(Files.readString(vertexFile), Files.readString(fragmentFile));
   }
 
-  protected Shader(String vertexContent, String fragmentContent) throws IOException {
+  protected Shader(String vertexContent, String fragmentContent) {
     int vertShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertShader, vertexContent);
     glCompileShader(vertShader);
