@@ -3,12 +3,12 @@ package de.re.engine.ecs.component;
 import de.re.engine.ecs.entity.Entity;
 import de.re.engine.test.Viewable;
 
-public class MeshComponent extends Component {
+public class SimpleMesh extends Component {
   private Viewable viewable;
 
   private float[] vertexPositions;
 
-  public MeshComponent(Entity entity) {
+  public SimpleMesh(Entity entity) {
     super(entity);
   }
 
@@ -24,15 +24,15 @@ public class MeshComponent extends Component {
     viewable = null;
   }
 
+  public boolean isViewable() {
+    return viewable != null;
+  }
+
   public float[] getVertexPositions() {
     return vertexPositions;
   }
 
   public void setVertexPositions(float[] vertexPositions) {
     this.vertexPositions = vertexPositions;
-  }
-
-  public boolean isViewable() {
-    return viewable != null;
   }
 }

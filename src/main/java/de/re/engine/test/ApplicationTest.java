@@ -2,13 +2,17 @@ package de.re.engine.test;
 
 import de.re.engine.GLApplication;
 import de.re.engine.KeyListener;
+import de.re.engine.objects.sampler.GLSamplerManager;
+import de.re.engine.objects.sampler.Sampler2D;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
 public class ApplicationTest extends GLApplication {
-  public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+  public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException, URISyntaxException {
     new ApplicationTest(1080, 720, "GL Test").run();
   }
 
@@ -16,7 +20,7 @@ public class ApplicationTest extends GLApplication {
     super(width, height, title);
   }
 
-  public void run() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+  public void run() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException, URISyntaxException {
     float [] triangleVertices = {
         -0.25f, -0.25f, 0.0f,
          0.0f,  0.25f,  0.0f,
@@ -24,18 +28,19 @@ public class ApplicationTest extends GLApplication {
     };
 
     float [] squareVertices = {
-        -1.0f, -1.0f, 0.0f,
-        -1.0f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
+        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        -1.0f, -0.5f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
 
-        -0.5f, -0.5f, 0.0f,
-        -1.0f, -1.0f, 0.0f,
-        -0.5f, -1.0f, 0.0f
+        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
+        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+        -0.5f, -1.0f, 0.0f, 1.0f, 0.0f
     };
 
     ecs.addSystem(TestRenderingSystem.class);
     ecs.addEntity(new TestEntity(triangleVertices));
-    TestEntity square = new TestEntity(squareVertices);
+    Sampler2D squareSampler = GLSamplerManager.get().sampler2D("container_box.png");
+    TexturedTestEntity square = new TexturedTestEntity(squareVertices, squareSampler);
     ecs.addEntity(square);
 
     context.toggleMouseCursor();

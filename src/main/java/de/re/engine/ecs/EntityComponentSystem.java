@@ -67,6 +67,7 @@ public class EntityComponentSystem {
     return entityGroups.containsKey(entity);
   }
 
+  // TODO: 06.03.2022: Get entities by component
   public <T extends Entity> Set<T> getEntities(Class<T> entity) {
     if (!hasEntity(entity)) {
       throw new IllegalArgumentException(entity.getName() + " not found!");

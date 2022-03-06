@@ -12,6 +12,8 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.glDeleteTextures;
 
 public class GLSamplerManager {
+  // TODO: 06.03.2022: Remove ResourceLoader
+
   private static GLSamplerManager instant;
 
   private final List<Integer> samplerIds;
