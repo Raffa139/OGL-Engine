@@ -20,6 +20,10 @@ public class MeshComponent extends Component {
     this.viewable = viewable;
   }
 
+  public void revokeViewable() {
+    viewable = null;
+  }
+
   public float[] getVertexPositions() {
     return vertexPositions;
   }

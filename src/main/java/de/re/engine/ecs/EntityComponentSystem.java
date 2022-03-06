@@ -3,12 +3,10 @@ package de.re.engine.ecs;
 import de.re.engine.GLApplication;
 import de.re.engine.ecs.entity.Entity;
 import de.re.engine.ecs.system.ApplicationSystem;
+import de.re.engine.test.EntityListener;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EntityComponentSystem {
@@ -20,10 +18,13 @@ public class EntityComponentSystem {
 
   private final Map<Class<? extends ApplicationSystem>, ApplicationSystem> systems;
 
+  private final Set<EntityListener> entityListeners;
+
   private EntityComponentSystem(GLApplication application) {
     this.application = application;
     entityGroups = new HashMap<>();
     systems = new HashMap<>();
+    entityListeners = new HashSet<>();
   }
 
   public static EntityComponentSystem get(GLApplication application) {
@@ -49,6 +50,7 @@ public class EntityComponentSystem {
       entityGroups.put(type, entities);
     }
     entityGroups.get(type).add(entity);
+    invokeEntityAddedEvent(entity);
   }
 
   public <T extends Entity> void removeEntity(T entity) {
@@ -58,6 +60,7 @@ public class EntityComponentSystem {
     }
 
     entityGroups.get(type).remove(entity);
+    invokeEntityRemovedEvent(entity);
   }
 
   public <T extends Entity> boolean hasEntity(Class<T> entity) {
@@ -76,7 +79,7 @@ public class EntityComponentSystem {
 
   public Set<Entity> getAllEntities() {
     if (entityGroups.isEmpty()) {
-
+      return Collections.emptySet();
     }
 
     Set<Entity> result = new HashSet<>();
@@ -108,5 +111,25 @@ public class EntityComponentSystem {
     }
 
     return system.cast(systems.get(system));
+  }
+
+  public void registerEntityListener(EntityListener listener) {
+    entityListeners.add(listener);
+  }
+
+  public void unregisterEntityListener(EntityListener listener) {
+    entityListeners.remove(listener);
+  }
+
+  private void invokeEntityAddedEvent(Entity entity) {
+    for (EntityListener listener : entityListeners) {
+      listener.entityAdded(entity);
+    }
+  }
+
+  private void invokeEntityRemovedEvent(Entity entity) {
+    for (EntityListener listener : entityListeners) {
+      listener.entityRemoved(entity);
+    }
   }
 }

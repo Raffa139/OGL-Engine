@@ -1,8 +1,11 @@
 package de.re.engine.test;
 
 import de.re.engine.GLApplication;
+import de.re.engine.KeyListener;
 
 import java.lang.reflect.InvocationTargetException;
+
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
 public class ApplicationTest extends GLApplication {
   public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -32,12 +35,28 @@ public class ApplicationTest extends GLApplication {
 
     ecs.addSystem(TestRenderingSystem.class);
     ecs.addSystem(LoadingSystem.class);
+    ecs.registerEntityListener(ecs.getSystem(LoadingSystem.class));
     ecs.addEntity(new TestEntity(triangleVertices));
-    ecs.addEntity(new TestEntity(squareVertices));
+    TestEntity square = new TestEntity(squareVertices);
+    ecs.addEntity(square);
 
     context.toggleMouseCursor();
+    boolean removed = false;
+    float lastPressed = 0.0f;
     while (glApplicationIsRunning()) {
       beginFrame();
+
+      if (KeyListener.keyPressed(GLFW_KEY_R) && currentTime > lastPressed + 0.25f) {
+        lastPressed = currentTime;
+        if (removed) {
+          ecs.addEntity(square);
+          removed = false;
+        } else {
+          ecs.removeEntity(square);
+          removed = true;
+        }
+
+      }
 
       endFrame();
     }
