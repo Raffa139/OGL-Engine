@@ -14,14 +14,18 @@ public final class ResourceLoader {
   private ResourceLoader() {
   }
 
-  public static Resource locateResource(String file, Class<?> clazz) throws FileNotFoundException, URISyntaxException {
+  public static Resource locateResource(String file, Class<?> clazz) throws FileNotFoundException {
     URL url = clazz.getClassLoader().getResource(file);
 
     if (url == null) {
       throw new FileNotFoundException(file);
     }
 
-    return new Resource(url.toURI());
+    try {
+      return new Resource(url.toURI());
+    } catch (URISyntaxException e) {
+      throw new FileNotFoundException(file);
+    }
   }
 
   public static class Resource {

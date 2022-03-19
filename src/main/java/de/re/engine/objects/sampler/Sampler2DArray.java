@@ -2,9 +2,12 @@ package de.re.engine.objects.sampler;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.glTexImage3D;
@@ -15,7 +18,7 @@ import static org.lwjgl.opengl.GL30.GL_TEXTURE_2D_ARRAY;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 public class Sampler2DArray extends Sampler {
-  protected Sampler2DArray(int width, int height, FileInputStream... fins) throws IOException {
+  protected Sampler2DArray(int width, int height, Path... paths) throws IOException {
     super(glGenTextures());
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, id);
@@ -24,12 +27,12 @@ public class Sampler2DArray extends Sampler {
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
     glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    int depth = fins.length;
+    int depth = paths.length;
     glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, width, height, depth, 0, GL_RGBA, GL_UNSIGNED_BYTE, (ByteBuffer) null);
 
     for (int layer = 0; layer < depth; layer++) {
-      FileInputStream fin = fins[layer];
-      PNGDecoder decoder = new PNGDecoder(fin);
+      InputStream in = Files.newInputStream(paths[layer], StandardOpenOption.READ);
+      PNGDecoder decoder = new PNGDecoder(in);
       ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
       decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
       buffer.flip();

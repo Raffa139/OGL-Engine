@@ -8,9 +8,9 @@ import de.re.engine.ecs.entity.EntityListener;
 import de.re.engine.objects.sampler.GLSamplerManager;
 import de.re.engine.objects.sampler.Sampler;
 import de.re.engine.test.Viewable;
+import de.re.engine.util.ResourceLoader;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -18,8 +18,6 @@ import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
 public class LoadingSystem extends ApplicationSystem implements EntityListener {
-  // TODO: Queue textures for loading
-
   private final Queue<MeshComponent> meshUploadQueue = new LinkedList<>();
   private final Queue<MeshComponent> meshRemoveQueue = new LinkedList<>();
 
@@ -44,9 +42,11 @@ public class LoadingSystem extends ApplicationSystem implements EntityListener {
               .enableAttribArray(1)
               .attribPointer(1, 2, GL_FLOAT, false, 5 * 4, 3 * 4L)
               .doFinal();
+
           try {
-            texture = GLSamplerManager.get().sampler2D(mesh.getTexture());
-          } catch (IOException | URISyntaxException e) {
+            texture = GLSamplerManager.get().sampler2D(ResourceLoader.locateResource(mesh.getTexture(), LoadingSystem.class).toPath());
+          } catch (IOException e) {
+            System.err.println("Unable to load texture, due to unexpected exception!");
             e.printStackTrace();
           }
         } else {

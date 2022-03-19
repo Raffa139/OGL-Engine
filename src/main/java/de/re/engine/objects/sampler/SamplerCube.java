@@ -2,9 +2,12 @@ package de.re.engine.objects.sampler;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -14,7 +17,7 @@ import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL30.GL_TEXTURE_2D_ARRAY;
 
 public class SamplerCube extends Sampler {
-  protected SamplerCube(List<FileInputStream> fins) throws IOException {
+  protected SamplerCube(List<Path> paths) throws IOException {
     super(glGenTextures());
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, id);
@@ -24,8 +27,8 @@ public class SamplerCube extends Sampler {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-    for (int i = 0; i < fins.size(); i++) {
-      FileInputStream fin = fins.get(i);
+    for (int i = 0; i < paths.size(); i++) {
+      InputStream fin = Files.newInputStream(paths.get(i), StandardOpenOption.READ);
 
       PNGDecoder decoder = new PNGDecoder(fin);
       ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());

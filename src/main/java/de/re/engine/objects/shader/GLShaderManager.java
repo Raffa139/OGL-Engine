@@ -31,7 +31,7 @@ public class GLShaderManager {
     return shader;
   }
 
-  public Shader createShader(String vertexContent, String fragmentContent) throws IOException {
+  public Shader createShader(String vertexContent, String fragmentContent) {
     Shader shader = new Shader(vertexContent, fragmentContent);
     shaderIds.add(shader.getId());
 

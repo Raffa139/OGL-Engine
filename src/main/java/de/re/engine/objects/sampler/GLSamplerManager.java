@@ -1,10 +1,7 @@
 package de.re.engine.objects.sampler;
 
-import de.re.engine.util.ResourceLoader;
-
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,8 +9,6 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.glDeleteTextures;
 
 public class GLSamplerManager {
-  // TODO: 06.03.2022: Remove ResourceLoader
-
   private static GLSamplerManager instant;
 
   private final List<Integer> samplerIds;
@@ -30,31 +25,22 @@ public class GLSamplerManager {
     return instant;
   }
 
-  public Sampler2D sampler2D(String file) throws IOException, URISyntaxException {
-    FileInputStream fin = ResourceLoader.locateResource(file, GLSamplerManager.class).toFileInputStream();
-    Sampler2D sampler = new Sampler2D(fin);
+  public Sampler2D sampler2D(Path path) throws IOException {
+    Sampler2D sampler = new Sampler2D(path);
     samplerIds.add(sampler.getId());
 
     return sampler;
   }
 
-  public Sampler2DArray sampler2DArray(int width, int height, String... files) throws IOException, URISyntaxException {
-    List<FileInputStream> fins = new ArrayList<>();
-    for (String file : files) {
-      fins.add(ResourceLoader.locateResource(file, GLSamplerManager.class).toFileInputStream());
-    }
-    Sampler2DArray sampler = new Sampler2DArray(width, height, fins.toArray(new FileInputStream[]{}));
+  public Sampler2DArray sampler2DArray(int width, int height, Path... paths) throws IOException {
+    Sampler2DArray sampler = new Sampler2DArray(width, height, paths);
     samplerIds.add(sampler.getId());
 
     return sampler;
   }
 
-  public SamplerCube samplerCube(String right, String left, String top, String bottom, String back, String front) throws IOException, URISyntaxException {
-    List<FileInputStream> fins = new ArrayList<>();
-    for (String file : Arrays.asList(right, left, top, bottom, back, front)) {
-      fins.add(ResourceLoader.locateResource(file, GLSamplerManager.class).toFileInputStream());
-    }
-    SamplerCube sampler = new SamplerCube(fins);
+  public SamplerCube samplerCube(Path right, Path left, Path top, Path bottom, Path back, Path front) throws IOException {
+    SamplerCube sampler = new SamplerCube(Arrays.asList(right, left, top, bottom, back, front));
     samplerIds.add(sampler.getId());
 
     return sampler;

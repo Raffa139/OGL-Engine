@@ -3,14 +3,12 @@ package de.re.engine.test;
 import de.re.engine.GLApplication;
 import de.re.engine.KeyListener;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
 public class ApplicationTest extends GLApplication {
-  public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException, URISyntaxException {
+  public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
     new ApplicationTest(1080, 720, "GL Test").run();
   }
 
@@ -18,7 +16,7 @@ public class ApplicationTest extends GLApplication {
     super(width, height, title);
   }
 
-  public void run() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, IOException, URISyntaxException {
+  public void run() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
     float [] triangleVertices = {
         -0.25f, -0.25f, 0.0f,
          0.0f,  0.25f,  0.0f,

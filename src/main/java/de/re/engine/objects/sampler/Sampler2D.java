@@ -2,9 +2,11 @@ package de.re.engine.objects.sampler;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
@@ -12,10 +14,10 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 public class Sampler2D extends Sampler {
-  protected Sampler2D(FileInputStream fin) throws IOException {
+  protected Sampler2D(Path path) throws IOException {
     super(glGenTextures());
 
-    PNGDecoder decoder = new PNGDecoder(fin);
+    PNGDecoder decoder = new PNGDecoder(Files.newInputStream(path, StandardOpenOption.READ));
     ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
     decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
     buffer.flip();
