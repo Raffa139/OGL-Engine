@@ -1,11 +1,7 @@
 package de.re.engine.test;
 
-import de.re.engine.ecs.component.MeshComponent;
-import de.re.engine.objects.shader.GLShaderManager;
+import de.re.engine.GLApplication;
 import de.re.engine.objects.shader.Shader;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -20,8 +16,9 @@ public class ViewableRenderer {
   private static final String FRAGMENT_SHADER_CONTENT =
       "#version 330 core\n" +
       "layout (location = 0) out vec4 FragColor;\n" +
+      "uniform float iTime;" +
       "void main() {\n" +
-      "    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n" +
+      "    gl_FragColor = vec4(1.0, (sin(iTime) + 1.0) / 2.0, 0.0, 1.0);\n" +
       "}";
 
   private static final String VERTEX_SHADER_TEXTURED_CONTENT =
@@ -45,11 +42,9 @@ public class ViewableRenderer {
   private final Shader viewableShader;
   private final Shader viewableTexturedShader;
 
-  public ViewableRenderer() throws IOException, URISyntaxException {
-    viewableShader = GLShaderManager.get()
-        .createShader(VERTEX_SHADER_CONTENT, FRAGMENT_SHADER_CONTENT);
-    viewableTexturedShader = GLShaderManager.get()
-        .createShader(VERTEX_SHADER_TEXTURED_CONTENT, FRAGMENT_SHADER_TEXTURED_CONTENT);
+  public ViewableRenderer(GLApplication application) {
+    viewableShader = application.createShader(VERTEX_SHADER_CONTENT, FRAGMENT_SHADER_CONTENT);
+    viewableTexturedShader = application.createShader(VERTEX_SHADER_TEXTURED_CONTENT, FRAGMENT_SHADER_TEXTURED_CONTENT);
   }
 
   public void prepare() {

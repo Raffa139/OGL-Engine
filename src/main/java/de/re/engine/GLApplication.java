@@ -49,8 +49,14 @@ public abstract class GLApplication {
     return ecs;
   }
 
-  protected Shader createShader(Path vertexFile, Path fragmentFile) throws IOException {
+  public Shader createShader(Path vertexFile, Path fragmentFile) throws IOException {
     Shader shader = shaderManager.createShader(vertexFile, fragmentFile);
+    shaders.add(shader);
+    return shader;
+  }
+
+  public Shader createShader(String vertexContent, String fragmentContent) {
+    Shader shader = shaderManager.createShader(vertexContent, fragmentContent);
     shaders.add(shader);
     return shader;
   }
