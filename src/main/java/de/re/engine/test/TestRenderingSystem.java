@@ -2,14 +2,12 @@ package de.re.engine.test;
 
 import de.re.engine.GLApplication;
 import de.re.engine.ecs.EntityComponentSystem;
-import de.re.engine.ecs.component.SimpleMesh;
-import de.re.engine.ecs.component.TexturedMesh;
+import de.re.engine.ecs.component.MeshComponent;
 import de.re.engine.ecs.entity.Entity;
 import de.re.engine.ecs.system.ApplicationSystem;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.HashSet;
 import java.util.Set;
 
 public class TestRenderingSystem extends ApplicationSystem {
@@ -31,9 +29,9 @@ public class TestRenderingSystem extends ApplicationSystem {
   public void invoke() {
     renderer.prepare();
 
-    Set<Entity> entities = ecs.getEntitiesByComponent(TexturedMesh.class);
+    Set<Entity> entities = ecs.getEntitiesByComponent(MeshComponent.class);
     for (Entity entity : entities) {
-      TexturedMesh mesh = entity.getComponent(TexturedMesh.class);
+      MeshComponent mesh = entity.getComponent(MeshComponent.class);
       if (mesh.isViewable()) {
         renderer.render(mesh);
       }

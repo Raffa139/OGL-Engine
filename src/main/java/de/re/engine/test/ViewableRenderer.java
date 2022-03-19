@@ -1,7 +1,6 @@
 package de.re.engine.test;
 
-import de.re.engine.ecs.component.SimpleMesh;
-import de.re.engine.ecs.component.TexturedMesh;
+import de.re.engine.ecs.component.MeshComponent;
 import de.re.engine.objects.shader.GLShaderManager;
 import de.re.engine.objects.shader.Shader;
 
@@ -58,10 +57,10 @@ public class ViewableRenderer {
     glClear(GL_COLOR_BUFFER_BIT);
   }
 
-  public void render(SimpleMesh mesh) {
-    if (mesh instanceof TexturedMesh) {
+  public void render(MeshComponent mesh) {
+    if (mesh.hasTexture()) {
       viewableTexturedShader.use();
-      ((TexturedMesh) mesh).getSampler().bind(0);
+      mesh.getTexture().bind(0);
     } else {
       viewableShader.use();
     }
