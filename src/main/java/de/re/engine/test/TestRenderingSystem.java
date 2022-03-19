@@ -31,13 +31,9 @@ public class TestRenderingSystem extends ApplicationSystem {
   public void invoke() {
     renderer.prepare();
 
-    Set<Entity> entities = new HashSet<>();
-    Set<TestEntity> testEntities = ecs.getEntities(TestEntity.class);
-    Set<TexturedTestEntity> texturedTestEntities = ecs.getEntities(TexturedTestEntity.class);
-    entities.addAll(testEntities);
-    entities.addAll(texturedTestEntities);
+    Set<Entity> entities = ecs.getEntitiesByComponent(TexturedMesh.class);
     for (Entity entity : entities) {
-      SimpleMesh mesh = entity.hasComponent(TexturedMesh.class) ? entity.getComponent(TexturedMesh.class) : entity.getComponent(SimpleMesh.class);
+      TexturedMesh mesh = entity.getComponent(TexturedMesh.class);
       if (mesh.isViewable()) {
         renderer.render(mesh);
       }

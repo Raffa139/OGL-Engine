@@ -1,6 +1,7 @@
 package de.re.engine.ecs;
 
 import de.re.engine.GLApplication;
+import de.re.engine.ecs.component.Component;
 import de.re.engine.ecs.entity.Entity;
 import de.re.engine.ecs.system.ApplicationSystem;
 import de.re.engine.ecs.entity.EntityListener;
@@ -67,7 +68,13 @@ public class EntityComponentSystem {
     return entityGroups.containsKey(entity);
   }
 
-  // TODO: 06.03.2022: Get entities by component
+  public Set<Entity> getEntitiesByComponent(Class<? extends Component> component) {
+    return entityGroups.values().stream()
+        .flatMap(Set::stream)
+        .filter(e -> e.hasComponent(component))
+        .collect(Collectors.toSet());
+  }
+
   public <T extends Entity> Set<T> getEntities(Class<T> entity) {
     if (!hasEntity(entity)) {
       throw new IllegalArgumentException(entity.getName() + " not found!");

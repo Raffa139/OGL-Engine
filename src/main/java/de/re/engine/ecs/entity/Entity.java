@@ -27,6 +27,16 @@ public abstract class Entity {
     return components.containsKey(component);
   }
 
+  public boolean hasComponents(Class<? extends Component>[] components) {
+    for (Class<?> component : components) {
+      if (this.components.containsKey(component)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   public <T extends Component> T getComponent(Class<T> component) {
     if (!hasComponent(component)) {
       throw new IllegalArgumentException(component.getName() + " not found!");
