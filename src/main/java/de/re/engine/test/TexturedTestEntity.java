@@ -1,15 +1,18 @@
 package de.re.engine.test;
 
 import de.re.engine.ecs.component.MeshComponent;
+import de.re.engine.ecs.component.PositionComponent;
 import de.re.engine.ecs.entity.Entity;
-import de.re.engine.objects.sampler.Sampler;
+import org.joml.Vector3f;
 
 import java.lang.reflect.InvocationTargetException;
 
 public class TexturedTestEntity extends Entity {
-  public TexturedTestEntity(float[] vertices, String texture) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+  public TexturedTestEntity(float[] vertices, String texture, Vector3f position) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    addComponent(PositionComponent.class);
     addComponent(MeshComponent.class);
     getComponent(MeshComponent.class).setVertexPositions(vertices);
     getComponent(MeshComponent.class).setTexture(texture);
+    getComponent(PositionComponent.class).setPosition(position);
   }
 }

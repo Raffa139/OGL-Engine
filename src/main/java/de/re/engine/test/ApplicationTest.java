@@ -1,7 +1,9 @@
 package de.re.engine.test;
 
+import de.re.engine.Camera;
 import de.re.engine.GLApplication;
 import de.re.engine.KeyListener;
+import org.joml.Vector3f;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -33,12 +35,17 @@ public class ApplicationTest extends GLApplication {
         -0.5f, -1.0f, 0.0f, 1.0f, 0.0f
     };
 
-    ecs.addSystem(TestRenderingSystem.class);
-    ecs.addEntity(new TestEntity(triangleVertices));
-    TexturedTestEntity square = new TexturedTestEntity(squareVertices, "container_box.png");
-    ecs.addEntity(square);
+    Camera camera = new Camera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
+    useCamera(camera);
 
-    context.toggleMouseCursor();
+    ecs.addSystem(TestRenderingSystem.class);
+    //ecs.addEntity(new TestEntity(triangleVertices));
+    TexturedTestEntity square = new TexturedTestEntity(squareVertices, "container_box.png", new Vector3f(0.0f));
+    TexturedTestEntity square2 = new TexturedTestEntity(squareVertices, "container_box.png", new Vector3f(1.0f, 0.0f, 0.0f));
+    ecs.addEntity(square);
+    ecs.addEntity(square2);
+
+    //context.toggleMouseCursor();
     boolean removed = false;
     float lastPressed = 0.0f;
     while (glApplicationIsRunning()) {

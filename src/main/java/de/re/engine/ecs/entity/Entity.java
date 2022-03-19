@@ -44,4 +44,12 @@ public abstract class Entity {
 
     return component.cast(components.get(component));
   }
+
+  public <T extends Component> T getComponentOrDefault(Class<T> component) {
+    try {
+      return component.cast(components.getOrDefault(component, component.getDeclaredConstructor(Entity.class).newInstance(this)));
+    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+      throw new IllegalStateException("Cannot instantiate default component!", e);
+    }
+  }
 }

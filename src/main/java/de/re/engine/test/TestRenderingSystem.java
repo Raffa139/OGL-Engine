@@ -3,8 +3,10 @@ package de.re.engine.test;
 import de.re.engine.GLApplication;
 import de.re.engine.ecs.EntityComponentSystem;
 import de.re.engine.ecs.component.MeshComponent;
+import de.re.engine.ecs.component.PositionComponent;
 import de.re.engine.ecs.entity.Entity;
 import de.re.engine.ecs.system.ApplicationSystem;
+import org.joml.Vector3f;
 
 import java.util.Set;
 
@@ -27,7 +29,9 @@ public class TestRenderingSystem extends ApplicationSystem {
     for (Entity entity : entities) {
       MeshComponent mesh = entity.getComponent(MeshComponent.class);
       if (mesh.isViewable()) {
-        renderer.render(mesh.getViewable());
+        PositionComponent position = entity.getComponentOrDefault(PositionComponent.class);
+        position.increaseRotation(new Vector3f(0.0f, 0.01f, 0.0f));
+        renderer.render(mesh.getViewable(), position);
       }
     }
   }
