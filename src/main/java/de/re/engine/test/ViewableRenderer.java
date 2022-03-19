@@ -57,16 +57,16 @@ public class ViewableRenderer {
     glClear(GL_COLOR_BUFFER_BIT);
   }
 
-  public void render(MeshComponent mesh) {
-    if (mesh.hasTexture()) {
+  public void render(Viewable viewable) {
+    if (viewable.hasTexture()) {
       viewableTexturedShader.use();
-      mesh.getTexture().bind(0);
+      viewable.getTexture().bind(0);
     } else {
       viewableShader.use();
     }
 
-    glBindVertexArray(mesh.getViewable().getVaoId());
-    glDrawArrays(GL_TRIANGLES, 0, mesh.getViewable().getVertexCount());
+    glBindVertexArray(viewable.getVaoId());
+    glDrawArrays(GL_TRIANGLES, 0, viewable.getVertexCount());
     glBindVertexArray(0);
   }
 }

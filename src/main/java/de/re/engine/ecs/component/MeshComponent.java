@@ -1,13 +1,12 @@
 package de.re.engine.ecs.component;
 
 import de.re.engine.ecs.entity.Entity;
-import de.re.engine.objects.sampler.Sampler;
 import de.re.engine.test.Viewable;
 
 public class MeshComponent extends Component {
   private float[] vertexPositions;
 
-  private Sampler texture;
+  private String texture;
 
   private Viewable viewable;
 
@@ -23,11 +22,11 @@ public class MeshComponent extends Component {
     this.vertexPositions = vertexPositions;
   }
 
-  public Sampler getTexture() {
+  public String getTexture() {
     return texture;
   }
 
-  public void setTexture(Sampler texture) {
+  public void setTexture(String texture) {
     this.texture = texture;
   }
 

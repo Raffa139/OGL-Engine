@@ -2,8 +2,6 @@ package de.re.engine.test;
 
 import de.re.engine.GLApplication;
 import de.re.engine.KeyListener;
-import de.re.engine.objects.sampler.GLSamplerManager;
-import de.re.engine.objects.sampler.Sampler2D;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -39,8 +37,7 @@ public class ApplicationTest extends GLApplication {
 
     ecs.addSystem(TestRenderingSystem.class);
     ecs.addEntity(new TestEntity(triangleVertices));
-    Sampler2D squareSampler = GLSamplerManager.get().sampler2D("container_box.png");
-    TexturedTestEntity square = new TexturedTestEntity(squareVertices, squareSampler);
+    TexturedTestEntity square = new TexturedTestEntity(squareVertices, "container_box.png");
     ecs.addEntity(square);
 
     context.toggleMouseCursor();

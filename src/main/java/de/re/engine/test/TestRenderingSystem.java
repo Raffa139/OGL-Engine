@@ -33,7 +33,7 @@ public class TestRenderingSystem extends ApplicationSystem {
     for (Entity entity : entities) {
       MeshComponent mesh = entity.getComponent(MeshComponent.class);
       if (mesh.isViewable()) {
-        renderer.render(mesh);
+        renderer.render(mesh.getViewable());
       }
     }
   }

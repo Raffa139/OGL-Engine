@@ -5,8 +5,12 @@ import de.re.engine.ecs.component.MeshComponent;
 import de.re.engine.ecs.entity.Entity;
 import de.re.engine.objects.GLVertexArrayManager;
 import de.re.engine.ecs.entity.EntityListener;
+import de.re.engine.objects.sampler.GLSamplerManager;
+import de.re.engine.objects.sampler.Sampler;
 import de.re.engine.test.Viewable;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -29,6 +33,8 @@ public class LoadingSystem extends ApplicationSystem implements EntityListener {
       MeshComponent mesh = meshUploadQueue.poll();
       if (!mesh.isViewable()) {
         int vaoId;
+        Sampler texture = null;
+
         if (mesh.hasTexture()) {
           vaoId = GLVertexArrayManager.get()
               .allocateVao()
@@ -38,6 +44,11 @@ public class LoadingSystem extends ApplicationSystem implements EntityListener {
               .enableAttribArray(1)
               .attribPointer(1, 2, GL_FLOAT, false, 5 * 4, 3 * 4L)
               .doFinal();
+          try {
+            texture = GLSamplerManager.get().sampler2D(mesh.getTexture());
+          } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+          }
         } else {
           vaoId = GLVertexArrayManager.get()
               .allocateVao()
@@ -47,7 +58,7 @@ public class LoadingSystem extends ApplicationSystem implements EntityListener {
               .doFinal();
         }
 
-        Viewable viewable = new Viewable(vaoId, mesh.getVertexPositions().length);
+        Viewable viewable = new Viewable(vaoId, mesh.getVertexPositions().length, texture);
         mesh.setViewable(viewable);
       }
     }

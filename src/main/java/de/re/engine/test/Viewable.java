@@ -1,13 +1,18 @@
 package de.re.engine.test;
 
+import de.re.engine.objects.sampler.Sampler;
+
 public class Viewable {
   private final int vaoId;
 
   private final int vertexCount;
 
-  public Viewable(int vaoId, int vertexCount) {
+  private final Sampler texture;
+
+  public Viewable(int vaoId, int vertexCount, Sampler texture) {
     this.vaoId = vaoId;
     this.vertexCount = vertexCount;
+    this.texture = texture;
   }
 
   public int getVaoId() {
@@ -16,5 +21,13 @@ public class Viewable {
 
   public int getVertexCount() {
     return vertexCount;
+  }
+
+  public Sampler getTexture() {
+    return texture;
+  }
+
+  public boolean hasTexture() {
+    return texture != null;
   }
 }
