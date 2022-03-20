@@ -30,7 +30,7 @@ public class TestRenderingSystem extends ApplicationSystem {
       MeshComponent mesh = entity.getComponent(MeshComponent.class);
       if (mesh.isViewable()) {
         PositionComponent position = entity.getComponentOrDefault(PositionComponent.class);
-        if (entity instanceof TexturedTestEntity && ((TexturedTestEntity)entity).isRotating()) {
+        if (entity instanceof TestEntity && ((TestEntity)entity).isRotating()) {
           position.increaseRotation(new Vector3f(0.0f, 0.01f, 0.0f));
         }
         renderer.render(mesh.getViewable(), position);

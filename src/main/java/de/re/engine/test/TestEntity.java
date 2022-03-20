@@ -1,10 +1,21 @@
 package de.re.engine.test;
 
-import de.re.engine.ecs.component.MeshComponent;
-import de.re.engine.ecs.entity.Entity;
+import de.re.engine.ecs.entity.MeshedEntity;
+import org.joml.Vector3f;
 
-public class TestEntity extends Entity {
-  public TestEntity(float[] vertices) {
-    addComponent(MeshComponent.class).setVertexPositions(vertices);
+public class TestEntity extends MeshedEntity {
+  private boolean rotating;
+
+  public TestEntity(float[] vertices, String texture, Vector3f position, boolean rotating) {
+    super(vertices, texture, position);
+    this.rotating = rotating;
+  }
+
+  public boolean isRotating() {
+    return rotating;
+  }
+
+  public void setRotating(boolean rotating) {
+    this.rotating = rotating;
   }
 }

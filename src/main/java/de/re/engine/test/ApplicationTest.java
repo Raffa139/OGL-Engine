@@ -3,7 +3,7 @@ package de.re.engine.test;
 import de.re.engine.Camera;
 import de.re.engine.GLApplication;
 import de.re.engine.KeyListener;
-import de.re.engine.ecs.system.BasicKeyBindings;
+import de.re.engine.ecs.entity.MeshedEntity;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
@@ -38,10 +38,8 @@ public class ApplicationTest extends GLApplication {
     useCamera(camera);
 
     ecs.addSystem(TestRenderingSystem.class);
-    ecs.addSystem(BasicKeyBindings.class);
-    //ecs.addEntity(new TestEntity(triangleVertices));
-    TexturedTestEntity square = new TexturedTestEntity(squareVertices, "container_box.png", new Vector3f(0.0f), true);
-    TexturedTestEntity square2 = new TexturedTestEntity(squareVertices, "container_box.png", new Vector3f(1.0f, 0.0f, 0.0f), false);
+    TestEntity square = new TestEntity(squareVertices, "container_box.png", new Vector3f(0.0f), true);
+    MeshedEntity square2 = new MeshedEntity(squareVertices, "container_box.png", new Vector3f(1.0f, 0.0f, 0.0f));
     ecs.addEntity(square);
     ecs.addEntity(square2);
 

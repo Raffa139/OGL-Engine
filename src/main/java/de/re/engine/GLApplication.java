@@ -1,6 +1,7 @@
 package de.re.engine;
 
 import de.re.engine.ecs.EntityComponentSystem;
+import de.re.engine.ecs.system.BasicKeyBindings;
 import de.re.engine.ecs.system.LoadingSystem;
 import de.re.engine.objects.GLVertexArrayManager;
 import de.re.engine.objects.sampler.GLSamplerManager;
@@ -121,6 +122,7 @@ public abstract class GLApplication {
   }
 
   private void setupStandardSystems() {
+    ecs.addSystem(BasicKeyBindings.class);
     ecs.addSystem(LoadingSystem.class);
     ecs.registerEntityListener(ecs.getSystem(LoadingSystem.class));
   }
