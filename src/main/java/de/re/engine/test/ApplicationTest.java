@@ -5,6 +5,7 @@ import de.re.engine.GLApplication;
 import de.re.engine.KeyListener;
 import de.re.engine.ecs.entity.MeshedEntity;
 import de.re.engine.ecs.system.MeshedEntityRenderingSystem;
+import de.re.engine.geometry.Polygon;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
@@ -19,30 +20,14 @@ public class ApplicationTest extends GLApplication {
   }
 
   public void run() {
-    float [] triangleVertices = {
-        -0.25f, -0.25f, 0.0f,
-         0.0f,  0.25f,  0.0f,
-         0.25f, -0.25f, 0.0f
-    };
-
-    float [] squareVertices = {
-        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-        -1.0f, -0.5f, 0.0f, 0.0f, 1.0f,
-        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
-
-        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
-        -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-        -0.5f, -1.0f, 0.0f, 1.0f, 0.0f
-    };
-
     Camera camera = new Camera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
     useCamera(camera);
 
     ecs.addSystem(MeshedEntityRenderingSystem.class);
     ecs.addSystem(TestSystem.class);
 
-    RotatingEntity square = new RotatingEntity(squareVertices, new Vector3f(0.0f), "container_box.png", true);
-    MeshedEntity square2 = new MeshedEntity(squareVertices, new Vector3f(1.0f, 0.0f, 0.0f), "container_box.png");
+    RotatingEntity square = new RotatingEntity(Polygon.SQUARE, new Vector3f(0.0f), "container_box.png", true);
+    MeshedEntity square2 = new MeshedEntity(Polygon.SQUARE, new Vector3f(1.0f, 0.0f, 0.0f), "container_box.png");
     ecs.addEntity(square);
     ecs.addEntity(square2);
 

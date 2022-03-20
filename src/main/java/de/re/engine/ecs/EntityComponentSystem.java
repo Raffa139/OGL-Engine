@@ -28,7 +28,7 @@ public class EntityComponentSystem {
     entityListeners = new HashSet<>();
   }
 
-  public static EntityComponentSystem get(GLApplication application) {
+  public static EntityComponentSystem init(GLApplication application) {
     if (instant == null) {
       instant = new EntityComponentSystem(application);
     }

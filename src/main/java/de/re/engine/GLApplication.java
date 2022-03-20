@@ -40,7 +40,7 @@ public abstract class GLApplication {
     shaderManager = GLShaderManager.get();
     samplerManager = GLSamplerManager.get();
     vaoManager = GLVertexArrayManager.get();
-    ecs = EntityComponentSystem.get(this);
+    ecs = EntityComponentSystem.init(this);
     shaders = new ArrayList<>();
     setupStandardSystems();
   }
