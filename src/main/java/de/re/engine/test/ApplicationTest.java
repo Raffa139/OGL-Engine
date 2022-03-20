@@ -6,20 +6,18 @@ import de.re.engine.KeyListener;
 import de.re.engine.ecs.system.BasicKeyBindings;
 import org.joml.Vector3f;
 
-import java.lang.reflect.InvocationTargetException;
-
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
 public class ApplicationTest extends GLApplication {
-  public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+  public static void main(String[] args) {
     new ApplicationTest(1080, 720, "GL Test").run();
   }
 
-  public ApplicationTest(int width, int height, String title) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+  public ApplicationTest(int width, int height, String title) {
     super(width, height, title);
   }
 
-  public void run() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+  public void run() {
     float [] triangleVertices = {
         -0.25f, -0.25f, 0.0f,
          0.0f,  0.25f,  0.0f,

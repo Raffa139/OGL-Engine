@@ -1,5 +1,6 @@
 package de.re.engine.ecs.entity;
 
+import de.re.engine.ecs.FailedInstantiationException;
 import de.re.engine.ecs.component.Component;
 
 import java.lang.reflect.InvocationTargetException;
@@ -9,11 +10,15 @@ import java.util.Map;
 public abstract class Entity {
   private final Map<Class<? extends Component>, Component> components = new HashMap<>();
 
-  public <T extends Component> T addComponent(Class<T> component) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+  public <T extends Component> T addComponent(Class<T> component) {
     if (!hasComponent(component)) {
-      T instance = component.getDeclaredConstructor(Entity.class).newInstance(this);
-      components.put(component, instance);
-      return instance;
+      try {
+        T instance = component.getDeclaredConstructor(Entity.class).newInstance(this);
+        components.put(component, instance);
+        return instance;
+      } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        throw new FailedInstantiationException(e);
+      }
     }
 
     return getComponent(component);
@@ -49,7 +54,7 @@ public abstract class Entity {
     try {
       return component.cast(components.getOrDefault(component, component.getDeclaredConstructor(Entity.class).newInstance(this)));
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-      throw new IllegalStateException("Cannot instantiate default component!", e);
+      throw new FailedInstantiationException(e);
     }
   }
 }

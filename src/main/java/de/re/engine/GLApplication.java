@@ -9,7 +9,6 @@ import de.re.engine.objects.shader.Shader;
 import org.joml.Matrix4f;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public abstract class GLApplication {
 
   private final List<Shader> shaders;
 
-  public GLApplication(int width, int height, String title) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+  public GLApplication(int width, int height, String title) {
     context = GLContext.init(width, height, title);
     shaderManager = GLShaderManager.get();
     samplerManager = GLSamplerManager.get();
@@ -121,7 +120,7 @@ public abstract class GLApplication {
     }
   }
 
-  private void setupStandardSystems() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+  private void setupStandardSystems() {
     ecs.addSystem(LoadingSystem.class);
     ecs.registerEntityListener(ecs.getSystem(LoadingSystem.class));
   }

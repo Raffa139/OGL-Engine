@@ -99,9 +99,13 @@ public class EntityComponentSystem {
     return result;
   }
 
-  public <T extends ApplicationSystem> void addSystem(Class<T> system) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+  public <T extends ApplicationSystem> void addSystem(Class<T> system) {
     if (!hasSystem(system)) {
-      systems.put(system, system.getConstructor(GLApplication.class).newInstance(application));
+      try {
+        systems.put(system, system.getConstructor(GLApplication.class).newInstance(application));
+      } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+        throw new FailedInstantiationException(e);
+      }
     }
   }
 
