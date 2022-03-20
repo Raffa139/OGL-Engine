@@ -5,11 +5,39 @@ import de.re.engine.ecs.component.PositionComponent;
 import org.joml.Vector3f;
 
 public class MeshedEntity extends Entity {
-  public MeshedEntity(float[] vertices, String texture, Vector3f position) {
+  public MeshedEntity(float[] vertices, Vector3f position, String texture) {
+    this(vertices, position);
+    getComponent(MeshComponent.class).setTexture(texture);
+  }
+
+  public MeshedEntity(float[] vertices, Vector3f position) {
     addComponent(MeshComponent.class);
     addComponent(PositionComponent.class);
     getComponent(MeshComponent.class).setVertexPositions(vertices);
-    getComponent(MeshComponent.class).setTexture(texture);
     getComponent(PositionComponent.class).setPosition(position);
+  }
+
+  public MeshComponent getMesh() {
+    return getComponent(MeshComponent.class);
+  }
+
+  public Vector3f getPosition() {
+    return getComponent(PositionComponent.class).getPosition();
+  }
+
+  public void setPosition(Vector3f position) {
+    getComponent(PositionComponent.class).setPosition(position);
+  }
+
+  public Vector3f getRotation() {
+    return getComponent(PositionComponent.class).getRotation();
+  }
+
+  public void setRotation(Vector3f rotation) {
+    getComponent(PositionComponent.class).setRotation(rotation);
+  }
+
+  public void increaseRotation(Vector3f rotation) {
+    getComponent(PositionComponent.class).increaseRotation(rotation);
   }
 }

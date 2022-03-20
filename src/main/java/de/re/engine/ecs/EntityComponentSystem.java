@@ -85,6 +85,18 @@ public class EntityComponentSystem {
         .collect(Collectors.toSet());
   }
 
+  public <T extends Entity> Set<T> getEntitiesWithInherited(Class<T> entity) {
+    if (!hasEntity(entity)) {
+      throw new IllegalArgumentException(entity.getName() + " not found!");
+    }
+
+    return entityGroups.values().stream()
+        .flatMap(Set::stream)
+        .filter(e -> entity.isAssignableFrom(e.getClass()))
+        .map(entity::cast)
+        .collect(Collectors.toSet());
+  }
+
   public Set<Entity> getAllEntities() {
     if (entityGroups.isEmpty()) {
       return Collections.emptySet();

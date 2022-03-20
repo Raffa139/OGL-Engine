@@ -1,7 +1,7 @@
 package de.re.engine.ecs.component;
 
 import de.re.engine.ecs.entity.Entity;
-import de.re.engine.test.Viewable;
+import de.re.engine.rendering.Viewable;
 
 public class MeshComponent extends Component {
   private float[] vertexPositions;

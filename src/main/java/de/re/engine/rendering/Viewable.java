@@ -1,4 +1,4 @@
-package de.re.engine.test;
+package de.re.engine.rendering;
 
 import de.re.engine.objects.sampler.Sampler;
 

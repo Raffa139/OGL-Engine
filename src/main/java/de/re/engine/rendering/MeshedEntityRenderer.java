@@ -1,28 +1,29 @@
-package de.re.engine.test;
+package de.re.engine.rendering;
 
 import de.re.engine.GLApplication;
-import de.re.engine.ecs.component.PositionComponent;
+import de.re.engine.ecs.entity.MeshedEntity;
 import de.re.engine.objects.shader.Shader;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-public class ViewableRenderer {
+public class MeshedEntityRenderer {
   private static final String VERTEX_SHADER_CONTENT =
       "#version 330 core\n" +
-      "layout (location = 0) in vec3 iPos;\n" +
-      "void main() {\n" +
-      "    gl_Position = vec4(iPos, 1.0);\n" +
-      "}";
+          "layout (location = 0) in vec3 iPos;\n" +
+          "void main() {\n" +
+          "    gl_Position = vec4(iPos, 1.0);\n" +
+          "}";
   private static final String FRAGMENT_SHADER_CONTENT =
       "#version 330 core\n" +
-      "layout (location = 0) out vec4 FragColor;\n" +
-      "uniform float iTime;\n" +
-      "void main() {\n" +
-      "    gl_FragColor = vec4(1.0, (sin(iTime) + 1.0) / 2.0, 0.0, 1.0);\n" +
-      "}";
+          "layout (location = 0) out vec4 FragColor;\n" +
+          "uniform float iTime;\n" +
+          "void main() {\n" +
+          "    gl_FragColor = vec4(1.0, (sin(iTime) + 1.0) / 2.0, 0.0, 1.0);\n" +
+          "}";
 
   private static final String VERTEX_SHADER_TEXTURED_CONTENT =
       "#version 330 core\n" +
@@ -45,12 +46,12 @@ public class ViewableRenderer {
           "    gl_FragColor = vec4(texture(sampler, PassTex).rgb, 1.0);\n" +
           "}";
 
-  private final Shader viewableShader;
-  private final Shader viewableTexturedShader;
+  private final Shader shader;
+  private final Shader shaderTextured;
 
-  public ViewableRenderer(GLApplication application) {
-    viewableShader = application.createShader(VERTEX_SHADER_CONTENT, FRAGMENT_SHADER_CONTENT);
-    viewableTexturedShader = application.createShader(VERTEX_SHADER_TEXTURED_CONTENT, FRAGMENT_SHADER_TEXTURED_CONTENT);
+  public MeshedEntityRenderer(GLApplication application) {
+    shader = application.createShader(VERTEX_SHADER_CONTENT, FRAGMENT_SHADER_CONTENT);
+    shaderTextured = application.createShader(VERTEX_SHADER_TEXTURED_CONTENT, FRAGMENT_SHADER_TEXTURED_CONTENT);
   }
 
   public void prepare() {
@@ -59,18 +60,22 @@ public class ViewableRenderer {
     glEnable(GL_DEPTH_TEST);
   }
 
-  public void render(Viewable viewable, PositionComponent position) {
+  public void render(MeshedEntity entity) {
+    Viewable viewable = entity.getMesh().getViewable();
     if (viewable.hasTexture()) {
-      viewableTexturedShader.use();
+      Vector3f rotation = entity.getRotation();
       Matrix4f model = new Matrix4f()
-          .translate(position.getPosition())
-          .rotate((float) Math.toRadians(position.getRotation().x), new Vector3f(1.0f, 0.0f, 0.0f))
-          .rotate((float) Math.toRadians(position.getRotation().y), new Vector3f(0.0f, 1.0f, 0.0f))
-          .rotate((float) Math.toRadians(position.getRotation().z), new Vector3f(0.0f, 0.0f, 1.0f));
-      viewableTexturedShader.setMatrix4("iModel", model);
+          .translate(entity.getPosition())
+          .rotate((float) Math.toRadians(rotation.x), new Vector3f(1.0f, 0.0f, 0.0f))
+          .rotate((float) Math.toRadians(rotation.y), new Vector3f(0.0f, 1.0f, 0.0f))
+          .rotate((float) Math.toRadians(rotation.z), new Vector3f(0.0f, 0.0f, 1.0f));
+
+      shaderTextured.use();
+      shaderTextured.setMatrix4("iModel", model);
+
       viewable.getTexture().bind(0);
     } else {
-      viewableShader.use();
+      shader.use();
     }
 
     glBindVertexArray(viewable.getVaoId());

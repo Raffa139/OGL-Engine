@@ -7,7 +7,7 @@ import de.re.engine.objects.GLVertexArrayManager;
 import de.re.engine.ecs.entity.EntityListener;
 import de.re.engine.objects.sampler.GLSamplerManager;
 import de.re.engine.objects.sampler.Sampler;
-import de.re.engine.test.Viewable;
+import de.re.engine.rendering.Viewable;
 import de.re.engine.util.ResourceLoader;
 
 import java.io.IOException;

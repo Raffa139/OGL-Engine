@@ -4,6 +4,7 @@ import de.re.engine.Camera;
 import de.re.engine.GLApplication;
 import de.re.engine.KeyListener;
 import de.re.engine.ecs.entity.MeshedEntity;
+import de.re.engine.ecs.system.MeshedEntityRenderingSystem;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
@@ -37,9 +38,11 @@ public class ApplicationTest extends GLApplication {
     Camera camera = new Camera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
     useCamera(camera);
 
-    ecs.addSystem(TestRenderingSystem.class);
-    TestEntity square = new TestEntity(squareVertices, "container_box.png", new Vector3f(0.0f), true);
-    MeshedEntity square2 = new MeshedEntity(squareVertices, "container_box.png", new Vector3f(1.0f, 0.0f, 0.0f));
+    ecs.addSystem(MeshedEntityRenderingSystem.class);
+    ecs.addSystem(TestSystem.class);
+
+    RotatingEntity square = new RotatingEntity(squareVertices, new Vector3f(0.0f), "container_box.png", true);
+    MeshedEntity square2 = new MeshedEntity(squareVertices, new Vector3f(1.0f, 0.0f, 0.0f), "container_box.png");
     ecs.addEntity(square);
     ecs.addEntity(square2);
 
