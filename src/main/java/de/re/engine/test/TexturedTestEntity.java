@@ -8,11 +8,18 @@ import org.joml.Vector3f;
 import java.lang.reflect.InvocationTargetException;
 
 public class TexturedTestEntity extends Entity {
-  public TexturedTestEntity(float[] vertices, String texture, Vector3f position) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+  private boolean rotating;
+
+  public TexturedTestEntity(float[] vertices, String texture, Vector3f position, boolean rotating) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    this.rotating = rotating;
     addComponent(PositionComponent.class);
     addComponent(MeshComponent.class);
     getComponent(MeshComponent.class).setVertexPositions(vertices);
     getComponent(MeshComponent.class).setTexture(texture);
     getComponent(PositionComponent.class).setPosition(position);
+  }
+
+  public boolean isRotating() {
+    return rotating;
   }
 }

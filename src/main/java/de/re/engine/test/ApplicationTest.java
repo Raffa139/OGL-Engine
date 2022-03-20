@@ -40,8 +40,8 @@ public class ApplicationTest extends GLApplication {
 
     ecs.addSystem(TestRenderingSystem.class);
     //ecs.addEntity(new TestEntity(triangleVertices));
-    TexturedTestEntity square = new TexturedTestEntity(squareVertices, "container_box.png", new Vector3f(0.0f));
-    TexturedTestEntity square2 = new TexturedTestEntity(squareVertices, "container_box.png", new Vector3f(1.0f, 0.0f, 0.0f));
+    TexturedTestEntity square = new TexturedTestEntity(squareVertices, "container_box.png", new Vector3f(0.0f), true);
+    TexturedTestEntity square2 = new TexturedTestEntity(squareVertices, "container_box.png", new Vector3f(1.0f, 0.0f, 0.0f), false);
     ecs.addEntity(square);
     ecs.addEntity(square2);
 
