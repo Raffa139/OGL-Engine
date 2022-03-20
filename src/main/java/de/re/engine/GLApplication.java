@@ -49,6 +49,14 @@ public abstract class GLApplication {
     return ecs;
   }
 
+  public GLContext getContext() {
+    return context;
+  }
+
+  public float getCurrentTime() {
+    return currentTime;
+  }
+
   public Shader createShader(Path vertexFile, Path fragmentFile) throws IOException {
     Shader shader = shaderManager.createShader(vertexFile, fragmentFile);
     shaders.add(shader);

@@ -3,6 +3,7 @@ package de.re.engine.test;
 import de.re.engine.Camera;
 import de.re.engine.GLApplication;
 import de.re.engine.KeyListener;
+import de.re.engine.ecs.system.BasicKeyBindings;
 import org.joml.Vector3f;
 
 import java.lang.reflect.InvocationTargetException;
@@ -39,13 +40,13 @@ public class ApplicationTest extends GLApplication {
     useCamera(camera);
 
     ecs.addSystem(TestRenderingSystem.class);
+    ecs.addSystem(BasicKeyBindings.class);
     //ecs.addEntity(new TestEntity(triangleVertices));
     TexturedTestEntity square = new TexturedTestEntity(squareVertices, "container_box.png", new Vector3f(0.0f), true);
     TexturedTestEntity square2 = new TexturedTestEntity(squareVertices, "container_box.png", new Vector3f(1.0f, 0.0f, 0.0f), false);
     ecs.addEntity(square);
     ecs.addEntity(square2);
 
-    //context.toggleMouseCursor();
     boolean removed = false;
     float lastPressed = 0.0f;
     while (glApplicationIsRunning()) {
@@ -60,7 +61,6 @@ public class ApplicationTest extends GLApplication {
           ecs.removeEntity(square);
           removed = true;
         }
-
       }
 
       endFrame();
