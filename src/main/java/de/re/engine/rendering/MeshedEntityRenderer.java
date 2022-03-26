@@ -68,7 +68,8 @@ public class MeshedEntityRenderer {
           .translate(entity.getPosition())
           .rotate((float) Math.toRadians(rotation.x), new Vector3f(1.0f, 0.0f, 0.0f))
           .rotate((float) Math.toRadians(rotation.y), new Vector3f(0.0f, 1.0f, 0.0f))
-          .rotate((float) Math.toRadians(rotation.z), new Vector3f(0.0f, 0.0f, 1.0f));
+          .rotate((float) Math.toRadians(rotation.z), new Vector3f(0.0f, 0.0f, 1.0f))
+          .scale(1.0f);
 
       shaderTextured.use();
       shaderTextured.setMatrix4("iModel", model);
