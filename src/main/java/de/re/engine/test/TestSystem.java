@@ -20,7 +20,7 @@ public class TestSystem extends ApplicationSystem {
     Set<RotatingEntity> entities = ecs.getEntities(RotatingEntity.class);
     for (RotatingEntity entity : entities) {
       if (entity.isRotating()) {
-        entity.increaseRotation(new Vector3f(0.0f, 0.01f, 0.0f));
+        entity.increaseRotation(new Vector3f(0.0f, 0.03f, 0.0f));
       }
     }
   }

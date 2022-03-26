@@ -6,6 +6,7 @@ import java.util.List;
 public class Geometry {
   private static final Geometry SQUARE = new Geometry(Polygon.SQUARE, Arrays.asList(PolygonGeometry.SQUARE));
   private static final Geometry TRIANGLE = new Geometry(Polygon.TRIANGLE, Arrays.asList(PolygonGeometry.TRIANGLE));
+  private static final Geometry CUBE = new Geometry(Polygon.CUBE, Arrays.asList(PolygonGeometry.CUBE));
 
   private final Polygon polygon;
 
@@ -22,6 +23,8 @@ public class Geometry {
         return SQUARE;
       case TRIANGLE:
         return TRIANGLE;
+      case CUBE:
+        return CUBE;
       default:
         throw new IllegalArgumentException(polygon + " currently not supported!");
     }

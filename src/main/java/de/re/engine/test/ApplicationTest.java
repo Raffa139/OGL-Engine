@@ -29,11 +29,13 @@ public class ApplicationTest extends GLApplication {
     RotatingEntity triangle = new RotatingEntity(Polygon.TRIANGLE, new Vector3f(0.0f), "container_box.png", true);
     RotatingEntity triangle2 = new RotatingEntity(Polygon.TRIANGLE, new Vector3f(0.0f), "container_box.png", true);
     triangle2.setRotation(new Vector3f(0.0f, 90.0f, 0.0f));
-    MeshedEntity square2 = new MeshedEntity(Polygon.SQUARE, new Vector3f(2.0f, 0.0f, 0.0f), "container_box.png");
+    MeshedEntity cube = new MeshedEntity(Polygon.CUBE, new Vector3f(2.0f, 0.0f, 0.0f), "container_box.png");
+    RotatingEntity cube2 = new RotatingEntity(Polygon.CUBE, new Vector3f(2.0f, 0.0f, 3.0f), "awesomeface.png", true);
 
     ecs.addEntity(triangle);
-    ecs.addEntity(square2);
     ecs.addEntity(triangle2);
+    ecs.addEntity(cube);
+    ecs.addEntity(cube2);
 
     boolean removed = false;
     float lastPressed = 0.0f;

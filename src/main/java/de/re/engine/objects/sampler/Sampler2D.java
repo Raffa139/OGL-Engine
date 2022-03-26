@@ -19,7 +19,7 @@ public class Sampler2D extends Sampler {
 
     PNGDecoder decoder = new PNGDecoder(Files.newInputStream(path, StandardOpenOption.READ));
     ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
-    decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
+    decoder.decodeFlipped(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
     buffer.flip();
 
     glBindTexture(GL_TEXTURE_2D, id);

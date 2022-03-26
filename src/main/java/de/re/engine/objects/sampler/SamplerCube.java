@@ -32,7 +32,7 @@ public class SamplerCube extends Sampler {
 
       PNGDecoder decoder = new PNGDecoder(fin);
       ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
-      decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
+      decoder.decodeFlipped(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
       buffer.flip();
 
       glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
