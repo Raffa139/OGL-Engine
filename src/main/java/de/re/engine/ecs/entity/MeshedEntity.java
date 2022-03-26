@@ -8,24 +8,15 @@ import org.joml.Vector3f;
 
 public class MeshedEntity extends Entity {
   public MeshedEntity(Polygon polygon, Vector3f position, String texture) {
-    this(polygon, position);
-    getComponent(MeshComponent.class).setTexture(texture);
-  }
-
-  public MeshedEntity(Polygon polygon, Vector3f position) {
-    this(Geometry.ofPolygon(polygon).getVerticesFlat(), position);
+    this(Geometry.ofPolygon(polygon).getVerticesFlat(), position, texture);
   }
 
   public MeshedEntity(float[] vertices, Vector3f position, String texture) {
-    this(vertices, position);
-    getComponent(MeshComponent.class).setTexture(texture);
-  }
-
-  public MeshedEntity(float[] vertices, Vector3f position) {
     addComponent(MeshComponent.class);
     addComponent(PositionComponent.class);
     getComponent(MeshComponent.class).setVertexPositions(vertices);
     getComponent(PositionComponent.class).setPosition(position);
+    getComponent(MeshComponent.class).setTexture(texture);
   }
 
   public MeshComponent getMesh() {
