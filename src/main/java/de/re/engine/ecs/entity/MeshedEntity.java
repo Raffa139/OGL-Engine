@@ -8,7 +8,7 @@ import org.joml.Vector3f;
 
 public class MeshedEntity extends Entity {
   public MeshedEntity(Polygon polygon, Vector3f position, String texture) {
-    this(Geometry.ofPolygon(polygon).getVerticesFlat(), position, texture);
+    this(Geometry.ofPolygon(polygon).getVerticesWithTexturesFlat(), position, texture);
   }
 
   public MeshedEntity(float[] vertices, Vector3f position, String texture) {

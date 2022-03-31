@@ -40,7 +40,7 @@ public class GLSamplerManager {
   }
 
   public SamplerCube samplerCube(Path right, Path left, Path top, Path bottom, Path back, Path front) throws IOException {
-    SamplerCube sampler = new SamplerCube(Arrays.asList(right, left, top, bottom, back, front));
+    SamplerCube sampler = new SamplerCube(Arrays.asList(right, left, bottom, top, back, front));
     samplerIds.add(sampler.getId());
 
     return sampler;

@@ -26,11 +26,11 @@ public class ApplicationTest extends GLApplication {
     ecs.addSystem(MeshedEntityRenderingSystem.class);
     ecs.addSystem(TestSystem.class);
 
-    RotatingEntity triangle = new RotatingEntity(Polygon.TRIANGLE, new Vector3f(0.0f), "container_box.png", true);
-    RotatingEntity triangle2 = new RotatingEntity(Polygon.TRIANGLE, new Vector3f(0.0f), "container_box.png", true);
+    RotatingEntity triangle = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
+    RotatingEntity triangle2 = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
     triangle2.setRotation(new Vector3f(0.0f, 90.0f, 0.0f));
-    MeshedEntity cube = new MeshedEntity(Polygon.CUBE, new Vector3f(2.0f, 0.0f, 0.0f), "container_box.png");
-    RotatingEntity cube2 = new RotatingEntity(Polygon.CUBE, new Vector3f(2.0f, 0.0f, 3.0f), "awesomeface.png", true);
+    MeshedEntity cube = new MeshedEntity(Polygon.CUBE_TEXTURED, new Vector3f(2.0f, 0.0f, 0.0f), "container_box.png");
+    RotatingEntity cube2 = new RotatingEntity(Polygon.CUBE_TEXTURED, new Vector3f(2.0f, 0.0f, 3.0f), "awesomeface.png", true);
 
     ecs.addEntity(triangle);
     ecs.addEntity(triangle2);
