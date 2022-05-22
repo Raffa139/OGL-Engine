@@ -1,12 +1,14 @@
-package de.re.engine;
+package de.re.engine.camera;
 
+import de.re.engine.KeyListener;
+import de.re.engine.MouseListener;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import static de.re.engine.util.Vectors.*;
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Camera {
+public class SimpleCamera implements Camera {
   protected Vector3f pos;
   protected Vector3f up;
   protected Vector3f front;
@@ -18,7 +20,7 @@ public class Camera {
   protected float lastPosX;
   protected float lastPosY;
 
-  public Camera(Vector3f pos, float fov) {
+  public SimpleCamera(Vector3f pos, float fov) {
     this.pos = pos;
     this.up = new Vector3f(0.0f, 1.0f, 0.0f);
     this.front = new Vector3f(0.0f, 0.0f, 0.0f);
@@ -27,6 +29,17 @@ public class Camera {
     this.fov = fov;
   }
 
+  @Override
+  public Vector3f getPosition() {
+    return pos;
+  }
+
+  @Override
+  public float getFieldOfView() {
+    return fov;
+  }
+
+  @Override
   public void update(float deltaTime, boolean allowTurn) {
     float speed = 0.075f;
 
@@ -45,12 +58,9 @@ public class Camera {
     move(deltaTime);
   }
 
+  @Override
   public Matrix4f getViewMatrix() {
     return new Matrix4f().lookAt(pos, add(pos, front), up);
-  }
-
-  public Vector3f getPos() {
-    return pos;
   }
 
   public Vector3f getFront() {
@@ -63,10 +73,6 @@ public class Camera {
 
   public float getYaw() {
     return yaw;
-  }
-
-  public float getFov() {
-    return fov;
   }
 
   private void turn(double xCurrent, double yCurrent) {

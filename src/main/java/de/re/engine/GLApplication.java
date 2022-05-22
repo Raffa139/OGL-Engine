@@ -1,5 +1,6 @@
 package de.re.engine;
 
+import de.re.engine.camera.Camera;
 import de.re.engine.ecs.EntityComponentSystem;
 import de.re.engine.ecs.system.BasicKeyBindings;
 import de.re.engine.ecs.system.LoadingSystem;
@@ -109,7 +110,7 @@ public abstract class GLApplication {
       if (cameraInUse()) {
         shader.setMatrix4("iView", view);
         shader.setMatrix4("iProjection", projection);
-        shader.setVec3("iCameraPosition", camera.getPos());
+        shader.setVec3("iCameraPosition", camera.getPosition());
       }
     }
   }
@@ -117,7 +118,7 @@ public abstract class GLApplication {
   private void setupViewProjection() {
     if (cameraInUse()) {
       view = camera.getViewMatrix();
-      projection = new Matrix4f().perspective((float) Math.toRadians(camera.getFov()), context.getAspectRatio(), 0.01f, 1000.0f);
+      projection = new Matrix4f().perspective((float) Math.toRadians(camera.getFieldOfView()), context.getAspectRatio(), 0.01f, 1000.0f);
     }
   }
 

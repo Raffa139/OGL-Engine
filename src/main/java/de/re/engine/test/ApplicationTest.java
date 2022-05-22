@@ -1,6 +1,7 @@
 package de.re.engine.test;
 
-import de.re.engine.Camera;
+import de.re.engine.camera.Camera;
+import de.re.engine.camera.SimpleCamera;
 import de.re.engine.GLApplication;
 import de.re.engine.KeyListener;
 import de.re.engine.ecs.entity.MeshedEntity;
@@ -20,7 +21,7 @@ public class ApplicationTest extends GLApplication {
   }
 
   public void run() {
-    Camera camera = new Camera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
+    Camera camera = new SimpleCamera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
     useCamera(camera);
 
     ecs.addSystem(MeshedEntityRenderingSystem.class);
