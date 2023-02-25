@@ -1,4 +1,4 @@
-package de.ren.ecs.test;
+package de.ren.ecs.example;
 
 import de.ren.ecs.engine.ecs.entity.MeshedEntity;
 import de.ren.ecs.engine.geometry.Polygon;

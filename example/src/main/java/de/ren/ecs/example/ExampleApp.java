@@ -1,4 +1,4 @@
-package de.ren.ecs.test;
+package de.ren.ecs.example;
 
 import de.ren.ecs.engine.GLApplication;
 import de.ren.ecs.engine.KeyListener;
@@ -11,12 +11,12 @@ import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
-public class ApplicationTest extends GLApplication {
+public class ExampleApp extends GLApplication {
   public static void main(String[] args) {
-    new ApplicationTest(1080, 720, "GL Test").run();
+    new ExampleApp(1080, 720, "GL Test").run();
   }
 
-  public ApplicationTest(int width, int height, String title) {
+  public ExampleApp(int width, int height, String title) {
     super(width, height, title);
   }
 
@@ -25,7 +25,7 @@ public class ApplicationTest extends GLApplication {
     useCamera(camera);
 
     ecs.addSystem(MeshedEntityRenderingSystem.class);
-    ecs.addSystem(TestSystem.class);
+    ecs.addSystem(ExampleSystem.class);
 
     RotatingEntity triangle = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
     RotatingEntity triangle2 = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);

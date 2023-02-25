@@ -1,4 +1,4 @@
-package de.ren.ecs.test;
+package de.ren.ecs.example;
 
 import de.ren.ecs.engine.GLApplication;
 import de.ren.ecs.engine.ecs.EntityComponentSystem;
@@ -7,10 +7,10 @@ import org.joml.Vector3f;
 
 import java.util.Set;
 
-public class TestSystem extends ApplicationSystem {
+public class ExampleSystem extends ApplicationSystem {
   private final EntityComponentSystem ecs;
 
-  public TestSystem(GLApplication application) {
+  public ExampleSystem(GLApplication application) {
     super(application);
     ecs = application.getEcs();
   }
