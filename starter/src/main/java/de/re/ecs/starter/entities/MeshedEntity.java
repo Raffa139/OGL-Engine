@@ -1,9 +1,10 @@
-package de.ren.ecs.engine.ecs.entity;
+package de.re.ecs.starter.entities;
 
-import de.ren.ecs.engine.ecs.component.MeshComponent;
-import de.ren.ecs.engine.ecs.component.PositionComponent;
-import de.ren.ecs.engine.geometry.Geometry;
-import de.ren.ecs.engine.geometry.Polygon;
+import de.re.ecs.starter.components.MeshComponent;
+import de.re.ecs.starter.components.PositionComponent;
+import de.ren.ecs.engine.ecs.Entity;
+import de.re.ecs.starter.geometry.Geometry;
+import de.re.ecs.starter.geometry.Polygon;
 import org.joml.Vector3f;
 
 public class MeshedEntity extends Entity {

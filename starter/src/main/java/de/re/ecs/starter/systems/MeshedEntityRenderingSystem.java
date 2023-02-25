@@ -1,9 +1,10 @@
-package de.ren.ecs.engine.ecs.system;
+package de.re.ecs.starter.systems;
 
+import de.re.ecs.starter.entities.MeshedEntity;
 import de.ren.ecs.engine.GLApplication;
 import de.ren.ecs.engine.ecs.EntityComponentSystem;
-import de.ren.ecs.engine.ecs.entity.MeshedEntity;
-import de.ren.ecs.engine.rendering.MeshedEntityRenderer;
+import de.ren.ecs.engine.ecs.ApplicationSystem;
+import de.re.ecs.starter.rendering.MeshedEntityRenderer;
 
 import java.util.Set;
 

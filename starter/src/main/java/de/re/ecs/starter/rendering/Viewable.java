@@ -1,4 +1,4 @@
-package de.ren.ecs.engine.rendering;
+package de.re.ecs.starter.rendering;
 
 import de.ren.ecs.engine.objects.sampler.Sampler;
 

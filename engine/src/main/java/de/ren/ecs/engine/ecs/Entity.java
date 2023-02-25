@@ -1,7 +1,4 @@
-package de.ren.ecs.engine.ecs.entity;
-
-import de.ren.ecs.engine.ecs.FailedInstantiationException;
-import de.ren.ecs.engine.ecs.component.Component;
+package de.ren.ecs.engine.ecs;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;

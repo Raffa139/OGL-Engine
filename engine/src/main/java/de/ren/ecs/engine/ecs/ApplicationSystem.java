@@ -1,4 +1,4 @@
-package de.ren.ecs.engine.ecs.system;
+package de.ren.ecs.engine.ecs;
 
 import de.ren.ecs.engine.GLApplication;
 

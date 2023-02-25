@@ -2,8 +2,6 @@ package de.ren.ecs.engine;
 
 import de.ren.ecs.engine.camera.Camera;
 import de.ren.ecs.engine.ecs.EntityComponentSystem;
-import de.ren.ecs.engine.ecs.system.BasicKeyBindings;
-import de.ren.ecs.engine.ecs.system.LoadingSystem;
 import de.ren.ecs.engine.objects.GLVertexArrayManager;
 import de.ren.ecs.engine.objects.sampler.GLSamplerManager;
 import de.ren.ecs.engine.objects.shader.GLShaderManager;
@@ -43,7 +41,6 @@ public abstract class GLApplication {
     vaoManager = GLVertexArrayManager.get();
     ecs = EntityComponentSystem.init(this);
     shaders = new ArrayList<>();
-    setupStandardSystems();
   }
 
   public EntityComponentSystem getEcs() {
@@ -120,12 +117,6 @@ public abstract class GLApplication {
       view = camera.getViewMatrix();
       projection = new Matrix4f().perspective((float) Math.toRadians(camera.getFieldOfView()), context.getAspectRatio(), 0.01f, 1000.0f);
     }
-  }
-
-  private void setupStandardSystems() {
-    ecs.addSystem(BasicKeyBindings.class);
-    ecs.addSystem(LoadingSystem.class);
-    ecs.registerEntityListener(ecs.getSystem(LoadingSystem.class));
   }
 
   private boolean cameraInUse() {

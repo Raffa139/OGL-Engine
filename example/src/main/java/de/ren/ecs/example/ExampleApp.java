@@ -1,19 +1,19 @@
 package de.ren.ecs.example;
 
-import de.ren.ecs.engine.GLApplication;
+import de.re.ecs.starter.StarterApp;
 import de.ren.ecs.engine.KeyListener;
 import de.ren.ecs.engine.camera.Camera;
-import de.ren.ecs.engine.camera.SimpleCamera;
-import de.ren.ecs.engine.ecs.entity.MeshedEntity;
-import de.ren.ecs.engine.ecs.system.MeshedEntityRenderingSystem;
-import de.ren.ecs.engine.geometry.Polygon;
+import de.re.ecs.starter.camera.StarterCamera;
+import de.re.ecs.starter.entities.MeshedEntity;
+import de.re.ecs.starter.systems.MeshedEntityRenderingSystem;
+import de.re.ecs.starter.geometry.Polygon;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
-public class ExampleApp extends GLApplication {
+public class ExampleApp extends StarterApp {
   public static void main(String[] args) {
-    new ExampleApp(1080, 720, "GL Test").run();
+    new ExampleApp(1080, 720, "GL Example").run();
   }
 
   public ExampleApp(int width, int height, String title) {
@@ -21,7 +21,7 @@ public class ExampleApp extends GLApplication {
   }
 
   public void run() {
-    Camera camera = new SimpleCamera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
+    Camera camera = new StarterCamera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
     useCamera(camera);
 
     ecs.addSystem(MeshedEntityRenderingSystem.class);

@@ -1,16 +1,17 @@
-package de.ren.ecs.engine.ecs.system;
+package de.re.ecs.starter.systems;
 
 import de.ren.ecs.engine.GLApplication;
 import de.ren.ecs.engine.KeyListener;
+import de.ren.ecs.engine.ecs.ApplicationSystem;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class BasicKeyBindings extends ApplicationSystem {
+public class StarterKeybindings extends ApplicationSystem {
   private static final float DELAY = 0.25f;
 
   private float lastPressed;
 
-  public BasicKeyBindings(GLApplication application) {
+  public StarterKeybindings(GLApplication application) {
     super(application);
   }
 

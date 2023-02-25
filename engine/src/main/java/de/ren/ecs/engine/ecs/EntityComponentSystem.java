@@ -1,10 +1,6 @@
 package de.ren.ecs.engine.ecs;
 
 import de.ren.ecs.engine.GLApplication;
-import de.ren.ecs.engine.ecs.component.Component;
-import de.ren.ecs.engine.ecs.entity.Entity;
-import de.ren.ecs.engine.ecs.system.ApplicationSystem;
-import de.ren.ecs.engine.ecs.entity.EntityListener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;

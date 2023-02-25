@@ -1,4 +1,4 @@
-package de.ren.ecs.engine.geometry;
+package de.re.ecs.starter.geometry;
 
 public final class PolygonGeometry {
   private PolygonGeometry() {

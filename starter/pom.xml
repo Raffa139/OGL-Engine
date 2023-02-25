@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>example</artifactId>
+    <artifactId>starter</artifactId>
 
     <properties>
         <maven.compiler.source>12</maven.compiler.source>
@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>de.ren.ecs</groupId>
-            <artifactId>starter</artifactId>
+            <artifactId>engine</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>

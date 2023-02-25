@@ -1,7 +1,7 @@
 package de.ren.ecs.example;
 
-import de.ren.ecs.engine.ecs.entity.MeshedEntity;
-import de.ren.ecs.engine.geometry.Polygon;
+import de.re.ecs.starter.entities.MeshedEntity;
+import de.re.ecs.starter.geometry.Polygon;
 import org.joml.Vector3f;
 
 public class RotatingEntity extends MeshedEntity {

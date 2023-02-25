@@ -1,4 +1,4 @@
-package de.ren.ecs.engine.geometry;
+package de.re.ecs.starter.geometry;
 
 import java.util.Arrays;
 import java.util.List;

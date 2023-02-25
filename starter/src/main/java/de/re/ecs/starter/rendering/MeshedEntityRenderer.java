@@ -1,7 +1,7 @@
-package de.ren.ecs.engine.rendering;
+package de.re.ecs.starter.rendering;
 
+import de.re.ecs.starter.entities.MeshedEntity;
 import de.ren.ecs.engine.GLApplication;
-import de.ren.ecs.engine.ecs.entity.MeshedEntity;
 import de.ren.ecs.engine.objects.shader.Shader;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;

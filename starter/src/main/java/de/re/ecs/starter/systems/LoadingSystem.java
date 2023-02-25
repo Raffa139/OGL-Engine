@@ -1,13 +1,14 @@
-package de.ren.ecs.engine.ecs.system;
+package de.re.ecs.starter.systems;
 
+import de.re.ecs.starter.components.MeshComponent;
 import de.ren.ecs.engine.GLApplication;
-import de.ren.ecs.engine.ecs.component.MeshComponent;
-import de.ren.ecs.engine.ecs.entity.Entity;
+import de.ren.ecs.engine.ecs.Entity;
+import de.ren.ecs.engine.ecs.ApplicationSystem;
 import de.ren.ecs.engine.objects.GLVertexArrayManager;
-import de.ren.ecs.engine.ecs.entity.EntityListener;
+import de.ren.ecs.engine.ecs.EntityListener;
 import de.ren.ecs.engine.objects.sampler.GLSamplerManager;
 import de.ren.ecs.engine.objects.sampler.Sampler;
-import de.ren.ecs.engine.rendering.Viewable;
+import de.re.ecs.starter.rendering.Viewable;
 import de.ren.ecs.engine.util.ResourceLoader;
 
 import java.io.IOException;

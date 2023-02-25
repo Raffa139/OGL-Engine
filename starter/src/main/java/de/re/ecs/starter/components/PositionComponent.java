@@ -1,6 +1,7 @@
-package de.ren.ecs.engine.ecs.component;
+package de.re.ecs.starter.components;
 
-import de.ren.ecs.engine.ecs.entity.Entity;
+import de.ren.ecs.engine.ecs.Component;
+import de.ren.ecs.engine.ecs.Entity;
 import org.joml.Vector3f;
 
 public class PositionComponent extends Component {

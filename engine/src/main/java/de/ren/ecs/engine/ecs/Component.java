@@ -1,6 +1,4 @@
-package de.ren.ecs.engine.ecs.component;
-
-import de.ren.ecs.engine.ecs.entity.Entity;
+package de.ren.ecs.engine.ecs;
 
 public abstract class Component {
   protected Entity entity;

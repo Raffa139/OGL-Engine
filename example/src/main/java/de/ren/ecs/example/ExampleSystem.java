@@ -2,7 +2,7 @@ package de.ren.ecs.example;
 
 import de.ren.ecs.engine.GLApplication;
 import de.ren.ecs.engine.ecs.EntityComponentSystem;
-import de.ren.ecs.engine.ecs.system.ApplicationSystem;
+import de.ren.ecs.engine.ecs.ApplicationSystem;
 import org.joml.Vector3f;
 
 import java.util.Set;

@@ -1,14 +1,17 @@
-package de.ren.ecs.engine.camera;
+package de.re.ecs.starter.camera;
 
 import de.ren.ecs.engine.KeyListener;
 import de.ren.ecs.engine.MouseListener;
+import de.ren.ecs.engine.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import static de.ren.ecs.engine.util.Vectors.*;
 import static org.lwjgl.glfw.GLFW.*;
 
-public class SimpleCamera implements Camera {
+public class StarterCamera implements Camera {
+  // TODO: Separate keybindings and camera position change
+
   protected Vector3f pos;
   protected Vector3f up;
   protected Vector3f front;
@@ -20,7 +23,7 @@ public class SimpleCamera implements Camera {
   protected float lastPosX;
   protected float lastPosY;
 
-  public SimpleCamera(Vector3f pos, float fov) {
+  public StarterCamera(Vector3f pos, float fov) {
     this.pos = pos;
     this.up = new Vector3f(0.0f, 1.0f, 0.0f);
     this.front = new Vector3f(0.0f, 0.0f, 0.0f);
