@@ -1,8 +1,8 @@
 package de.re.ecs.starter.systems;
 
-import de.ren.ecs.engine.GLApplication;
 import de.ren.ecs.engine.KeyListener;
 import de.ren.ecs.engine.ecs.ApplicationSystem;
+import de.ren.ecs.engine.ecs.ECSApplication;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -11,7 +11,7 @@ public class StarterKeybindings extends ApplicationSystem {
 
   private float lastPressed;
 
-  public StarterKeybindings(GLApplication application) {
+  public StarterKeybindings(ECSApplication application) {
     super(application);
   }
 

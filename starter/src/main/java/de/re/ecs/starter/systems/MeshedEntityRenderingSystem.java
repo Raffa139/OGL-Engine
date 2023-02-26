@@ -1,21 +1,17 @@
 package de.re.ecs.starter.systems;
 
 import de.re.ecs.starter.entities.MeshedEntity;
-import de.ren.ecs.engine.GLApplication;
-import de.ren.ecs.engine.ecs.EntityComponentSystem;
+import de.ren.ecs.engine.ecs.ECSApplication;
 import de.ren.ecs.engine.ecs.ApplicationSystem;
 import de.re.ecs.starter.rendering.MeshedEntityRenderer;
 
 import java.util.Set;
 
 public class MeshedEntityRenderingSystem extends ApplicationSystem {
-  private final EntityComponentSystem ecs;
-
   private final MeshedEntityRenderer renderer;
 
-  public MeshedEntityRenderingSystem(GLApplication application) {
+  public MeshedEntityRenderingSystem(ECSApplication application) {
     super(application);
-    ecs = application.getEcs();
     renderer = new MeshedEntityRenderer(application);
   }
 
@@ -23,7 +19,7 @@ public class MeshedEntityRenderingSystem extends ApplicationSystem {
   public void invoke() {
     renderer.prepare();
 
-    Set<MeshedEntity> entities = ecs.getEntitiesWithInherited(MeshedEntity.class);
+    Set<MeshedEntity> entities = application.getEntitiesWithInherited(MeshedEntity.class);
     for (MeshedEntity entity : entities) {
       if (entity.getMesh().isViewable()) {
         renderer.render(entity);

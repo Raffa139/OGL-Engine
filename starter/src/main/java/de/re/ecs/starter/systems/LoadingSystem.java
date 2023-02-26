@@ -1,7 +1,7 @@
 package de.re.ecs.starter.systems;
 
 import de.re.ecs.starter.components.MeshComponent;
-import de.ren.ecs.engine.GLApplication;
+import de.ren.ecs.engine.ecs.ECSApplication;
 import de.ren.ecs.engine.ecs.Entity;
 import de.ren.ecs.engine.ecs.ApplicationSystem;
 import de.ren.ecs.engine.objects.GLVertexArrayManager;
@@ -22,7 +22,7 @@ public class LoadingSystem extends ApplicationSystem implements EntityListener {
   private final Queue<MeshComponent> meshUploadQueue = new LinkedList<>();
   private final Queue<MeshComponent> meshRemoveQueue = new LinkedList<>();
 
-  public LoadingSystem(GLApplication application) {
+  public LoadingSystem(ECSApplication application) {
     super(application);
   }
 

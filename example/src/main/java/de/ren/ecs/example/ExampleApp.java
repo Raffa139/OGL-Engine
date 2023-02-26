@@ -24,8 +24,8 @@ public class ExampleApp extends StarterApp {
     Camera camera = new StarterCamera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
     useCamera(camera);
 
-    ecs.addSystem(MeshedEntityRenderingSystem.class);
-    ecs.addSystem(ExampleSystem.class);
+    addSystem(MeshedEntityRenderingSystem.class);
+    addSystem(ExampleSystem.class);
 
     RotatingEntity triangle = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
     RotatingEntity triangle2 = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
@@ -33,10 +33,10 @@ public class ExampleApp extends StarterApp {
     MeshedEntity cube = new MeshedEntity(Polygon.CUBE_TEXTURED, new Vector3f(2.0f, 0.0f, 0.0f), "container_box.png");
     RotatingEntity cube2 = new RotatingEntity(Polygon.CUBE_TEXTURED, new Vector3f(2.0f, 0.0f, 3.0f), "awesomeface.png", true);
 
-    ecs.addEntity(triangle);
-    ecs.addEntity(triangle2);
-    ecs.addEntity(cube);
-    ecs.addEntity(cube2);
+    addEntity(triangle);
+    addEntity(triangle2);
+    addEntity(cube);
+    addEntity(cube2);
 
     boolean removed = false;
     float lastPressed = 0.0f;
@@ -46,10 +46,10 @@ public class ExampleApp extends StarterApp {
       if (KeyListener.keyPressed(GLFW_KEY_R) && currentTime > lastPressed + 0.25f) {
         lastPressed = currentTime;
         if (removed) {
-          ecs.addEntity(triangle);
+          addEntity(triangle);
           removed = false;
         } else {
-          ecs.removeEntity(triangle);
+          removeEntity(triangle);
           removed = true;
         }
       }

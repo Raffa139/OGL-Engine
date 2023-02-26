@@ -1,7 +1,6 @@
 package de.ren.ecs.engine;
 
 import de.ren.ecs.engine.camera.Camera;
-import de.ren.ecs.engine.ecs.EntityComponentSystem;
 import de.ren.ecs.engine.objects.GLVertexArrayManager;
 import de.ren.ecs.engine.objects.sampler.GLSamplerManager;
 import de.ren.ecs.engine.objects.shader.GLShaderManager;
@@ -22,8 +21,6 @@ public abstract class GLApplication {
   protected final GLSamplerManager samplerManager;
   protected final GLVertexArrayManager vaoManager;
 
-  protected final EntityComponentSystem ecs;
-
   protected float currentTime;
 
   protected Camera camera;
@@ -39,12 +36,7 @@ public abstract class GLApplication {
     shaderManager = GLShaderManager.get();
     samplerManager = GLSamplerManager.get();
     vaoManager = GLVertexArrayManager.get();
-    ecs = EntityComponentSystem.init(this);
     shaders = new ArrayList<>();
-  }
-
-  public EntityComponentSystem getEcs() {
-    return ecs;
   }
 
   public GLContext getContext() {
@@ -55,13 +47,13 @@ public abstract class GLApplication {
     return currentTime;
   }
 
-  public Shader createShader(Path vertexFile, Path fragmentFile) throws IOException {
+  public Shader createShaderWithAppContext(Path vertexFile, Path fragmentFile) throws IOException {
     Shader shader = shaderManager.createShader(vertexFile, fragmentFile);
     shaders.add(shader);
     return shader;
   }
 
-  public Shader createShader(String vertexContent, String fragmentContent) {
+  public Shader createShaderWithAppContext(String vertexContent, String fragmentContent) {
     Shader shader = shaderManager.createShader(vertexContent, fragmentContent);
     shaders.add(shader);
     return shader;
@@ -75,7 +67,6 @@ public abstract class GLApplication {
     currentTime = (float) glfwGetTime();
     setupViewProjection();
     setupShader();
-    ecs.tick();
   }
 
   protected void endFrame() {

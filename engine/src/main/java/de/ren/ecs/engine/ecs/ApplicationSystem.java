@@ -1,11 +1,9 @@
 package de.ren.ecs.engine.ecs;
 
-import de.ren.ecs.engine.GLApplication;
-
 public abstract class ApplicationSystem {
-  protected GLApplication application;
+  protected ECSApplication application;
 
-  public ApplicationSystem(GLApplication application) {
+  public ApplicationSystem(ECSApplication application) {
     this.application = application;
   }
 

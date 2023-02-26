@@ -35,7 +35,7 @@ public class MeshedEntityRenderer {
   private final Shader shader;
 
   public MeshedEntityRenderer(GLApplication application) {
-    shader = application.createShader(VERTEX_SHADER_CONTENT, FRAGMENT_SHADER_CONTENT);
+    shader = application.createShaderWithAppContext(VERTEX_SHADER_CONTENT, FRAGMENT_SHADER_CONTENT);
   }
 
   public void prepare() {

@@ -7,7 +7,7 @@
     <groupId>de.ren.ecs</groupId>
     <artifactId>ECS-Engine</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <modules>
         <module>engine</module>
