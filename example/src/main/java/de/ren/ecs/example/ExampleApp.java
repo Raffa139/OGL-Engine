@@ -7,12 +7,12 @@ import de.re.ecs.starter.camera.StarterCamera;
 import de.re.ecs.starter.entities.MeshedEntity;
 import de.re.ecs.starter.systems.MeshedEntityRenderingSystem;
 import de.re.ecs.starter.geometry.Polygon;
-import jakarta.enterprise.context.ApplicationScoped;
 import org.joml.Vector3f;
+import org.springframework.stereotype.Component;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
-@ApplicationScoped
+@Component
 public class ExampleApp extends StarterApp {
   public ExampleApp(int width, int height, String title) {
     super(width, height, title);
