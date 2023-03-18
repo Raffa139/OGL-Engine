@@ -1,0 +1,11 @@
+- Java SE CDI
+  - Weld Container
+  - Wrapper for application
+    - initialize container
+---
+- Shader creation
+  - Field annotation
+  - Define sources in annotation
+- Register systems
+- Register entity listener
+- Auto execution of renderer (?)
