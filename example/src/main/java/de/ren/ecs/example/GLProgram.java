@@ -8,7 +8,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GLProgram {
-  String vertSource();
+  String vertSource() default "";
 
-  String fragSource();
+  String fragSource() default "";
+
+  String vertContent() default "";
+
+  String fragContent() default "";
 }

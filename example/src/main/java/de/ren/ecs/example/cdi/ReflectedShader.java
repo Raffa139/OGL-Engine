@@ -19,6 +19,14 @@ public class ReflectedShader {
     return annotation.getAnnotation(GLProgram.class);
   }
 
+  public boolean isSourceDefined() {
+    return !getGLProgram().vertSource().isEmpty() && !getGLProgram().fragSource().isEmpty();
+  }
+
+  public boolean isContentDefined() {
+    return !getGLProgram().vertContent().isEmpty() && !getGLProgram().fragContent().isEmpty();
+  }
+
   public String getShaderName() {
     return annotation.getSimpleName();
   }
