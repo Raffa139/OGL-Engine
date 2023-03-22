@@ -7,6 +7,7 @@ import de.re.ecs.starter.camera.StarterCamera;
 import de.re.ecs.starter.entities.MeshedEntity;
 import de.re.ecs.starter.systems.MeshedEntityRenderingSystem;
 import de.re.ecs.starter.geometry.Polygon;
+import de.ren.ecs.engine.objects.shader.Shader;
 import org.joml.Vector3f;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +15,16 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
 @Component
 public class ExampleApp extends StarterApp {
+  @TestShader
+  private Shader shader;
+
   public ExampleApp(int width, int height, String title) {
     super(width, height, title);
   }
 
   public void run() {
+    System.out.println(shader.getId());
+
     Camera camera = new StarterCamera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
     useCamera(camera);
 
@@ -35,6 +41,8 @@ public class ExampleApp extends StarterApp {
     addEntity(triangle2);
     addEntity(cube);
     addEntity(cube2);
+
+    System.out.println(getSystem(ExampleSystem.class).getShader().getId());
 
     boolean removed = false;
     float lastPressed = 0.0f;

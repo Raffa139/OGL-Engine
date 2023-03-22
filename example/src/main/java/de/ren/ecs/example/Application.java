@@ -1,11 +1,10 @@
 package de.ren.ecs.example;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import de.ren.ecs.example.context.ApplicationContext;
 
 public class Application {
   public static void main(String[] args) {
-    ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
+    ApplicationContext context = new ApplicationContext(ApplicationConfiguration.class);
     context.getBean(ExampleApp.class).run();
   }
 }

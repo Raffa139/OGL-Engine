@@ -29,6 +29,12 @@
             <artifactId>spring-context</artifactId>
             <version>6.0.6</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.10.2</version>
+        </dependency>
     </dependencies>
 
 </project>
