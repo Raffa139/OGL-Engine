@@ -1,4 +1,4 @@
-package de.ren.ecs.example.cdi;
+package de.ren.ecs.engine.cdi.reflect;
 
 import de.ren.ecs.engine.objects.shader.Shader;
 

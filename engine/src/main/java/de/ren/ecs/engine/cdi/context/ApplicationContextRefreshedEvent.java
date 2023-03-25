@@ -1,4 +1,4 @@
-package de.ren.ecs.example.context;
+package de.ren.ecs.engine.cdi.context;
 
 import java.util.EventObject;
 

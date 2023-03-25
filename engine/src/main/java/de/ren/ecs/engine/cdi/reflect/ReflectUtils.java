@@ -1,7 +1,6 @@
-package de.ren.ecs.example.cdi.reflect;
+package de.ren.ecs.engine.cdi.reflect;
 
-import de.ren.ecs.example.GLProgram;
-import de.ren.ecs.example.cdi.ReflectedShader;
+import de.ren.ecs.engine.cdi.meta.GLProgram;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;

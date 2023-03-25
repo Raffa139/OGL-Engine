@@ -1,4 +1,4 @@
-package de.ren.ecs.example;
+package de.ren.ecs.engine.cdi.meta;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

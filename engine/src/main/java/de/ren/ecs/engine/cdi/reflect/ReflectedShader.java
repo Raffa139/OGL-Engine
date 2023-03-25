@@ -1,6 +1,6 @@
-package de.ren.ecs.example.cdi;
+package de.ren.ecs.engine.cdi.reflect;
 
-import de.ren.ecs.example.GLProgram;
+import de.ren.ecs.engine.cdi.meta.GLProgram;
 
 import java.lang.annotation.Annotation;
 

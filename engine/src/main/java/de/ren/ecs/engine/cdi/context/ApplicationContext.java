@@ -1,19 +1,25 @@
-package de.ren.ecs.example.context;
+package de.ren.ecs.engine.cdi.context;
 
-import de.ren.ecs.example.cdi.ReflectedShader;
-import de.ren.ecs.example.cdi.ReflectedShaderUsage;
-import de.ren.ecs.example.cdi.reflect.ReflectUtils;
+import de.ren.ecs.engine.cdi.reflect.ReflectedShader;
+import de.ren.ecs.engine.cdi.reflect.ReflectedShaderUsage;
+import de.ren.ecs.engine.cdi.reflect.ReflectUtils;
 import org.reflections.ReflectionUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
 public class ApplicationContext extends AnnotationConfigApplicationContext {
   public ApplicationContext(Class<?>... componentClasses) {
-    super(componentClasses);
+    super(
+        Stream.concat(
+            Arrays.stream(new Class<?>[]{ContextConfiguration.class}),
+            Arrays.stream(componentClasses)
+        ).toArray(Class[]::new)
+    );
   }
 
   public Set<ReflectedShaderUsage> getReflectedShaderUsages(ReflectedShader shader) {

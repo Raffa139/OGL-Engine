@@ -1,13 +1,12 @@
-package de.ren.ecs.example.cdi;
+package de.ren.ecs.engine.cdi.inject;
 
 import de.ren.ecs.engine.objects.shader.GLShaderManager;
 import de.ren.ecs.engine.objects.shader.Shader;
 import de.ren.ecs.engine.util.ResourceLoader;
-import de.ren.ecs.example.context.ApplicationContext;
-import de.ren.ecs.example.context.ApplicationContextRefreshedEvent;
-import de.ren.ecs.example.cdi.reflect.ReflectUtils;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
+import de.ren.ecs.engine.cdi.reflect.ReflectedShader;
+import de.ren.ecs.engine.cdi.reflect.ReflectedShaderUsage;
+import de.ren.ecs.engine.cdi.context.ApplicationContext;
+import de.ren.ecs.engine.cdi.reflect.ReflectUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -15,11 +14,8 @@ import java.nio.file.Path;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Component
-public class ShaderInjector {
-  @EventListener
-  public void handleContextEvent(ApplicationContextRefreshedEvent event) {
-    ApplicationContext context = event.getApplicationContext();
+public class AnnotationInjector {
+  public static void injectShader(ApplicationContext context) {
     Set<ReflectedShader> reflectedShaders = ReflectUtils.getReflectedShaderAnnotations();
 
     reflectedShaders.forEach(reflectedShader -> {
@@ -39,8 +35,8 @@ public class ShaderInjector {
           String vertSource = reflectedShader.getGLProgram().vertSource();
           String fragSource = reflectedShader.getGLProgram().fragSource();
 
-          Path vertPath = ResourceLoader.locateResource(vertSource, ShaderInjector.class).toPath();
-          Path fragPath = ResourceLoader.locateResource(fragSource, ShaderInjector.class).toPath();
+          Path vertPath = ResourceLoader.locateResource(vertSource, AnnotationInjector.class).toPath();
+          Path fragPath = ResourceLoader.locateResource(fragSource, AnnotationInjector.class).toPath();
 
           shader = GLShaderManager.get().createShader(vertPath, fragPath);
         } catch (IOException e) {
