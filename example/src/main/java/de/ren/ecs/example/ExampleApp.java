@@ -5,7 +5,6 @@ import de.ren.ecs.engine.KeyListener;
 import de.ren.ecs.engine.camera.Camera;
 import de.re.ecs.starter.camera.StarterCamera;
 import de.re.ecs.starter.entities.MeshedEntity;
-import de.re.ecs.starter.systems.MeshedEntityRenderingSystem;
 import de.re.ecs.starter.geometry.Polygon;
 import de.ren.ecs.engine.cdi.meta.GLApplication;
 import de.ren.ecs.engine.objects.shader.Shader;
@@ -27,8 +26,6 @@ public class ExampleApp extends StarterApp {
 
     Camera camera = new StarterCamera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
     useCamera(camera);
-
-    addSystem(MeshedEntityRenderingSystem.class);
 
     RotatingEntity triangle = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
     RotatingEntity triangle2 = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);

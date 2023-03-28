@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan
+@ComponentScan(basePackages = { "de.ren.ecs.example", "de.re.ecs.starter" })
 public class ApplicationConfiguration {
   @Bean
   public ExampleApp exampleApp() {

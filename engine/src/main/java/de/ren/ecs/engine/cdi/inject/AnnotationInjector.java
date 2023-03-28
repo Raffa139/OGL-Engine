@@ -2,7 +2,7 @@ package de.ren.ecs.engine.cdi.inject;
 
 import de.ren.ecs.engine.cdi.meta.ApplicationSystem;
 import de.ren.ecs.engine.cdi.meta.GLApplication;
-import de.ren.ecs.engine.ecs.AbstractSystem;
+import de.ren.ecs.engine.ecs.InvokableSystem;
 import de.ren.ecs.engine.ecs.ECSApplication;
 import de.ren.ecs.engine.objects.shader.GLShaderManager;
 import de.ren.ecs.engine.objects.shader.Shader;
@@ -21,20 +21,24 @@ import java.util.stream.Collectors;
 
 public class AnnotationInjector {
   public static void inject(ApplicationContext context) {
-    injectShaders(context);
     injectSystems(context);
+    injectShaders(context);
   }
 
   private static void injectSystems(ApplicationContext context) {
-    Set<Class<? extends Annotation>> systemClasses = ReflectUtils.getTypesAnnotatedWith(ApplicationSystem.class);
-
     Class<? extends Annotation> applicationClass = ReflectUtils.getTypesAnnotatedWith(GLApplication.class).stream()
         .findFirst()
         .orElseThrow();
     ECSApplication application = (ECSApplication) context.getBean(applicationClass);
+    System.out.println("GL app found: " + applicationClass.getSimpleName());
+
+    Set<Class<? extends Annotation>> systemClasses = ReflectUtils.getTypesAnnotatedWith(ApplicationSystem.class);
+    System.out.println("Systems found: " + systemClasses.size());
 
     systemClasses.forEach(systemClass -> {
-      AbstractSystem system = (AbstractSystem) context.getBean(systemClass);
+      System.out.println("System found: " + systemClass.getSimpleName());
+
+      InvokableSystem system = (InvokableSystem) context.getBean(systemClass);
       application.addSystem(system);
     });
   }

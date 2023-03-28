@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 public final class ReflectUtils {
   private static final Reflections REFLECTIONS = new Reflections(
       new ConfigurationBuilder()
-          .forPackage("de.ren.ecs.example")
+          .forPackage("de.ren.ecs")
+          .forPackage("de.re.ecs.starter")
           .addScanners(
               Scanners.TypesAnnotated,
               Scanners.FieldsAnnotated

@@ -2,19 +2,23 @@ package de.ren.ecs.example;
 
 import de.ren.ecs.engine.cdi.meta.ApplicationSystem;
 import de.ren.ecs.engine.ecs.ECSApplication;
-import de.ren.ecs.engine.ecs.AbstractSystem;
+import de.ren.ecs.engine.ecs.InvokableSystem;
 import de.ren.ecs.engine.objects.shader.Shader;
 import org.joml.Vector3f;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 
 @ApplicationSystem
-public class ExampleSystem extends AbstractSystem {
+public class ExampleSystem implements InvokableSystem {
+  private final ECSApplication application;
+
   @TestShader
   private Shader shader;
 
+  @Autowired
   public ExampleSystem(ECSApplication application) {
-    super(application);
+    this.application = application;
   }
 
   public Shader getShader() {

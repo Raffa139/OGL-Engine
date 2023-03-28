@@ -1,18 +1,24 @@
 package de.re.ecs.starter.systems;
 
 import de.ren.ecs.engine.KeyListener;
-import de.ren.ecs.engine.ecs.AbstractSystem;
+import de.ren.ecs.engine.cdi.meta.ApplicationSystem;
+import de.ren.ecs.engine.ecs.InvokableSystem;
 import de.ren.ecs.engine.ecs.ECSApplication;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class StarterKeybindings extends AbstractSystem {
+@ApplicationSystem
+public class StarterKeybindings implements InvokableSystem {
   private static final float DELAY = 0.25f;
+
+  private final ECSApplication application;
 
   private float lastPressed;
 
+  @Autowired
   public StarterKeybindings(ECSApplication application) {
-    super(application);
+    this.application = application;
   }
 
   @Override

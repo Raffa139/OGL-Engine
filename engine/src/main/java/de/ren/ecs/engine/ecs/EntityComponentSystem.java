@@ -11,7 +11,7 @@ public class EntityComponentSystem {
 
   private final Map<Class<? extends Entity>, Set<Entity>> entityGroups;
 
-  private final Map<Class<? extends AbstractSystem>, AbstractSystem> systems;
+  private final Map<Class<? extends InvokableSystem>, InvokableSystem> systems;
 
   private final Set<EntityListener> entityListeners;
 
@@ -31,8 +31,8 @@ public class EntityComponentSystem {
   }
 
   protected void tick() {
-    for (Class<? extends AbstractSystem> system : systems.keySet()) {
-      AbstractSystem instance = systems.get(system);
+    for (Class<? extends InvokableSystem> system : systems.keySet()) {
+      InvokableSystem instance = systems.get(system);
       instance.invoke();
     }
   }
@@ -105,7 +105,7 @@ public class EntityComponentSystem {
     return result;
   }
 
-  protected <T extends AbstractSystem> void addSystem(Class<T> system) {
+  protected <T extends InvokableSystem> void addSystem(Class<T> system) {
     if (!hasSystem(system)) {
       try {
         systems.put(system, system.getConstructor(ECSApplication.class).newInstance(application));
@@ -115,19 +115,19 @@ public class EntityComponentSystem {
     }
   }
 
-  protected <T extends AbstractSystem> void addSystem(T system) {
+  protected <T extends InvokableSystem> void addSystem(T system) {
     systems.put(system.getClass(), system);
   }
 
-  protected <T extends AbstractSystem> void removeSystem(Class<T> system) {
+  protected <T extends InvokableSystem> void removeSystem(Class<T> system) {
     systems.remove(system);
   }
 
-  protected <T extends AbstractSystem> boolean hasSystem(Class<T> system) {
+  protected <T extends InvokableSystem> boolean hasSystem(Class<T> system) {
     return systems.containsKey(system);
   }
 
-  protected <T extends AbstractSystem> T getSystem(Class<T> system) {
+  protected <T extends InvokableSystem> T getSystem(Class<T> system) {
     if (!hasSystem(system)) {
       throw new IllegalArgumentException(system.getName() + " not found!");
     }

@@ -1,9 +1,9 @@
 package de.re.ecs.starter.systems;
 
 import de.re.ecs.starter.components.MeshComponent;
-import de.ren.ecs.engine.ecs.ECSApplication;
+import de.ren.ecs.engine.cdi.meta.ApplicationSystem;
 import de.ren.ecs.engine.ecs.Entity;
-import de.ren.ecs.engine.ecs.AbstractSystem;
+import de.ren.ecs.engine.ecs.InvokableSystem;
 import de.ren.ecs.engine.objects.GLVertexArrayManager;
 import de.ren.ecs.engine.ecs.EntityListener;
 import de.ren.ecs.engine.objects.sampler.GLSamplerManager;
@@ -18,13 +18,10 @@ import java.util.Queue;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
-public class LoadingSystem extends AbstractSystem implements EntityListener {
+@ApplicationSystem
+public class LoadingSystem implements InvokableSystem, EntityListener {
   private final Queue<MeshComponent> meshUploadQueue = new LinkedList<>();
   private final Queue<MeshComponent> meshRemoveQueue = new LinkedList<>();
-
-  public LoadingSystem(ECSApplication application) {
-    super(application);
-  }
 
   @Override
   public void invoke() {
