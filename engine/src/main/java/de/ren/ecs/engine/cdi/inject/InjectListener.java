@@ -11,6 +11,6 @@ public class InjectListener {
   public void handleContextRefreshedEvent(ApplicationContextRefreshedEvent event) {
     ApplicationContext context = event.getApplicationContext();
 
-    AnnotationInjector.injectShader(context);
+    AnnotationInjector.inject(context);
   }
 }

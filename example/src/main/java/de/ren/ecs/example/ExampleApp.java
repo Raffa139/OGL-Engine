@@ -7,13 +7,13 @@ import de.re.ecs.starter.camera.StarterCamera;
 import de.re.ecs.starter.entities.MeshedEntity;
 import de.re.ecs.starter.systems.MeshedEntityRenderingSystem;
 import de.re.ecs.starter.geometry.Polygon;
+import de.ren.ecs.engine.cdi.meta.GLApplication;
 import de.ren.ecs.engine.objects.shader.Shader;
 import org.joml.Vector3f;
-import org.springframework.stereotype.Component;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
-@Component
+@GLApplication
 public class ExampleApp extends StarterApp {
   @TestShader
   private Shader shader;
@@ -29,7 +29,6 @@ public class ExampleApp extends StarterApp {
     useCamera(camera);
 
     addSystem(MeshedEntityRenderingSystem.class);
-    addSystem(ExampleSystem.class);
 
     RotatingEntity triangle = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
     RotatingEntity triangle2 = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);

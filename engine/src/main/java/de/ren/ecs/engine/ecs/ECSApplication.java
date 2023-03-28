@@ -40,15 +40,19 @@ public abstract class ECSApplication extends GLApplication {
     return ecs.getAllEntities();
   }
 
-  public <T extends ApplicationSystem> void addSystem(Class<T> system) {
+  public <T extends AbstractSystem> void addSystem(Class<T> system) {
     ecs.addSystem(system);
   }
 
-  public <T extends ApplicationSystem> void removeSystem(Class<T> system) {
+  public <T extends AbstractSystem> void addSystem(T system) {
+    ecs.addSystem(system);
+  }
+
+  public <T extends AbstractSystem> void removeSystem(Class<T> system) {
     ecs.removeSystem(system);
   }
 
-  public <T extends ApplicationSystem> T getSystem(Class<T> system) {
+  public <T extends AbstractSystem> T getSystem(Class<T> system) {
     return ecs.getSystem(system);
   }
 

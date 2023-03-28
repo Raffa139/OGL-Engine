@@ -1,15 +1,15 @@
 package de.ren.ecs.example;
 
+import de.ren.ecs.engine.cdi.meta.ApplicationSystem;
 import de.ren.ecs.engine.ecs.ECSApplication;
-import de.ren.ecs.engine.ecs.ApplicationSystem;
+import de.ren.ecs.engine.ecs.AbstractSystem;
 import de.ren.ecs.engine.objects.shader.Shader;
 import org.joml.Vector3f;
-import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
-@Component
-public class ExampleSystem extends ApplicationSystem {
+@ApplicationSystem
+public class ExampleSystem extends AbstractSystem {
   @TestShader
   private Shader shader;
 

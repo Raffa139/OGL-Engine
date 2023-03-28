@@ -28,15 +28,16 @@ public final class ReflectUtils {
   }
 
   public static Set<ReflectedShader> getReflectedShaderAnnotations() {
-    Set<Class<?>> annotations = getTypesAnnotatedWith(GLProgram.class);
+    Set<Class<? extends Annotation>> annotations = getTypesAnnotatedWith(GLProgram.class);
     return annotations.stream()
-        .map(annotation -> (Class<? extends Annotation>) annotation)
         .map(ReflectedShader::new)
         .collect(Collectors.toSet());
   }
 
-  public static Set<Class<?>> getTypesAnnotatedWith(Class<? extends Annotation> annotation) {
-    return REFLECTIONS.getTypesAnnotatedWith(annotation);
+  public static Set<Class<? extends Annotation>> getTypesAnnotatedWith(Class<? extends Annotation> annotation) {
+    return REFLECTIONS.getTypesAnnotatedWith(annotation).stream()
+        .map(it -> (Class<? extends Annotation>) it)
+        .collect(Collectors.toSet());
   }
 
   public static Set<Field> getFieldsAnnotatedWith(Class<? extends Annotation> annotation) {

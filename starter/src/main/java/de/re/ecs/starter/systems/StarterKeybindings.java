@@ -1,12 +1,12 @@
 package de.re.ecs.starter.systems;
 
 import de.ren.ecs.engine.KeyListener;
-import de.ren.ecs.engine.ecs.ApplicationSystem;
+import de.ren.ecs.engine.ecs.AbstractSystem;
 import de.ren.ecs.engine.ecs.ECSApplication;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class StarterKeybindings extends ApplicationSystem {
+public class StarterKeybindings extends AbstractSystem {
   private static final float DELAY = 0.25f;
 
   private float lastPressed;

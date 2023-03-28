@@ -1,9 +1,9 @@
 package de.ren.ecs.engine.ecs;
 
-public abstract class ApplicationSystem {
+public abstract class AbstractSystem {
   protected ECSApplication application;
 
-  public ApplicationSystem(ECSApplication application) {
+  public AbstractSystem(ECSApplication application) {
     this.application = application;
   }
 

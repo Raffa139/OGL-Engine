@@ -1,5 +1,9 @@
 package de.ren.ecs.engine.cdi.inject;
 
+import de.ren.ecs.engine.cdi.meta.ApplicationSystem;
+import de.ren.ecs.engine.cdi.meta.GLApplication;
+import de.ren.ecs.engine.ecs.AbstractSystem;
+import de.ren.ecs.engine.ecs.ECSApplication;
 import de.ren.ecs.engine.objects.shader.GLShaderManager;
 import de.ren.ecs.engine.objects.shader.Shader;
 import de.ren.ecs.engine.util.ResourceLoader;
@@ -9,13 +13,33 @@ import de.ren.ecs.engine.cdi.context.ApplicationContext;
 import de.ren.ecs.engine.cdi.reflect.ReflectUtils;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AnnotationInjector {
-  public static void injectShader(ApplicationContext context) {
+  public static void inject(ApplicationContext context) {
+    injectShaders(context);
+    injectSystems(context);
+  }
+
+  private static void injectSystems(ApplicationContext context) {
+    Set<Class<? extends Annotation>> systemClasses = ReflectUtils.getTypesAnnotatedWith(ApplicationSystem.class);
+
+    Class<? extends Annotation> applicationClass = ReflectUtils.getTypesAnnotatedWith(GLApplication.class).stream()
+        .findFirst()
+        .orElseThrow();
+    ECSApplication application = (ECSApplication) context.getBean(applicationClass);
+
+    systemClasses.forEach(systemClass -> {
+      AbstractSystem system = (AbstractSystem) context.getBean(systemClass);
+      application.addSystem(system);
+    });
+  }
+
+  private static void injectShaders(ApplicationContext context) {
     Set<ReflectedShader> reflectedShaders = ReflectUtils.getReflectedShaderAnnotations();
 
     reflectedShaders.forEach(reflectedShader -> {
