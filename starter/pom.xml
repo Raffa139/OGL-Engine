@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ECS-Engine</artifactId>
-        <groupId>de.ren.ecs</groupId>
+        <groupId>de.ren.ogl</groupId>
         <version>1.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -19,7 +19,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>de.ren.ecs</groupId>
+            <groupId>de.ren.ogl</groupId>
             <artifactId>engine</artifactId>
             <version>1.0.1-SNAPSHOT</version>
         </dependency>
