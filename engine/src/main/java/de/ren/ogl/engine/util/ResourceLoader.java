@@ -53,7 +53,7 @@ public final class ResourceLoader {
 
     @Override
     public String toString() {
-      return uri.getPath();
+      return toPath().toString();
     }
   }
 }
