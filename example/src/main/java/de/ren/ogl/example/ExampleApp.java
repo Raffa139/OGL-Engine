@@ -1,7 +1,7 @@
 package de.ren.ogl.example;
 
 import de.ren.ogl.starter.StarterApp;
-import de.ren.ogl.engine.KeyListener;
+import de.ren.ogl.engine.controller.keyboard.Keyboard;
 import de.ren.ogl.engine.camera.Camera;
 import de.ren.ogl.starter.camera.StarterCamera;
 import de.ren.ogl.starter.entities.MeshedEntity;
@@ -43,7 +43,7 @@ public class ExampleApp extends StarterApp {
     while (glApplicationIsRunning()) {
       beginFrame();
 
-      if (KeyListener.keyPressed(GLFW_KEY_R) && currentTime > lastPressed + 0.25f) {
+      if (Keyboard.keyPressed(GLFW_KEY_R) && currentTime > lastPressed + 0.25f) {
         lastPressed = currentTime;
         if (removed) {
           addEntity(triangle);

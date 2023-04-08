@@ -1,6 +1,6 @@
 package de.ren.ogl.starter.systems;
 
-import de.ren.ogl.engine.KeyListener;
+import de.ren.ogl.engine.controller.keyboard.Keyboard;
 import de.ren.ogl.engine.ecs.ApplicationSystem;
 import de.ren.ogl.engine.ecs.ECSApplication;
 
@@ -17,9 +17,9 @@ public class StarterKeybindings extends ApplicationSystem {
 
   @Override
   public void invoke() {
-    if (KeyListener.keyPressed(GLFW_KEY_ESCAPE)) {
+    if (Keyboard.keyPressed(GLFW_KEY_ESCAPE)) {
       application.getContext().requestClose();
-    } else if (KeyListener.keyPressed(GLFW_KEY_TAB) && application.getCurrentTime() > lastPressed + DELAY) {
+    } else if (Keyboard.keyPressed(GLFW_KEY_TAB) && application.getCurrentTime() > lastPressed + DELAY) {
       lastPressed = application.getCurrentTime();
       application.getContext().toggleMouseCursor();
     }

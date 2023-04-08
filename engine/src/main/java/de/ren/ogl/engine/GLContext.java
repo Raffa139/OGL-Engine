@@ -1,5 +1,7 @@
 package de.ren.ogl.engine;
 
+import de.ren.ogl.engine.controller.keyboard.Keyboard;
+import de.ren.ogl.engine.controller.mouse.Mouse;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
@@ -144,10 +146,10 @@ public class GLContext {
     }
 
     // Setup input callback
-    glfwSetKeyCallback(window, KeyListener::keyCallback);
-    glfwSetCursorPosCallback(window, MouseListener::cursorPosCallback);
-    glfwSetMouseButtonCallback(window, MouseListener::mouseButtonCallback);
-    glfwSetScrollCallback(window, MouseListener::scrollCallback);
+    glfwSetKeyCallback(window, Keyboard::keyCallback);
+    glfwSetCursorPosCallback(window, Mouse::cursorPosCallback);
+    glfwSetMouseButtonCallback(window, Mouse::mouseButtonCallback);
+    glfwSetScrollCallback(window, Mouse::scrollCallback);
 
     glfwSetFramebufferSizeCallback(window, GLContext::framebufferSizeCallback);
 
