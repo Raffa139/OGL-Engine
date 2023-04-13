@@ -66,11 +66,15 @@ public class GLVertexArrayManager {
     }
 
     public ArrayBuffer bufferData(float[] data, int usage) {
-      return bufferData((Object) data, usage);
+      return bufferData(data, GL_ARRAY_BUFFER, usage);
     }
 
     public ArrayBuffer bufferData(int[] data, int usage) {
-      return bufferData((Object) data, usage);
+      return bufferData(data, GL_ARRAY_BUFFER, usage);
+    }
+
+    public ArrayBuffer bufferIndices(int[] indices, int usage) {
+      return bufferData(indices, GL_ELEMENT_ARRAY_BUFFER, usage);
     }
 
     public int doFinal() {
@@ -78,15 +82,15 @@ public class GLVertexArrayManager {
       return id;
     }
 
-    private ArrayBuffer bufferData(Object data, int usage) {
+    private ArrayBuffer bufferData(Object data, int type, int usage) {
       int vboId = glGenBuffers();
       appendVboToVao(id, vboId);
-      glBindBuffer(GL_ARRAY_BUFFER, vboId);
+      glBindBuffer(type, vboId);
 
       if (data instanceof float[]) {
-        glBufferData(GL_ARRAY_BUFFER, (float[]) data, usage);
+        glBufferData(type, (float[]) data, usage);
       } else if (data instanceof int[]) {
-        glBufferData(GL_ARRAY_BUFFER, (int[]) data, usage);
+        glBufferData(type, (int[]) data, usage);
       }
 
       return new ArrayBuffer(this);
@@ -108,6 +112,16 @@ public class GLVertexArrayManager {
     public ArrayBuffer attribPointer(int index, int size, int type, boolean normalized, int stride, long offset) {
       glVertexAttribPointer(index, size, type, normalized, stride, offset);
       return this;
+    }
+
+    public VertexArray enableAttribPointer(int index, int size, int type, boolean normalized, int stride, long offset) {
+      glEnableVertexAttribArray(index);
+      glVertexAttribPointer(index, size, type, normalized, stride, offset);
+      return vao;
+    }
+
+    public VertexArray toVertexArray() {
+      return vao;
     }
 
     public int doFinal() {

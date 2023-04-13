@@ -3,6 +3,7 @@ package de.ren.ogl.engine.objects.shader;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
 import java.io.IOException;
@@ -80,11 +81,15 @@ public class Shader {
     }
   }
 
+  public void setVec2(String name, Vector2f value) {
+    glUniform2f(glGetUniformLocation(id, name), value.x, value.y);
+  }
+
   public void setVec3(String name, Vector3f value) {
     glUniform3f(glGetUniformLocation(id, name), value.x, value.y, value.z);
   }
 
-  public void setVec2(String name, Vector2f value) {
-    glUniform2f(glGetUniformLocation(id, name), value.x, value.y);
+  public void setVec4(String name, Vector4f value) {
+    glUniform4f(glGetUniformLocation(id, name), value.x, value.y, value.z, value.w);
   }
 }
