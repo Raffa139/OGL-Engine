@@ -47,6 +47,10 @@ public abstract class GLApplication {
     return currentTime;
   }
 
+  public Camera getCamera() {
+    return camera;
+  }
+
   public Shader createShaderWithAppContext(Path vertexFile, Path fragmentFile) throws IOException {
     Shader shader = shaderManager.createShader(vertexFile, fragmentFile);
     shaders.add(shader);
