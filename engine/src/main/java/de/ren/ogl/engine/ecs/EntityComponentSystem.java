@@ -80,10 +80,6 @@ public class EntityComponentSystem {
   }
 
   protected <T extends Entity> Set<T> getEntitiesWithInherited(Class<T> entity) {
-    if (!hasEntity(entity)) {
-      throw new IllegalArgumentException(entity.getName() + " not found!");
-    }
-
     return entityGroups.values().stream()
         .flatMap(Set::stream)
         .filter(e -> entity.isAssignableFrom(e.getClass()))
