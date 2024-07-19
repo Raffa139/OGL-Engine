@@ -1,17 +1,23 @@
 package de.ren.ogl.starter.systems;
 
-import de.ren.ogl.starter.entities.MeshedEntity;
+import de.ren.ogl.engine.cdi.meta.ApplicationSystem;
 import de.ren.ogl.engine.ecs.ECSApplication;
-import de.ren.ogl.engine.ecs.ApplicationSystem;
+import de.ren.ogl.engine.ecs.InvokableSystem;
+import de.ren.ogl.starter.entities.MeshedEntity;
 import de.ren.ogl.starter.rendering.MeshedEntityRenderer;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Set;
 
-public class MeshedEntityRenderingSystem extends ApplicationSystem {
+@ApplicationSystem
+public class MeshedEntityRenderingSystem implements InvokableSystem {
   private final MeshedEntityRenderer renderer;
 
+  private final ECSApplication application;
+
+  @Autowired
   public MeshedEntityRenderingSystem(ECSApplication application) {
-    super(application);
+    this.application = application;
     renderer = new MeshedEntityRenderer(application);
   }
 

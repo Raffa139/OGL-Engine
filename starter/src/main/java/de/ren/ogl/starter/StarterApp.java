@@ -7,7 +7,7 @@ import de.ren.ogl.engine.ecs.ECSApplication;
 public abstract class StarterApp extends ECSApplication {
   public StarterApp(int width, int height, String title) {
     super(width, height, title);
-    setupStarterSystems();
+    //setupStarterSystems();
   }
 
   private void setupStarterSystems() {
