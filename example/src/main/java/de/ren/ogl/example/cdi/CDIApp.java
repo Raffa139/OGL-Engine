@@ -5,9 +5,7 @@ import de.ren.ogl.starter.StarterConfig;
 
 public class CDIApp {
   // TODO:
-  //  Rename whole projects packages to de.ren.ogl.engine etc..
   //  Configuration for starter module, which can easily be included
-  //  RelfectUtils needs to scan all packages / or can be configured
   //  Inject systems into each other for testing (no cyclic possible)
   //  Enable entity listener
   //  Replace manual shader creation w/ cdi in MeshedEntityRenderer

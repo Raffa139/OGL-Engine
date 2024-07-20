@@ -1,16 +1,11 @@
 package de.ren.ogl.engine.cdi.context;
 
-import de.ren.ogl.engine.cdi.reflect.ReflectedShader;
-import de.ren.ogl.engine.cdi.reflect.ReflectedShaderUsage;
-import de.ren.ogl.engine.cdi.reflect.ReflectUtils;
-import org.reflections.ReflectionUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 public class ApplicationContext extends AnnotationConfigApplicationContext {
   public ApplicationContext(Class<?>... componentClasses) {
@@ -20,44 +15,6 @@ public class ApplicationContext extends AnnotationConfigApplicationContext {
             Arrays.stream(componentClasses)
         ).toArray(Class[]::new)
     );
-  }
-
-  public Set<ReflectedShaderUsage> getReflectedShaderUsages(ReflectedShader shader) {
-    String[] beanNames = getBeanDefinitionNames();
-
-    Set<Field> shaderFields = ReflectUtils.getFieldsUsingReflectedShader(shader);
-
-    Map<Class<?>, Set<Field>> fieldsGroupedByClasses = Arrays.stream(beanNames)
-        .map(this::getBean)
-        .map(Object::getClass)
-        .map(ReflectionUtils::getFields)
-        .flatMap(Collection::stream)
-        .filter(shaderFields::contains)
-        .collect(groupingBy(Field::getDeclaringClass, toSet()));
-
-    Set<ReflectedShaderUsage> usages = new HashSet<>();
-    for (Class<?> clazz : fieldsGroupedByClasses.keySet()) {
-      Set<Field> fields = fieldsGroupedByClasses.get(clazz);
-      usages.add(new ReflectedShaderUsage(shader, getBean(clazz), fields.stream().findFirst().get()));
-    }
-
-    return usages;
-  }
-
-  public Set<Object> getBeansUsingReflectedShader(ReflectedShader shader) {
-    String[] beanNames = getBeanDefinitionNames();
-
-    Set<Field> shaderFields = ReflectUtils.getFieldsUsingReflectedShader(shader);
-
-    return Arrays.stream(beanNames)
-        .map(this::getBean)
-        .map(Object::getClass)
-        .map(ReflectionUtils::getFields)
-        .flatMap(Collection::stream)
-        .filter(shaderFields::contains)
-        .map(Field::getDeclaringClass)
-        .map(this::getBean)
-        .collect(toSet());
   }
 
   @Override

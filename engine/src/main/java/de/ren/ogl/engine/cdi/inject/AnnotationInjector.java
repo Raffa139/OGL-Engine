@@ -13,7 +13,6 @@ import de.ren.ogl.engine.util.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Set;
@@ -23,13 +22,16 @@ import java.util.stream.Collectors;
 public class AnnotationInjector {
   private final ECSApplication application;
 
-  public AnnotationInjector(ECSApplication application) {
+  private final ReflectUtils reflectUtils;
+
+  public AnnotationInjector(ECSApplication application, ReflectUtils reflectUtils) {
     this.application = application;
+    this.reflectUtils = reflectUtils;
   }
 
   public void inject(ApplicationContext context) {
     registerSystems(context);
-    injectShaders(context);
+    injectShaders();
   }
 
   private void registerSystems(ApplicationContext context) {
@@ -45,28 +47,17 @@ public class AnnotationInjector {
     });
   }
 
-  private void injectShaders(ApplicationContext context) {
-    Set<ReflectedShader> reflectedShaders = ReflectUtils.getReflectedShaderAnnotations();
+  private void injectShaders() {
+    Set<ReflectedShader> reflectedShaders = reflectUtils.getReflectedShaderAnnotations();
 
     reflectedShaders.forEach(reflectedShader -> {
       System.out.println("GL program found: " + reflectedShader.getShaderName());
 
-      Set<Field> fields = ReflectUtils.getFieldsUsingReflectedShader(reflectedShader);
-
-      System.out.println("Usages: " + fields.size());
-
       System.out.println(
           "Beans using program: " +
-              context.getBeansUsingReflectedShader(reflectedShader).stream()
+              reflectUtils.getBeansUsingReflectedShader(reflectedShader).stream()
                   .map(Object::getClass)
                   .map(Class::getSimpleName)
-                  .collect(Collectors.toSet())
-      );
-
-      System.out.println(
-          "Fields using program: " +
-              fields.stream()
-                  .map(Field::getName)
                   .collect(Collectors.toSet())
       );
 
@@ -92,7 +83,7 @@ public class AnnotationInjector {
         throw new IllegalArgumentException(String.format("Could not load shader %s, make sure it is defined properly.", reflectedShader.getShaderName()));
       }
 
-      Set<ReflectedShaderUsage> reflectedShaderUsages = context.getReflectedShaderUsages(reflectedShader);
+      Set<ReflectedShaderUsage> reflectedShaderUsages = reflectUtils.getReflectedShaderUsages(reflectedShader);
 
       reflectedShaderUsages.forEach(usage -> {
         try {
