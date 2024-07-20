@@ -11,6 +11,8 @@ import de.ren.ogl.engine.ecs.InvokableSystem;
 import de.ren.ogl.engine.objects.shader.GLShaderManager;
 import de.ren.ogl.engine.objects.shader.Shader;
 import de.ren.ogl.engine.util.ResourceLoader;
+import org.springframework.beans.BeansException;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -19,17 +21,23 @@ import java.nio.file.Path;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Component
 public class AnnotationInjector {
-  public static void inject(ApplicationContext context) {
-    injectSystems(context);
+  private final ECSApplication application;
+
+  public AnnotationInjector(ECSApplication application) {
+    this.application = application;
+  }
+
+  public void inject(ApplicationContext context) {
+    registerSystems(context);
     injectShaders(context);
   }
 
-  private static void injectSystems(ApplicationContext context) {
+  private void registerSystems(ApplicationContext context) {
     Class<? extends Annotation> applicationClass = ReflectUtils.getTypesAnnotatedWith(GLApplication.class).stream()
         .findFirst()
         .orElseThrow();
-    ECSApplication application = (ECSApplication) context.getBean(applicationClass);
     System.out.println("GL app found: " + applicationClass.getSimpleName());
 
     Set<Class<? extends Annotation>> systemClasses = ReflectUtils.getTypesAnnotatedWith(ApplicationSystem.class);
@@ -38,12 +46,16 @@ public class AnnotationInjector {
     systemClasses.forEach(systemClass -> {
       System.out.println("System found: " + systemClass.getSimpleName());
 
-      InvokableSystem system = (InvokableSystem) context.getBean(systemClass);
-      application.addSystem(system);
+      try {
+        InvokableSystem system = (InvokableSystem) context.getBean(systemClass);
+        application.addSystem(system);
+      } catch (BeansException e) {
+        System.err.println("No matching bean for system found: " + systemClass.getSimpleName());
+      }
     });
   }
 
-  private static void injectShaders(ApplicationContext context) {
+  private void injectShaders(ApplicationContext context) {
     Set<ReflectedShader> reflectedShaders = ReflectUtils.getReflectedShaderAnnotations();
 
     reflectedShaders.forEach(reflectedShader -> {

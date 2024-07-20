@@ -16,7 +16,7 @@ public class ApplicationContext extends AnnotationConfigApplicationContext {
   public ApplicationContext(Class<?>... componentClasses) {
     super(
         Stream.concat(
-            Arrays.stream(new Class<?>[]{ContextConfiguration.class}),
+            Arrays.stream(new Class<?>[]{ContextConfig.class}),
             Arrays.stream(componentClasses)
         ).toArray(Class[]::new)
     );

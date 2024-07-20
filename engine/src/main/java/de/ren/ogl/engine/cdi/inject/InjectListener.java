@@ -7,10 +7,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class InjectListener {
+  private final AnnotationInjector annotationInjector;
+
+  public InjectListener(AnnotationInjector annotationInjector) {
+    this.annotationInjector = annotationInjector;
+  }
+
   @EventListener
   public void handleContextRefreshedEvent(ApplicationContextRefreshedEvent event) {
     ApplicationContext context = event.getApplicationContext();
-
-    AnnotationInjector.inject(context);
+    annotationInjector.inject(context);
   }
 }

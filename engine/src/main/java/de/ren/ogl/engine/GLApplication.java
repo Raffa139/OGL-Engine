@@ -1,6 +1,7 @@
 package de.ren.ogl.engine;
 
 import de.ren.ogl.engine.camera.Camera;
+import de.ren.ogl.engine.context.GLContext;
 import de.ren.ogl.engine.objects.GLVertexArrayManager;
 import de.ren.ogl.engine.objects.sampler.GLSamplerManager;
 import de.ren.ogl.engine.objects.shader.GLShaderManager;
@@ -14,8 +15,8 @@ import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 
-public abstract class GLApplication {
-  protected final GLContext context;
+public class GLApplication {
+  private final GLContext context;
 
   protected final GLShaderManager shaderManager;
   protected final GLSamplerManager samplerManager;
@@ -31,8 +32,8 @@ public abstract class GLApplication {
 
   private final List<Shader> shaders;
 
-  public GLApplication(int width, int height, String title) {
-    context = GLContext.init(width, height, title);
+  public GLApplication(GLContext context) {
+    this.context = context;
     shaderManager = GLShaderManager.get();
     samplerManager = GLSamplerManager.get();
     vaoManager = GLVertexArrayManager.get();
@@ -63,31 +64,31 @@ public abstract class GLApplication {
     return shader;
   }
 
-  protected void useCamera(Camera camera) {
+  public void useCamera(Camera camera) {
     this.camera = camera;
   }
 
-  protected void beginFrame() {
+  public void beginFrame() {
     currentTime = (float) glfwGetTime();
     setupViewProjection();
     setupShader();
   }
 
-  protected void endFrame() {
+  public void endFrame() {
     if (cameraInUse()) {
       camera.update(context.getDeltaTime(), !context.isMouseCursorToggled());
     }
     context.update();
   }
 
-  protected void quit() {
+  public void quit() {
     shaderManager.terminate();
     samplerManager.terminate();
     vaoManager.terminate();
     context.terminate();
   }
 
-  protected boolean glApplicationIsRunning() {
+  public boolean glApplicationIsRunning() {
     return !context.isCloseRequested();
   }
 

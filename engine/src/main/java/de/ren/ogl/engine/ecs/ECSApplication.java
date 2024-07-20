@@ -1,14 +1,16 @@
 package de.ren.ogl.engine.ecs;
 
 import de.ren.ogl.engine.GLApplication;
+import de.ren.ogl.engine.context.GLContext;
 
 import java.util.Set;
 
-public abstract class ECSApplication extends GLApplication {
+@org.springframework.stereotype.Component
+public class ECSApplication extends GLApplication {
   protected final EntityComponentSystem ecs;
 
-  public ECSApplication(int width, int height, String title) {
-    super(width, height, title);
+  public ECSApplication(GLContext context) {
+    super(context);
     ecs = EntityComponentSystem.init(this);
   }
 
@@ -65,7 +67,7 @@ public abstract class ECSApplication extends GLApplication {
   }
 
   @Override
-  protected void beginFrame() {
+  public void beginFrame() {
     super.beginFrame();
     ecs.tick();
   }

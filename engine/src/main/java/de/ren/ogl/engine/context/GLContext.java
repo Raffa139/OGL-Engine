@@ -1,10 +1,11 @@
-package de.ren.ogl.engine;
+package de.ren.ogl.engine.context;
 
 import de.ren.ogl.engine.controller.keyboard.Keyboard;
 import de.ren.ogl.engine.controller.mouse.Mouse;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.system.MemoryStack;
+import org.springframework.stereotype.Component;
 
 import java.nio.IntBuffer;
 
@@ -14,13 +15,14 @@ import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+@Component
 public class GLContext {
-  private static GLContext instant;
-
   private final long window;
 
   private int windowWidth;
   private int windowHeight;
+
+  private String windowTitle;
 
   private int frames;
   private float deltaTime;
@@ -29,29 +31,21 @@ public class GLContext {
 
   private boolean mouseCursorToggled = false;
 
-  private GLContext(long window, int width, int height) {
-    this.window = window;
+  public GLContext(@WindowWidth int width, @WindowHeight int height, @WindowTitle String title) {
     windowWidth = width;
     windowHeight = height;
-  }
-
-  public static GLContext init(int width, int height, String title) {
-    if (instant == null) {
-      long window = setup(width, height, title);
-      instant = new GLContext(window, width, height);
-    }
-
-    return instant;
+    windowTitle = title;
+    window = setup(width, height, title);
   }
 
   public void update() {
-    float currentFrame = (float)glfwGetTime();
+    float currentFrame = (float) glfwGetTime();
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
     frames++;
 
     if ((currentFrame - last) >= 1.0f) {
-      glfwSetWindowTitle(window, "FPS: " + frames);
+      glfwSetWindowTitle(window, String.format("%s | FPS: %s", windowTitle, frames));
       frames = 0;
       last = currentFrame;
     }
@@ -113,15 +107,7 @@ public class GLContext {
     return (float) windowWidth / (float) windowHeight;
   }
 
-  private void setWindowWidth(int width) {
-    windowWidth = width;
-  }
-
-  private void setWindowHeight(int height) {
-    windowHeight = height;
-  }
-
-  private static long setup(int width, int height, String title) {
+  private long setup(int width, int height, String title) {
     // Setup error callback. Default implementation will print error messages in System.err
     glfwSetErrorCallback(GLFWErrorCallback.createPrint(System.err));
 
@@ -151,7 +137,7 @@ public class GLContext {
     glfwSetMouseButtonCallback(window, Mouse::mouseButtonCallback);
     glfwSetScrollCallback(window, Mouse::scrollCallback);
 
-    glfwSetFramebufferSizeCallback(window, GLContext::framebufferSizeCallback);
+    glfwSetFramebufferSizeCallback(window, this::framebufferSizeCallback);
 
     // Get thread stack & push a new frame
     try (MemoryStack stack = MemoryStack.stackPush()) {
@@ -183,9 +169,9 @@ public class GLContext {
     return window;
   }
 
-  private static void framebufferSizeCallback(long window, int width, int height) {
-    instant.setWindowWidth(width);
-    instant.setWindowHeight(height);
+  private void framebufferSizeCallback(long window, int width, int height) {
+    windowWidth = width;
+    windowHeight = height;
     glViewport(0, 0, width, height);
   }
 }
