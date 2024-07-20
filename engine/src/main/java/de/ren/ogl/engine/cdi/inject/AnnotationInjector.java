@@ -2,7 +2,6 @@ package de.ren.ogl.engine.cdi.inject;
 
 import de.ren.ogl.engine.cdi.context.ApplicationContext;
 import de.ren.ogl.engine.cdi.meta.ApplicationSystem;
-import de.ren.ogl.engine.cdi.meta.GLApplication;
 import de.ren.ogl.engine.cdi.reflect.ReflectUtils;
 import de.ren.ogl.engine.cdi.reflect.ReflectedShader;
 import de.ren.ogl.engine.cdi.reflect.ReflectedShaderUsage;
@@ -11,13 +10,12 @@ import de.ren.ogl.engine.ecs.InvokableSystem;
 import de.ren.ogl.engine.objects.shader.GLShaderManager;
 import de.ren.ogl.engine.objects.shader.Shader;
 import de.ren.ogl.engine.util.ResourceLoader;
-import org.springframework.beans.BeansException;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,23 +33,15 @@ public class AnnotationInjector {
   }
 
   private void registerSystems(ApplicationContext context) {
-    Class<? extends Annotation> applicationClass = ReflectUtils.getTypesAnnotatedWith(GLApplication.class).stream()
-        .findFirst()
-        .orElseThrow();
-    System.out.println("GL app found: " + applicationClass.getSimpleName());
+    String[] systemBeans = context.getBeanNamesForAnnotation(ApplicationSystem.class);
+    System.out.println("Systems found: " + systemBeans.length);
 
-    Set<Class<? extends Annotation>> systemClasses = ReflectUtils.getTypesAnnotatedWith(ApplicationSystem.class);
-    System.out.println("Systems found: " + systemClasses.size());
+    Arrays.stream(systemBeans).forEach(systemBean -> {
+      InvokableSystem system = (InvokableSystem) context.getBean(systemBean);
 
-    systemClasses.forEach(systemClass -> {
-      System.out.println("System found: " + systemClass.getSimpleName());
+      System.out.println("System found: " + system.getClass().getSimpleName());
 
-      try {
-        InvokableSystem system = (InvokableSystem) context.getBean(systemClass);
-        application.addSystem(system);
-      } catch (BeansException e) {
-        System.err.println("No matching bean for system found: " + systemClass.getSimpleName());
-      }
+      application.addSystem(system);
     });
   }
 
@@ -65,9 +55,20 @@ public class AnnotationInjector {
 
       System.out.println("Usages: " + fields.size());
 
-      System.out.println("Beans using program: " + context.getBeansUsingReflectedShader(reflectedShader).stream().map(Object::getClass).map(Class::getSimpleName).collect(Collectors.toSet()));
+      System.out.println(
+          "Beans using program: " +
+              context.getBeansUsingReflectedShader(reflectedShader).stream()
+                  .map(Object::getClass)
+                  .map(Class::getSimpleName)
+                  .collect(Collectors.toSet())
+      );
 
-      System.out.println("Fields using program: " + fields.stream().map(Field::getName).collect(Collectors.toSet()));
+      System.out.println(
+          "Fields using program: " +
+              fields.stream()
+                  .map(Field::getName)
+                  .collect(Collectors.toSet())
+      );
 
       Shader shader;
       if (reflectedShader.isSourceDefined()) {

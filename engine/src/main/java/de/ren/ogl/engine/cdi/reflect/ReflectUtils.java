@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class ReflectUtils {
+  // TODO: Get scanned packages from spring in here
   private static final Reflections REFLECTIONS = new Reflections(
       new ConfigurationBuilder()
           .forPackage("de.ren.ogl")
