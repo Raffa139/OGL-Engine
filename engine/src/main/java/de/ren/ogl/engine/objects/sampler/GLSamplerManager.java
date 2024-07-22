@@ -1,5 +1,7 @@
 package de.ren.ogl.engine.objects.sampler;
 
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -8,21 +10,12 @@ import java.util.List;
 
 import static org.lwjgl.opengl.GL11.glDeleteTextures;
 
+@Component
 public class GLSamplerManager {
-  private static GLSamplerManager instant;
-
   private final List<Integer> samplerIds;
 
   private GLSamplerManager() {
     samplerIds = new ArrayList<>();
-  }
-
-  public static GLSamplerManager get() {
-    if (instant == null) {
-      instant = new GLSamplerManager();
-    }
-
-    return instant;
   }
 
   public Sampler2D sampler2D(Path path) throws IOException {

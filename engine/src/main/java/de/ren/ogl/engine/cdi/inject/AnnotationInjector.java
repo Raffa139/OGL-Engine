@@ -24,9 +24,15 @@ public class AnnotationInjector {
 
   private final ReflectUtils reflectUtils;
 
-  public AnnotationInjector(ECSApplication application, ReflectUtils reflectUtils) {
+  private final GLShaderManager shaderManager;
+
+  private final ResourceLoader resourceLoader;
+
+  public AnnotationInjector(ECSApplication application, ReflectUtils reflectUtils, GLShaderManager shaderManager, ResourceLoader resourceLoader) {
     this.application = application;
     this.reflectUtils = reflectUtils;
+    this.shaderManager = shaderManager;
+    this.resourceLoader = resourceLoader;
   }
 
   public void inject(ApplicationContext context) {
@@ -67,10 +73,10 @@ public class AnnotationInjector {
           String vertSource = reflectedShader.getGLProgram().vertSource();
           String fragSource = reflectedShader.getGLProgram().fragSource();
 
-          Path vertPath = ResourceLoader.locateResource(vertSource, AnnotationInjector.class).toPath();
-          Path fragPath = ResourceLoader.locateResource(fragSource, AnnotationInjector.class).toPath();
+          Path vertPath = resourceLoader.locateResource(vertSource, AnnotationInjector.class).toPath();
+          Path fragPath = resourceLoader.locateResource(fragSource, AnnotationInjector.class).toPath();
 
-          shader = GLShaderManager.get().createShader(vertPath, fragPath);
+          shader = shaderManager.createShader(vertPath, fragPath);
         } catch (IOException e) {
           throw new IllegalArgumentException(String.format("Sources of shader %s could not be found.", reflectedShader.getShaderName()));
         }
@@ -78,7 +84,7 @@ public class AnnotationInjector {
         String vertContent = reflectedShader.getGLProgram().vertContent();
         String fragContent = reflectedShader.getGLProgram().fragContent();
 
-        shader = GLShaderManager.get().createShader(vertContent, fragContent);
+        shader = shaderManager.createShader(vertContent, fragContent);
       } else {
         throw new IllegalArgumentException(String.format("Could not load shader %s, make sure it is defined properly.", reflectedShader.getShaderName()));
       }

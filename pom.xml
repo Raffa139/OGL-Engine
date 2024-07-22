@@ -7,7 +7,7 @@
     <groupId>de.ren.ogl</groupId>
     <artifactId>OGL-Engine</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-CDI-SNAPSHOT</version>
 
     <modules>
         <module>engine</module>

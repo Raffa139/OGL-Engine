@@ -1,5 +1,7 @@
 package de.ren.ogl.engine.objects.shader;
 
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -7,21 +9,12 @@ import java.util.List;
 
 import static org.lwjgl.opengl.GL20.glDeleteProgram;
 
+@Component
 public class GLShaderManager {
-  private static GLShaderManager instant;
-
   private final List<Integer> shaderIds;
 
   private GLShaderManager() {
     shaderIds = new ArrayList<>();
-  }
-
-  public static GLShaderManager get() {
-    if (instant == null) {
-      instant = new GLShaderManager();
-    }
-
-    return instant;
   }
 
   public Shader createShader(Path vertexFile, Path fragmentFile) throws IOException {

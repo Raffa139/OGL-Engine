@@ -22,8 +22,20 @@ import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
 @ApplicationSystem
 public class LoadingSystem implements InvokableSystem {
+  private final GLVertexArrayManager vaoManager;
+
+  private final GLSamplerManager samplerManager;
+
+  private final ResourceLoader resourceLoader;
+
   private final Queue<MeshComponent> meshUploadQueue = new LinkedList<>();
   private final Queue<MeshComponent> meshRemoveQueue = new LinkedList<>();
+
+  public LoadingSystem(GLVertexArrayManager vaoManager, GLSamplerManager samplerManager, ResourceLoader resourceLoader) {
+    this.vaoManager = vaoManager;
+    this.samplerManager = samplerManager;
+    this.resourceLoader = resourceLoader;
+  }
 
   @Override
   public void invoke() {
@@ -34,7 +46,7 @@ public class LoadingSystem implements InvokableSystem {
         Sampler texture = null;
 
         if (mesh.hasTexture()) {
-          vaoId = GLVertexArrayManager.get()
+          vaoId = vaoManager
               .allocateVao()
               .bufferData(mesh.getVertexPositions(), GL_STATIC_DRAW)
               .enableAttribArray(0)
@@ -44,13 +56,13 @@ public class LoadingSystem implements InvokableSystem {
               .doFinal();
 
           try {
-            texture = GLSamplerManager.get().sampler2D(ResourceLoader.locateResource(mesh.getTexture(), LoadingSystem.class).toPath());
+            texture = samplerManager.sampler2D(resourceLoader.locateResource(mesh.getTexture(), LoadingSystem.class).toPath());
           } catch (IOException e) {
             System.err.println("Unable to load texture, due to unexpected exception!");
             e.printStackTrace();
           }
         } else {
-          vaoId = GLVertexArrayManager.get()
+          vaoId = vaoManager
               .allocateVao()
               .bufferData(mesh.getVertexPositions(), GL_STATIC_DRAW)
               .enableAttribArray(0)
@@ -67,7 +79,7 @@ public class LoadingSystem implements InvokableSystem {
       MeshComponent mesh = meshRemoveQueue.poll();
       if (mesh.isViewable()) {
         Viewable viewable = mesh.getViewable();
-        GLVertexArrayManager.get().freeVao(viewable.getVaoId());
+        vaoManager.freeVao(viewable.getVaoId());
         mesh.revokeViewable();
       }
     }

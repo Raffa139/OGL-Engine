@@ -5,7 +5,7 @@
     <parent>
         <artifactId>OGL-Engine</artifactId>
         <groupId>de.ren.ogl</groupId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.0-CDI-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

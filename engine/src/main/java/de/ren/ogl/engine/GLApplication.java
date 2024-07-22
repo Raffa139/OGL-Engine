@@ -18,25 +18,27 @@ import static org.lwjgl.glfw.GLFW.glfwGetTime;
 public class GLApplication {
   private final GLContext context;
 
-  protected final GLShaderManager shaderManager;
-  protected final GLSamplerManager samplerManager;
-  protected final GLVertexArrayManager vaoManager;
+  private final GLShaderManager shaderManager;
 
-  protected float currentTime;
+  private final GLSamplerManager samplerManager;
 
-  protected Camera camera;
+  private final GLVertexArrayManager vaoManager;
 
-  protected Matrix4f view;
+  private float currentTime;
 
-  protected Matrix4f projection;
+  private Camera camera;
+
+  private Matrix4f view;
+
+  private Matrix4f projection;
 
   private final List<Shader> shaders;
 
-  public GLApplication(GLContext context) {
+  public GLApplication(GLContext context, GLShaderManager shaderManager, GLSamplerManager samplerManager, GLVertexArrayManager vaoManager) {
     this.context = context;
-    shaderManager = GLShaderManager.get();
-    samplerManager = GLSamplerManager.get();
-    vaoManager = GLVertexArrayManager.get();
+    this.shaderManager = shaderManager;
+    this.samplerManager = samplerManager;
+    this.vaoManager = vaoManager;
     shaders = new ArrayList<>();
   }
 

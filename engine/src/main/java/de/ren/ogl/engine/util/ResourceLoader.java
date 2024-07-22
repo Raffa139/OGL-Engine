@@ -1,5 +1,7 @@
 package de.ren.ogl.engine.util;
 
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,11 +12,9 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@Component
 public final class ResourceLoader {
-  private ResourceLoader() {
-  }
-
-  public static Resource locateResource(String file, Class<?> clazz) throws FileNotFoundException {
+  public Resource locateResource(String file, Class<?> clazz) throws FileNotFoundException {
     URL url = clazz.getClassLoader().getResource(file);
 
     if (url == null) {

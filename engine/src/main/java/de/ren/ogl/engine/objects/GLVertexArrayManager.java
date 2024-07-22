@@ -1,5 +1,7 @@
 package de.ren.ogl.engine.objects;
 
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 
 import static org.lwjgl.opengl.GL15.*;
@@ -7,21 +9,12 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.*;
 
+@Component
 public class GLVertexArrayManager {
-  private static GLVertexArrayManager instant;
-
   private final Map<Integer, Set<Integer>> vaoIds;
 
   private GLVertexArrayManager() {
     vaoIds = new HashMap<>();
-  }
-
-  public static GLVertexArrayManager get() {
-    if (instant == null) {
-      instant = new GLVertexArrayManager();
-    }
-
-    return instant;
   }
 
   public VertexArray allocateVao() {
