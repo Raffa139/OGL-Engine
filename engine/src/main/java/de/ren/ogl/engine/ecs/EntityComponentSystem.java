@@ -1,33 +1,20 @@
 package de.ren.ogl.engine.ecs;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@org.springframework.stereotype.Component
 public class EntityComponentSystem {
-  private static EntityComponentSystem instant;
-
-  private final ECSApplication application;
-
   private final Map<Class<? extends Entity>, Set<Entity>> entityGroups;
 
   private final Map<Class<? extends InvokableSystem>, InvokableSystem> systems;
 
   private final Set<EntityListener> entityListeners;
 
-  private EntityComponentSystem(ECSApplication application) {
-    this.application = application;
+  private EntityComponentSystem() {
     entityGroups = new HashMap<>();
     systems = new HashMap<>();
     entityListeners = new HashSet<>();
-  }
-
-  protected static EntityComponentSystem init(ECSApplication application) {
-    if (instant == null) {
-      instant = new EntityComponentSystem(application);
-    }
-
-    return instant;
   }
 
   protected void tick() {
@@ -101,22 +88,12 @@ public class EntityComponentSystem {
     return result;
   }
 
-  protected <T extends InvokableSystem> void addSystem(Class<T> system) {
-    if (!hasSystem(system)) {
-      try {
-        systems.put(system, system.getConstructor(ECSApplication.class).newInstance(application));
-      } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-        throw new FailedInstantiationException(e);
-      }
-    }
-  }
-
   protected <T extends InvokableSystem> void addSystem(T system) {
     systems.put(system.getClass(), system);
   }
 
-  protected <T extends InvokableSystem> void removeSystem(Class<T> system) {
-    systems.remove(system);
+  protected <T extends InvokableSystem> void removeSystem(T system) {
+    systems.remove(system.getClass());
   }
 
   protected <T extends InvokableSystem> boolean hasSystem(Class<T> system) {

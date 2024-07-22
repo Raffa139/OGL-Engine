@@ -7,11 +7,11 @@ import java.util.Set;
 
 @org.springframework.stereotype.Component
 public class ECSApplication extends GLApplication {
-  protected final EntityComponentSystem ecs;
+  private final EntityComponentSystem ecs;
 
-  public ECSApplication(GLContext context) {
+  public ECSApplication(GLContext context, EntityComponentSystem ecs) {
     super(context);
-    ecs = EntityComponentSystem.init(this);
+    this.ecs = ecs;
   }
 
   public <T extends Entity> void addEntity(T entity) {
@@ -42,15 +42,11 @@ public class ECSApplication extends GLApplication {
     return ecs.getAllEntities();
   }
 
-  public <T extends InvokableSystem> void addSystem(Class<T> system) {
-    ecs.addSystem(system);
-  }
-
   public <T extends InvokableSystem> void addSystem(T system) {
     ecs.addSystem(system);
   }
 
-  public <T extends InvokableSystem> void removeSystem(Class<T> system) {
+  public <T extends InvokableSystem> void removeSystem(T system) {
     ecs.removeSystem(system);
   }
 
