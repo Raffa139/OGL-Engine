@@ -71,15 +71,19 @@ public class AnnotationInjector {
 
       );
 
-      Shader shader = createShaderFromReflected(annotationShader);
+      Set<ReflectedShaderUsage> shaderUsages = reflectUtils.getAnnotationShaderUsages(annotationShader);
 
-      reflectUtils.getAnnotationShaderUsages(annotationShader).forEach(reflectedShaderUsage -> {
-        try {
-          reflectedShaderUsage.apply(shader, loggingEnabled);
-        } catch (IllegalAccessException e) {
-          throw new RuntimeException(e);
-        }
-      });
+      if (!shaderUsages.isEmpty()) {
+        Shader shader = createShaderFromReflected(annotationShader);
+
+        shaderUsages.forEach(reflectedShaderUsage -> {
+          try {
+            reflectedShaderUsage.apply(shader, loggingEnabled);
+          } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+          }
+        });
+      }
     });
   }
 
