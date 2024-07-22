@@ -2,9 +2,7 @@ package de.ren.ogl.engine.cdi.inject;
 
 import de.ren.ogl.engine.cdi.context.ApplicationContext;
 import de.ren.ogl.engine.cdi.meta.ApplicationSystem;
-import de.ren.ogl.engine.cdi.reflect.ReflectUtils;
-import de.ren.ogl.engine.cdi.reflect.ReflectedShader;
-import de.ren.ogl.engine.cdi.reflect.ReflectedShaderUsage;
+import de.ren.ogl.engine.cdi.reflect.*;
 import de.ren.ogl.engine.ecs.ECSApplication;
 import de.ren.ogl.engine.ecs.InvokableSystem;
 import de.ren.ogl.engine.objects.shader.Shader;
@@ -14,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -24,10 +23,13 @@ public class AnnotationInjector {
 
   private final ResourceLoader resourceLoader;
 
-  public AnnotationInjector(ECSApplication application, ReflectUtils reflectUtils, ResourceLoader resourceLoader) {
+  private final boolean loggingEnabled;
+
+  public AnnotationInjector(ECSApplication application, ReflectUtils reflectUtils, ResourceLoader resourceLoader, @DebugAnnotationInjector Boolean loggingEnabled) {
     this.application = application;
     this.reflectUtils = reflectUtils;
     this.resourceLoader = resourceLoader;
+    this.loggingEnabled = loggingEnabled;
   }
 
   public void inject(ApplicationContext context) {
@@ -37,12 +39,12 @@ public class AnnotationInjector {
 
   private void registerSystems(ApplicationContext context) {
     String[] systemBeans = context.getBeanNamesForAnnotation(ApplicationSystem.class);
-    System.out.println("Systems found: " + systemBeans.length);
+    log("Systems found: %s%n", systemBeans.length);
 
     Arrays.stream(systemBeans).forEach(systemBean -> {
       InvokableSystem system = (InvokableSystem) context.getBean(systemBean);
 
-      System.out.println("System found: " + system.getClass().getSimpleName());
+      log("System found: %s%n", system.getClass().getSimpleName());
 
       application.addSystem(system);
     });
@@ -54,22 +56,26 @@ public class AnnotationInjector {
   }
 
   private void injectAnnotationShaders() {
-    reflectUtils.getAnnotationShaders().forEach(annotationShader -> {
-      System.out.println("GL program found: " + annotationShader.getShaderName());
+    Set<AnnotationShader> annotationShaders = reflectUtils.getAnnotationShaders();
+    log("Annotated GL programs found: %s%n", annotationShaders.size());
 
-      System.out.println(
-          "Beans using program: " +
-              reflectUtils.getBeansUsingAnnotationShader(annotationShader).stream()
-                  .map(Object::getClass)
-                  .map(Class::getSimpleName)
-                  .collect(Collectors.toSet())
+    annotationShaders.forEach(annotationShader -> {
+      log("GL program found: %s%n", annotationShader.getShaderName());
+
+      log(
+          "Beans using program: %s%n",
+          reflectUtils.getBeansUsingAnnotationShader(annotationShader).stream()
+              .map(Object::getClass)
+              .map(Class::getSimpleName)
+              .collect(Collectors.toSet())
+
       );
 
       Shader shader = createShaderFromReflected(annotationShader);
 
       reflectUtils.getAnnotationShaderUsages(annotationShader).forEach(reflectedShaderUsage -> {
         try {
-          reflectedShaderUsage.apply(shader);
+          reflectedShaderUsage.apply(shader, loggingEnabled);
         } catch (IllegalAccessException e) {
           throw new RuntimeException(e);
         }
@@ -78,14 +84,17 @@ public class AnnotationInjector {
   }
 
   private void injectInlineShaders() {
-    reflectUtils.getInlineShaders().forEach(inlineShader -> {
-      System.out.println("GL program found: " + inlineShader.getShaderName());
+    Set<InlineShader> inlineShaders = reflectUtils.getInlineShaders();
+    log("Inline GL programs found: %s%n", inlineShaders.size());
+
+    inlineShaders.forEach(inlineShader -> {
+      log("GL program found: %s%n", inlineShader.getShaderName());
 
       Shader shader = createShaderFromReflected(inlineShader);
 
       try {
         ReflectedShaderUsage reflectedShaderUsage = reflectUtils.getInlineShaderUsage(inlineShader);
-        reflectedShaderUsage.apply(shader);
+        reflectedShaderUsage.apply(shader, loggingEnabled);
       } catch (IllegalAccessException e) {
         throw new RuntimeException(e);
       }
@@ -112,6 +121,12 @@ public class AnnotationInjector {
       return application.createShaderWithAppContext(vertContent, fragContent);
     } else {
       throw new IllegalArgumentException(String.format("Could not load shader %s, make sure it is defined properly.", reflectedShader.getShaderName()));
+    }
+  }
+
+  private void log(String format, Object... args) {
+    if (loggingEnabled) {
+      System.out.printf(format, args);
     }
   }
 }

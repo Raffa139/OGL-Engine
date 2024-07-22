@@ -17,8 +17,10 @@ public class ReflectedShaderUsage {
     this.field = field;
   }
 
-  public void apply(Shader value) throws IllegalAccessException {
-    System.out.println("Inject " + shader.getShaderName() + " into bean: " + bean.getClass().getSimpleName());
+  public void apply(Shader value, boolean loggingEnabled) throws IllegalAccessException {
+    if (loggingEnabled) {
+      System.out.printf("Inject %s into bean: %s%n", shader.getShaderName(), bean.getClass().getSimpleName());
+    }
 
     field.setAccessible(true);
     field.set(bean, value);
