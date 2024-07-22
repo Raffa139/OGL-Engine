@@ -1,10 +1,10 @@
 package de.ren.ogl.example;
 
-import de.ren.ogl.engine.context.GLContext;
 import de.ren.ogl.engine.camera.Camera;
+import de.ren.ogl.engine.cdi.meta.GLApplication;
 import de.ren.ogl.engine.controller.keyboard.Keyboard;
+import de.ren.ogl.engine.ecs.ECSApplication;
 import de.ren.ogl.engine.objects.shader.Shader;
-import de.ren.ogl.starter.StarterApp;
 import de.ren.ogl.starter.camera.StarterCamera;
 import de.ren.ogl.starter.entities.MeshedEntity;
 import de.ren.ogl.starter.geometry.Polygon;
@@ -13,22 +13,25 @@ import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
-//@GLApplication
-public class ExampleApp extends StarterApp {
+@GLApplication
+public class ExampleApp {
+
+  private final ECSApplication application;
+
   @TestShader
   private Shader shader;
 
-  public ExampleApp(GLContext context) {
-    super(context);
+  public ExampleApp(ECSApplication application) {
+    this.application = application;
   }
 
   public void run() {
     System.out.println(shader.getId());
 
     Camera camera = new StarterCamera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
-    useCamera(camera);
+    application.useCamera(camera);
 
-    registerEntityListener(getSystem(LoadingSystem.class));
+    application.registerEntityListener(application.getSystem(LoadingSystem.class));
 
     RotatingEntity triangle = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
     RotatingEntity triangle2 = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
@@ -36,32 +39,34 @@ public class ExampleApp extends StarterApp {
     MeshedEntity cube = new MeshedEntity(Polygon.CUBE_TEXTURED, new Vector3f(2.0f, 0.0f, 0.0f), "container_box.png");
     RotatingEntity cube2 = new RotatingEntity(Polygon.CUBE_TEXTURED, new Vector3f(2.0f, 0.0f, 3.0f), "awesomeface.png", true);
 
-    addEntity(triangle);
-    addEntity(triangle2);
-    addEntity(cube);
-    addEntity(cube2);
+    application.addEntity(triangle);
+    application.addEntity(triangle2);
+    application.addEntity(cube);
+    application.addEntity(cube2);
 
-    System.out.println(getSystem(ExampleSystem.class).getShader().getId());
+    System.out.println(application.getSystem(ExampleSystem.class).getShader().getId());
 
     boolean removed = false;
     float lastPressed = 0.0f;
-    while (glApplicationIsRunning()) {
-      beginFrame();
+    while (application.glApplicationIsRunning()) {
+      application.beginFrame();
 
-      if (Keyboard.keyPressed(GLFW_KEY_R) && currentTime > lastPressed + 0.25f) {
-        lastPressed = currentTime;
+      if (Keyboard.keyPressed(GLFW_KEY_R) && application.getCurrentTime() > lastPressed + 0.25f) {
+        lastPressed = application.getCurrentTime();
         if (removed) {
-          addEntity(triangle);
+          application.addEntity(triangle);
+          application.addEntity(triangle2);
           removed = false;
         } else {
-          removeEntity(triangle);
+          application.removeEntity(triangle);
+          application.removeEntity(triangle2);
           removed = true;
         }
       }
 
-      endFrame();
+      application.endFrame();
     }
 
-    quit();
+    application.quit();
   }
 }

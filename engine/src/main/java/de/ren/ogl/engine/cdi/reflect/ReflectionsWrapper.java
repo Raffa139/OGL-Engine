@@ -43,7 +43,6 @@ public class ReflectionsWrapper {
           .collect(Collectors.toSet());
 
       ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
-          .forPackage("de.ren.ogl")
           .addScanners(
               Scanners.TypesAnnotated,
               Scanners.FieldsAnnotated
