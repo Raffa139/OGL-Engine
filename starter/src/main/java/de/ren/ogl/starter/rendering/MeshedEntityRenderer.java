@@ -1,42 +1,18 @@
 package de.ren.ogl.starter.rendering;
 
-import de.ren.ogl.starter.entities.MeshedEntity;
-import de.ren.ogl.engine.GLApplication;
 import de.ren.ogl.engine.objects.shader.Shader;
+import de.ren.ogl.starter.entities.MeshedEntity;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.springframework.stereotype.Component;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
+@Component
 public class MeshedEntityRenderer {
-  private static final String VERTEX_SHADER_CONTENT =
-      "#version 330 core\n" +
-          "layout (location = 0) in vec3 iPos;\n" +
-          "layout (location = 1) in vec2 iTex;\n" +
-          "uniform mat4 iModel;\n" +
-          "uniform mat4 iView;\n" +
-          "uniform mat4 iProjection;\n" +
-          "out vec2 PassTex;\n" +
-          "void main() {\n" +
-          "    gl_Position = iProjection * iView * iModel * vec4(iPos, 1.0);\n" +
-          "    PassTex = iTex;\n" +
-          "}";
-  private static final String FRAGMENT_SHADER_CONTENT =
-      "#version 330 core\n" +
-          "layout (location = 0) out vec4 FragColor;\n" +
-          "in vec2 PassTex;\n" +
-          "uniform sampler2D sampler;\n" +
-          "void main() {\n" +
-          "    gl_FragColor = vec4(texture(sampler, PassTex).rgb, 1.0);\n" +
-          "}";
-
-  private final Shader shader;
-
-  public MeshedEntityRenderer(GLApplication application) {
-    shader = application.createShaderWithAppContext(VERTEX_SHADER_CONTENT, FRAGMENT_SHADER_CONTENT);
-  }
+  @MeshedEntityShader
+  private Shader shader;
 
   public void prepare() {
     glClearColor(0.0f, 0.0f, 1.0f, 0.0f);

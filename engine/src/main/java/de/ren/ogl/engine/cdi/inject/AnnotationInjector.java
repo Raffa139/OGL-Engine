@@ -7,7 +7,6 @@ import de.ren.ogl.engine.cdi.reflect.ReflectedShader;
 import de.ren.ogl.engine.cdi.reflect.ReflectedShaderUsage;
 import de.ren.ogl.engine.ecs.ECSApplication;
 import de.ren.ogl.engine.ecs.InvokableSystem;
-import de.ren.ogl.engine.objects.shader.GLShaderManager;
 import de.ren.ogl.engine.objects.shader.Shader;
 import de.ren.ogl.engine.util.ResourceLoader;
 import org.springframework.stereotype.Component;
@@ -24,14 +23,11 @@ public class AnnotationInjector {
 
   private final ReflectUtils reflectUtils;
 
-  private final GLShaderManager shaderManager;
-
   private final ResourceLoader resourceLoader;
 
-  public AnnotationInjector(ECSApplication application, ReflectUtils reflectUtils, GLShaderManager shaderManager, ResourceLoader resourceLoader) {
+  public AnnotationInjector(ECSApplication application, ReflectUtils reflectUtils, ResourceLoader resourceLoader) {
     this.application = application;
     this.reflectUtils = reflectUtils;
-    this.shaderManager = shaderManager;
     this.resourceLoader = resourceLoader;
   }
 
@@ -76,7 +72,7 @@ public class AnnotationInjector {
           Path vertPath = resourceLoader.locateResource(vertSource, AnnotationInjector.class).toPath();
           Path fragPath = resourceLoader.locateResource(fragSource, AnnotationInjector.class).toPath();
 
-          shader = shaderManager.createShader(vertPath, fragPath);
+          shader = application.createShaderWithAppContext(vertPath, fragPath);
         } catch (IOException e) {
           throw new IllegalArgumentException(String.format("Sources of shader %s could not be found.", reflectedShader.getShaderName()));
         }
@@ -84,7 +80,7 @@ public class AnnotationInjector {
         String vertContent = reflectedShader.getGLProgram().vertContent();
         String fragContent = reflectedShader.getGLProgram().fragContent();
 
-        shader = shaderManager.createShader(vertContent, fragContent);
+        shader = application.createShaderWithAppContext(vertContent, fragContent);
       } else {
         throw new IllegalArgumentException(String.format("Could not load shader %s, make sure it is defined properly.", reflectedShader.getShaderName()));
       }

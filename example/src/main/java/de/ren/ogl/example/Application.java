@@ -4,7 +4,6 @@ import de.ren.ogl.engine.cdi.context.ApplicationContext;
 
 public class Application {
   // TODO:
-  //  Replace manual shader creation w/ cdi in MeshedEntityRenderer
   //  Make @GLProgram work on fields also, w/o needing to create extra annotation
   //  Use spring events for mouse & keyboard callbacks
 
