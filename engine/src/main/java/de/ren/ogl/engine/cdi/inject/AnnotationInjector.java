@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -50,50 +49,69 @@ public class AnnotationInjector {
   }
 
   private void injectShaders() {
-    Set<ReflectedShader> reflectedShaders = reflectUtils.getReflectedShaderAnnotations();
+    injectAnnotationShaders();
+    injectInlineShaders();
+  }
 
-    reflectedShaders.forEach(reflectedShader -> {
-      System.out.println("GL program found: " + reflectedShader.getShaderName());
+  private void injectAnnotationShaders() {
+    reflectUtils.getAnnotationShaders().forEach(annotationShader -> {
+      System.out.println("GL program found: " + annotationShader.getShaderName());
 
       System.out.println(
           "Beans using program: " +
-              reflectUtils.getBeansUsingReflectedShader(reflectedShader).stream()
+              reflectUtils.getBeansUsingAnnotationShader(annotationShader).stream()
                   .map(Object::getClass)
                   .map(Class::getSimpleName)
                   .collect(Collectors.toSet())
       );
 
-      Shader shader;
-      if (reflectedShader.isSourceDefined()) {
+      Shader shader = createShaderFromReflected(annotationShader);
+
+      reflectUtils.getAnnotationShaderUsages(annotationShader).forEach(reflectedShaderUsage -> {
         try {
-          String vertSource = reflectedShader.getGLProgram().vertSource();
-          String fragSource = reflectedShader.getGLProgram().fragSource();
-
-          Path vertPath = resourceLoader.locateResource(vertSource, AnnotationInjector.class).toPath();
-          Path fragPath = resourceLoader.locateResource(fragSource, AnnotationInjector.class).toPath();
-
-          shader = application.createShaderWithAppContext(vertPath, fragPath);
-        } catch (IOException e) {
-          throw new IllegalArgumentException(String.format("Sources of shader %s could not be found.", reflectedShader.getShaderName()));
-        }
-      } else if (reflectedShader.isContentDefined()) {
-        String vertContent = reflectedShader.getGLProgram().vertContent();
-        String fragContent = reflectedShader.getGLProgram().fragContent();
-
-        shader = application.createShaderWithAppContext(vertContent, fragContent);
-      } else {
-        throw new IllegalArgumentException(String.format("Could not load shader %s, make sure it is defined properly.", reflectedShader.getShaderName()));
-      }
-
-      Set<ReflectedShaderUsage> reflectedShaderUsages = reflectUtils.getReflectedShaderUsages(reflectedShader);
-
-      reflectedShaderUsages.forEach(usage -> {
-        try {
-          usage.apply(shader);
+          reflectedShaderUsage.apply(shader);
         } catch (IllegalAccessException e) {
           throw new RuntimeException(e);
         }
       });
     });
+  }
+
+  private void injectInlineShaders() {
+    reflectUtils.getInlineShaders().forEach(inlineShader -> {
+      System.out.println("GL program found: " + inlineShader.getShaderName());
+
+      Shader shader = createShaderFromReflected(inlineShader);
+
+      try {
+        ReflectedShaderUsage reflectedShaderUsage = reflectUtils.getInlineShaderUsage(inlineShader);
+        reflectedShaderUsage.apply(shader);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      }
+    });
+  }
+
+  private Shader createShaderFromReflected(ReflectedShader reflectedShader) {
+    if (reflectedShader.isSourceDefined()) {
+      try {
+        String vertSource = reflectedShader.getGLProgram().vertSource();
+        String fragSource = reflectedShader.getGLProgram().fragSource();
+
+        Path vertPath = resourceLoader.locateResource(vertSource, AnnotationInjector.class).toPath();
+        Path fragPath = resourceLoader.locateResource(fragSource, AnnotationInjector.class).toPath();
+
+        return application.createShaderWithAppContext(vertPath, fragPath);
+      } catch (IOException e) {
+        throw new IllegalArgumentException(String.format("Sources of shader %s could not be found.", reflectedShader.getShaderName()));
+      }
+    } else if (reflectedShader.isContentDefined()) {
+      String vertContent = reflectedShader.getGLProgram().vertContent();
+      String fragContent = reflectedShader.getGLProgram().fragContent();
+
+      return application.createShaderWithAppContext(vertContent, fragContent);
+    } else {
+      throw new IllegalArgumentException(String.format("Could not load shader %s, make sure it is defined properly.", reflectedShader.getShaderName()));
+    }
   }
 }

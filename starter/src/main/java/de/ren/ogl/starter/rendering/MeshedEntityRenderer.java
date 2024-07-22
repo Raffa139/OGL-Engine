@@ -1,5 +1,6 @@
 package de.ren.ogl.starter.rendering;
 
+import de.ren.ogl.engine.cdi.meta.GLProgram;
 import de.ren.ogl.engine.objects.shader.Shader;
 import de.ren.ogl.starter.entities.MeshedEntity;
 import org.joml.Matrix4f;
@@ -11,7 +12,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 @Component
 public class MeshedEntityRenderer {
-  @MeshedEntityShader
+  @GLProgram(vertSource = "meshedEntity.vert", fragSource = "meshedEntity.frag")
   private Shader shader;
 
   public void prepare() {

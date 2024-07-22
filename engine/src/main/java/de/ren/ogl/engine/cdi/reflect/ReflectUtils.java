@@ -24,31 +24,20 @@ public class ReflectUtils {
     this.reflections = reflections;
   }
 
-  public Set<Field> getFieldsUsingReflectedShader(ReflectedShader shader) {
+  public Set<AnnotationShader> getAnnotationShaders() {
+    return getTypesAnnotatedWith(GLProgram.class).stream()
+        .map(AnnotationShader::new)
+        .collect(Collectors.toSet());
+  }
+
+  public Set<Field> getFieldsUsingAnnotationShader(AnnotationShader shader) {
     return getFieldsAnnotatedWith(shader.getAnnotation());
   }
 
-  public Set<ReflectedShader> getReflectedShaderAnnotations() {
-    Set<Class<? extends Annotation>> annotations = getTypesAnnotatedWith(GLProgram.class);
-    return annotations.stream()
-        .map(ReflectedShader::new)
-        .collect(Collectors.toSet());
-  }
-
-  public Set<Class<? extends Annotation>> getTypesAnnotatedWith(Class<? extends Annotation> annotation) {
-    return reflections.getTypesAnnotatedWith(annotation).stream()
-        .map(it -> (Class<? extends Annotation>) it)
-        .collect(Collectors.toSet());
-  }
-
-  public Set<Field> getFieldsAnnotatedWith(Class<? extends Annotation> annotation) {
-    return reflections.getFieldsAnnotatedWith(annotation);
-  }
-
-  public Set<ReflectedShaderUsage> getReflectedShaderUsages(ReflectedShader shader) {
+  public Set<ReflectedShaderUsage> getAnnotationShaderUsages(AnnotationShader shader) {
     String[] beanNames = context.getBeanDefinitionNames();
 
-    Set<Field> shaderFields = getFieldsUsingReflectedShader(shader);
+    Set<Field> shaderFields = getFieldsUsingAnnotationShader(shader);
 
     Map<Class<?>, Set<Field>> fieldsGroupedByClasses = Arrays.stream(beanNames)
         .map(context::getBean)
@@ -67,10 +56,22 @@ public class ReflectUtils {
     return usages;
   }
 
-  public Set<Object> getBeansUsingReflectedShader(ReflectedShader shader) {
+  public Set<InlineShader> getInlineShaders() {
+    return getFieldsAnnotatedWith(GLProgram.class).stream()
+        .map(InlineShader::new)
+        .collect(toSet());
+  }
+
+  public ReflectedShaderUsage getInlineShaderUsage(InlineShader shader) {
+    Field field = shader.getField();
+    Class<?> clazz = field.getDeclaringClass();
+    return new ReflectedShaderUsage(shader, context.getBean(clazz), field);
+  }
+
+  public Set<Object> getBeansUsingAnnotationShader(AnnotationShader shader) {
     String[] beanNames = context.getBeanDefinitionNames();
 
-    Set<Field> shaderFields = getFieldsUsingReflectedShader(shader);
+    Set<Field> shaderFields = getFieldsUsingAnnotationShader(shader);
 
     return Arrays.stream(beanNames)
         .map(context::getBean)
@@ -81,5 +82,15 @@ public class ReflectUtils {
         .map(Field::getDeclaringClass)
         .map(context::getBean)
         .collect(toSet());
+  }
+
+  private Set<Class<? extends Annotation>> getTypesAnnotatedWith(Class<? extends Annotation> annotation) {
+    return reflections.getTypesAnnotatedWith(annotation).stream()
+        .map(it -> (Class<? extends Annotation>) it)
+        .collect(Collectors.toSet());
+  }
+
+  private Set<Field> getFieldsAnnotatedWith(Class<? extends Annotation> annotation) {
+    return reflections.getFieldsAnnotatedWith(annotation);
   }
 }

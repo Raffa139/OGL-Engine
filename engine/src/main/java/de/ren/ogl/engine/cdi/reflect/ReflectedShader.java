@@ -2,22 +2,10 @@ package de.ren.ogl.engine.cdi.reflect;
 
 import de.ren.ogl.engine.cdi.meta.GLProgram;
 
-import java.lang.annotation.Annotation;
+public abstract class ReflectedShader {
+  public abstract GLProgram getGLProgram();
 
-public class ReflectedShader {
-  private final Class<? extends Annotation> annotation;
-
-  public ReflectedShader(Class<? extends Annotation> annotation) {
-    this.annotation = annotation;
-  }
-
-  public Class<? extends Annotation> getAnnotation() {
-    return annotation;
-  }
-
-  public GLProgram getGLProgram() {
-    return annotation.getAnnotation(GLProgram.class);
-  }
+  public abstract String getShaderName();
 
   public boolean isSourceDefined() {
     return !getGLProgram().vertSource().isEmpty() && !getGLProgram().fragSource().isEmpty();
@@ -25,9 +13,5 @@ public class ReflectedShader {
 
   public boolean isContentDefined() {
     return !getGLProgram().vertContent().isEmpty() && !getGLProgram().fragContent().isEmpty();
-  }
-
-  public String getShaderName() {
-    return annotation.getSimpleName();
   }
 }
