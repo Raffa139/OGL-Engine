@@ -8,7 +8,6 @@ import de.ren.ogl.engine.objects.shader.Shader;
 import de.ren.ogl.starter.camera.StarterCamera;
 import de.ren.ogl.starter.entities.MeshedEntity;
 import de.ren.ogl.starter.geometry.Polygon;
-import de.ren.ogl.starter.systems.LoadingSystem;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
@@ -30,8 +29,6 @@ public class ExampleApp {
 
     Camera camera = new StarterCamera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
     application.useCamera(camera);
-
-    application.registerEntityListener(application.getSystem(LoadingSystem.class));
 
     RotatingEntity triangle = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
     RotatingEntity triangle2 = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);

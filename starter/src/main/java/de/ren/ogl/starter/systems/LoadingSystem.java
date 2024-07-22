@@ -2,7 +2,8 @@ package de.ren.ogl.starter.systems;
 
 import de.ren.ogl.engine.cdi.meta.ApplicationSystem;
 import de.ren.ogl.engine.ecs.Entity;
-import de.ren.ogl.engine.ecs.EntityListener;
+import de.ren.ogl.engine.ecs.EntityAddedEvent;
+import de.ren.ogl.engine.ecs.EntityRemovedEvent;
 import de.ren.ogl.engine.ecs.InvokableSystem;
 import de.ren.ogl.engine.objects.GLVertexArrayManager;
 import de.ren.ogl.engine.objects.sampler.GLSamplerManager;
@@ -10,6 +11,7 @@ import de.ren.ogl.engine.objects.sampler.Sampler;
 import de.ren.ogl.engine.util.ResourceLoader;
 import de.ren.ogl.starter.components.MeshComponent;
 import de.ren.ogl.starter.rendering.Viewable;
+import org.springframework.context.event.EventListener;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -19,7 +21,7 @@ import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 
 @ApplicationSystem
-public class LoadingSystem implements InvokableSystem, EntityListener {
+public class LoadingSystem implements InvokableSystem {
   private final Queue<MeshComponent> meshUploadQueue = new LinkedList<>();
   private final Queue<MeshComponent> meshRemoveQueue = new LinkedList<>();
 
@@ -71,15 +73,19 @@ public class LoadingSystem implements InvokableSystem, EntityListener {
     }
   }
 
-  @Override
-  public void entityAdded(Entity entity) {
+  @EventListener
+  public void handleEntityAdded(EntityAddedEvent event) {
+    Entity entity = event.getEntity();
+
     if (entity.hasComponent(MeshComponent.class)) {
       meshUploadQueue.add(entity.getComponent(MeshComponent.class));
     }
   }
 
-  @Override
-  public void entityRemoved(Entity entity) {
+  @EventListener
+  public void handleEntityRemoved(EntityRemovedEvent event) {
+    Entity entity = event.getEntity();
+
     if (entity.hasComponent(MeshComponent.class)) {
       meshRemoveQueue.add(entity.getComponent(MeshComponent.class));
     }

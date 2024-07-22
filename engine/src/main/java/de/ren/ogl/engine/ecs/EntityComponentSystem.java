@@ -1,5 +1,7 @@
 package de.ren.ogl.engine.ecs;
 
+import org.springframework.context.ApplicationEventPublisher;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -9,12 +11,12 @@ public class EntityComponentSystem {
 
   private final Map<Class<? extends InvokableSystem>, InvokableSystem> systems;
 
-  private final Set<EntityListener> entityListeners;
+  private final ApplicationEventPublisher eventPublisher;
 
-  private EntityComponentSystem() {
+  private EntityComponentSystem(ApplicationEventPublisher eventPublisher) {
+    this.eventPublisher = eventPublisher;
     entityGroups = new HashMap<>();
     systems = new HashMap<>();
-    entityListeners = new HashSet<>();
   }
 
   protected void tick() {
@@ -108,23 +110,11 @@ public class EntityComponentSystem {
     return system.cast(systems.get(system));
   }
 
-  protected void registerEntityListener(EntityListener listener) {
-    entityListeners.add(listener);
-  }
-
-  protected void unregisterEntityListener(EntityListener listener) {
-    entityListeners.remove(listener);
-  }
-
   private void invokeEntityAddedEvent(Entity entity) {
-    for (EntityListener listener : entityListeners) {
-      listener.entityAdded(entity);
-    }
+    eventPublisher.publishEvent(new EntityAddedEvent(this, entity));
   }
 
   private void invokeEntityRemovedEvent(Entity entity) {
-    for (EntityListener listener : entityListeners) {
-      listener.entityRemoved(entity);
-    }
+    eventPublisher.publishEvent(new EntityRemovedEvent(this, entity));
   }
 }

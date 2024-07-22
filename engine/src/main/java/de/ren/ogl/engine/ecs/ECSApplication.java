@@ -54,14 +54,6 @@ public class ECSApplication extends GLApplication {
     return ecs.getSystem(system);
   }
 
-  public void registerEntityListener(EntityListener listener) {
-    ecs.registerEntityListener(listener);
-  }
-
-  public void unregisterEntityListener(EntityListener listener) {
-    ecs.unregisterEntityListener(listener);
-  }
-
   @Override
   public void beginFrame() {
     super.beginFrame();
