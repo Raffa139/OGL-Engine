@@ -1,73 +1,64 @@
 package de.ren.ogl.engine.controller.mouse;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+@Component
+public class Mouse {
+  private final List<MouseScrollCallback> scrollCallbacks;
+  private final List<MouseMoveCallback> moveCallbacks;
+  private final List<MouseButtonCallback> buttonCallbacks;
 
-public final class Mouse {
-  private static final boolean[] BUTTONS = new boolean[12];
+  private double lastPosX;
+  private double lastPosY;
 
-  private static final List<ScrollCallback> SCROLL_CALLBACKS = new ArrayList<>();
-  private static final List<MoveCallback> MOVE_CALLBACKS = new ArrayList<>();
-  private static final List<MouseButtonCallback> BUTTON_PRESS_CALLBACKS = new ArrayList<>();
+  private boolean mouseEverMoved = false;
 
-  private static double lastPosX;
-  private static double lastPosY;
-
-  private static boolean mouseMoved = false;
-
-  private Mouse() {
+  public Mouse() {
+    scrollCallbacks = new ArrayList<>();
+    moveCallbacks = new ArrayList<>();
+    buttonCallbacks = new ArrayList<>();
   }
 
-  public static double getLastPosX() {
+  public double getLastPosX() {
     return lastPosX;
   }
 
-  public static double getLastPosY() {
+  public double getLastPosY() {
     return lastPosY;
   }
 
-  public static boolean buttonPressed(int button) {
-    return BUTTONS[button];
+  public boolean hasMouseEverMoved() {
+    return mouseEverMoved;
   }
 
-  public static boolean hasMouseMoved() {
-    return mouseMoved;
+  public void onMove(MouseMoveCallback callback) {
+    moveCallbacks.add(callback);
   }
 
-  public static void onMove(MoveCallback callback) {
-    MOVE_CALLBACKS.add(callback);
+  public void onButtonPress(MouseButtonCallback callback) {
+    buttonCallbacks.add(callback);
   }
 
-  public static void onButtonPress(MouseButtonCallback callback) {
-    BUTTON_PRESS_CALLBACKS.add(callback);
+  public void onScroll(MouseScrollCallback callback) {
+    scrollCallbacks.add(callback);
   }
 
-  public static void onScroll(ScrollCallback callback) {
-    SCROLL_CALLBACKS.add(callback);
-  }
-
-  public static void cursorPosCallback(long window, double xPos, double yPos) {
-    MOVE_CALLBACKS.forEach(callback -> callback.run(window, xPos, yPos));
-
+  public void cursorPosCallback(long window, double xPos, double yPos) {
     lastPosX = xPos;
     lastPosY = yPos;
-    mouseMoved = true;
+    mouseEverMoved = true;
+
+    moveCallbacks.forEach(callback -> callback.run(window, xPos, yPos));
   }
 
-  public static void mouseButtonCallback(long window, int button, int action, int mods) {
-    BUTTON_PRESS_CALLBACKS.forEach(callback -> callback.run(window, button, action, mods));
-
-    if (action == GLFW_PRESS) {
-      BUTTONS[button] = true;
-    } else if (action == GLFW_RELEASE) {
-      BUTTONS[button] = false;
-    }
+  public void mouseButtonCallback(long window, int button, int action, int mods) {
+    buttonCallbacks.forEach(callback -> callback.run(window, button, action, mods));
   }
 
-  public static void scrollCallback(long window, double xOffset, double yOffset) {
-    SCROLL_CALLBACKS.forEach(callback -> callback.run(window, xOffset, yOffset));
+  public void scrollCallback(long window, double xOffset, double yOffset) {
+    scrollCallbacks.forEach(callback -> callback.run(window, xOffset, yOffset));
   }
 }

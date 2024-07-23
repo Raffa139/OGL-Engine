@@ -1,12 +1,10 @@
 package de.ren.ogl.example;
 
-import de.ren.ogl.engine.camera.Camera;
 import de.ren.ogl.engine.cdi.meta.GLApplication;
 import de.ren.ogl.engine.controller.keyboard.Keyboard;
 import de.ren.ogl.engine.ecs.ECSApplication;
 import de.ren.ogl.engine.ecs.EntityComponentSystem;
 import de.ren.ogl.engine.objects.shader.Shader;
-import de.ren.ogl.starter.camera.StarterCamera;
 import de.ren.ogl.starter.entities.MeshedEntity;
 import de.ren.ogl.starter.geometry.Polygon;
 import org.joml.Vector3f;
@@ -30,9 +28,6 @@ public class ExampleApp {
 
   public void run() {
     System.out.println(shader.getId());
-
-    Camera camera = new StarterCamera(new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
-    application.useCamera(camera);
 
     RotatingEntity triangle = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
     RotatingEntity triangle2 = new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);

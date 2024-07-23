@@ -34,11 +34,12 @@ public class GLApplication {
 
   private final List<Shader> shaders;
 
-  public GLApplication(GLContext context, GLShaderManager shaderManager, GLSamplerManager samplerManager, GLVertexArrayManager vaoManager) {
+  public GLApplication(GLContext context, GLShaderManager shaderManager, GLSamplerManager samplerManager, GLVertexArrayManager vaoManager, Camera camera) {
     this.context = context;
     this.shaderManager = shaderManager;
     this.samplerManager = samplerManager;
     this.vaoManager = vaoManager;
+    this.camera = camera;
     shaders = new ArrayList<>();
   }
 

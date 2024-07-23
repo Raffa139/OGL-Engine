@@ -17,6 +17,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 @Component
 public class GLContext {
+  private final Mouse mouse;
+
   private final long window;
 
   private int windowWidth;
@@ -29,12 +31,14 @@ public class GLContext {
   private float lastFrame;
   private float last;
 
-  private boolean mouseCursorToggled = false;
+  private boolean mouseCursorToggled;
 
-  public GLContext(@WindowWidth int width, @WindowHeight int height, @WindowTitle String title) {
+  public GLContext(Mouse mouse, @WindowWidth int width, @WindowHeight int height, @WindowTitle String title) {
+    this.mouse = mouse;
     windowWidth = width;
     windowHeight = height;
     windowTitle = title;
+    mouseCursorToggled = false;
     window = setup(width, height, title);
   }
 
@@ -133,9 +137,9 @@ public class GLContext {
 
     // Setup input callback
     glfwSetKeyCallback(window, Keyboard::keyCallback);
-    glfwSetCursorPosCallback(window, Mouse::cursorPosCallback);
-    glfwSetMouseButtonCallback(window, Mouse::mouseButtonCallback);
-    glfwSetScrollCallback(window, Mouse::scrollCallback);
+    glfwSetCursorPosCallback(window, mouse::cursorPosCallback);
+    glfwSetMouseButtonCallback(window, mouse::mouseButtonCallback);
+    glfwSetScrollCallback(window, mouse::scrollCallback);
 
     glfwSetFramebufferSizeCallback(window, this::framebufferSizeCallback);
 

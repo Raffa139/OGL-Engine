@@ -1,16 +1,20 @@
 package de.ren.ogl.starter.camera;
 
+import de.ren.ogl.engine.camera.Camera;
 import de.ren.ogl.engine.controller.keyboard.Keyboard;
 import de.ren.ogl.engine.controller.mouse.Mouse;
-import de.ren.ogl.engine.camera.Camera;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.springframework.stereotype.Component;
 
 import static de.ren.ogl.engine.util.Vectors.*;
 import static org.lwjgl.glfw.GLFW.*;
 
+@Component
 public class StarterCamera implements Camera {
   // TODO: Separate keybindings and camera position change
+
+  private final Mouse mouse;
 
   protected Vector3f pos;
   protected Vector3f up;
@@ -23,7 +27,8 @@ public class StarterCamera implements Camera {
   protected float lastPosX;
   protected float lastPosY;
 
-  public StarterCamera(Vector3f pos, float fov) {
+  public StarterCamera(Mouse mouse, Vector3f pos, float fov) {
+    this.mouse = mouse;
     this.pos = pos;
     this.up = new Vector3f(0.0f, 1.0f, 0.0f);
     this.front = new Vector3f(0.0f, 0.0f, 0.0f);
@@ -46,15 +51,18 @@ public class StarterCamera implements Camera {
   public void update(float deltaTime, boolean allowTurn) {
     float speed = 0.075f;
 
-    double xCurrent = Mouse.getLastPosX() * speed;
-    double yCurrent = Mouse.getLastPosY() * speed;
-    if (!Mouse.hasMouseMoved()) {
+    double xCurrent = mouse.getLastPosX() * speed;
+    double yCurrent = mouse.getLastPosY() * speed;
+
+    if (!mouse.hasMouseEverMoved()) {
       lastPosX = (float) xCurrent;
       lastPosY = (float) yCurrent;
     }
+
     if (allowTurn) {
       turn(xCurrent, yCurrent);
     }
+
     lastPosX = (float) xCurrent;
     lastPosY = (float) yCurrent;
 
@@ -88,6 +96,7 @@ public class StarterCamera implements Camera {
     if (pitch > 89.0f) {
       pitch = 89.0f;
     }
+
     if (pitch < -89.0f) {
       pitch = -89.0f;
     }
