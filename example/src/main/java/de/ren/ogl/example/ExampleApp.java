@@ -4,6 +4,7 @@ import de.ren.ogl.engine.camera.Camera;
 import de.ren.ogl.engine.cdi.meta.GLApplication;
 import de.ren.ogl.engine.controller.keyboard.Keyboard;
 import de.ren.ogl.engine.ecs.ECSApplication;
+import de.ren.ogl.engine.ecs.EntityComponentSystem;
 import de.ren.ogl.engine.objects.shader.Shader;
 import de.ren.ogl.starter.camera.StarterCamera;
 import de.ren.ogl.starter.entities.MeshedEntity;
@@ -17,11 +18,14 @@ public class ExampleApp {
 
   private final ECSApplication application;
 
+  private final EntityComponentSystem ecs;
+
   @TestShader
   private Shader shader;
 
-  public ExampleApp(ECSApplication application) {
+  public ExampleApp(ECSApplication application, EntityComponentSystem ecs) {
     this.application = application;
+    this.ecs = ecs;
   }
 
   public void run() {
@@ -36,12 +40,12 @@ public class ExampleApp {
     MeshedEntity cube = new MeshedEntity(Polygon.CUBE_TEXTURED, new Vector3f(2.0f, 0.0f, 0.0f), "container_box.png");
     RotatingEntity cube2 = new RotatingEntity(Polygon.CUBE_TEXTURED, new Vector3f(2.0f, 0.0f, 3.0f), "awesomeface.png", true);
 
-    application.addEntity(triangle);
-    application.addEntity(triangle2);
-    application.addEntity(cube);
-    application.addEntity(cube2);
+    ecs.addEntity(triangle);
+    ecs.addEntity(triangle2);
+    ecs.addEntity(cube);
+    ecs.addEntity(cube2);
 
-    System.out.println(application.getSystem(ExampleSystem.class).getShader().getId());
+    System.out.println(ecs.getSystem(ExampleSystem.class).getShader().getId());
 
     boolean removed = false;
     float lastPressed = 0.0f;
@@ -51,12 +55,12 @@ public class ExampleApp {
       if (Keyboard.keyPressed(GLFW_KEY_R) && application.getCurrentTime() > lastPressed + 0.25f) {
         lastPressed = application.getCurrentTime();
         if (removed) {
-          application.addEntity(triangle);
-          application.addEntity(triangle2);
+          ecs.addEntity(triangle);
+          ecs.addEntity(triangle2);
           removed = false;
         } else {
-          application.removeEntity(triangle);
-          application.removeEntity(triangle2);
+          ecs.removeEntity(triangle);
+          ecs.removeEntity(triangle2);
           removed = true;
         }
       }

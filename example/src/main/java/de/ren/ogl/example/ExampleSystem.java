@@ -1,7 +1,7 @@
 package de.ren.ogl.example;
 
 import de.ren.ogl.engine.cdi.meta.ApplicationSystem;
-import de.ren.ogl.engine.ecs.ECSApplication;
+import de.ren.ogl.engine.ecs.EntityComponentSystem;
 import de.ren.ogl.engine.ecs.InvokableSystem;
 import de.ren.ogl.engine.objects.shader.Shader;
 import org.joml.Vector3f;
@@ -11,14 +11,14 @@ import java.util.Set;
 
 @ApplicationSystem
 public class ExampleSystem implements InvokableSystem {
-  private final ECSApplication application;
+  private final EntityComponentSystem ecs;
 
   @TestShader
   private Shader shader;
 
   @Autowired
-  public ExampleSystem(ECSApplication application) {
-    this.application = application;
+  public ExampleSystem(EntityComponentSystem ecs) {
+    this.ecs = ecs;
   }
 
   public Shader getShader() {
@@ -27,7 +27,7 @@ public class ExampleSystem implements InvokableSystem {
 
   @Override
   public void invoke() {
-    Set<RotatingEntity> entities = application.getEntities(RotatingEntity.class);
+    Set<RotatingEntity> entities = ecs.getEntities(RotatingEntity.class);
     for (RotatingEntity entity : entities) {
       if (entity.isRotating()) {
         entity.increaseRotation(new Vector3f(0.0f, 0.03f, 0.0f));

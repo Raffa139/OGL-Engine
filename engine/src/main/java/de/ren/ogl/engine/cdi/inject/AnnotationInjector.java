@@ -4,6 +4,7 @@ import de.ren.ogl.engine.cdi.context.ApplicationContext;
 import de.ren.ogl.engine.cdi.meta.ApplicationSystem;
 import de.ren.ogl.engine.cdi.reflect.*;
 import de.ren.ogl.engine.ecs.ECSApplication;
+import de.ren.ogl.engine.ecs.EntityComponentSystem;
 import de.ren.ogl.engine.ecs.InvokableSystem;
 import de.ren.ogl.engine.objects.shader.Shader;
 import de.ren.ogl.engine.util.ResourceLoader;
@@ -19,14 +20,17 @@ import java.util.stream.Collectors;
 public class AnnotationInjector {
   private final ECSApplication application;
 
+  private final EntityComponentSystem ecs;
+
   private final ReflectUtils reflectUtils;
 
   private final ResourceLoader resourceLoader;
 
   private final boolean loggingEnabled;
 
-  public AnnotationInjector(ECSApplication application, ReflectUtils reflectUtils, ResourceLoader resourceLoader, @DebugAnnotationInjector Boolean loggingEnabled) {
+  public AnnotationInjector(ECSApplication application, EntityComponentSystem ecs, ReflectUtils reflectUtils, ResourceLoader resourceLoader, @DebugAnnotationInjector Boolean loggingEnabled) {
     this.application = application;
+    this.ecs = ecs;
     this.reflectUtils = reflectUtils;
     this.resourceLoader = resourceLoader;
     this.loggingEnabled = loggingEnabled;
@@ -46,7 +50,7 @@ public class AnnotationInjector {
 
       log("System found: %s%n", system.getClass().getSimpleName());
 
-      application.addSystem(system);
+      ecs.addSystem(system);
     });
   }
 

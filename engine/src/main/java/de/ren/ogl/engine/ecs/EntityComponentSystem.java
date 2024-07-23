@@ -19,14 +19,7 @@ public class EntityComponentSystem {
     systems = new HashMap<>();
   }
 
-  protected void tick() {
-    for (Class<? extends InvokableSystem> system : systems.keySet()) {
-      InvokableSystem instance = systems.get(system);
-      instance.invoke();
-    }
-  }
-
-  protected <T extends Entity> void addEntity(T entity) {
+  public <T extends Entity> void addEntity(T entity) {
     Class<? extends Entity> type = entity.getClass();
     if (!hasEntity(type)) {
       Set<Entity> entities = new HashSet<>();
@@ -37,7 +30,7 @@ public class EntityComponentSystem {
     invokeEntityAddedEvent(entity);
   }
 
-  protected <T extends Entity> void removeEntity(T entity) {
+  public <T extends Entity> void removeEntity(T entity) {
     Class<? extends Entity> type = entity.getClass();
     if (!hasEntity(type)) {
       throw new IllegalArgumentException(type.getName() + " not found!");
@@ -47,18 +40,18 @@ public class EntityComponentSystem {
     invokeEntityRemovedEvent(entity);
   }
 
-  protected <T extends Entity> boolean hasEntity(Class<T> entity) {
+  public <T extends Entity> boolean hasEntity(Class<T> entity) {
     return entityGroups.containsKey(entity);
   }
 
-  protected Set<Entity> getEntitiesByComponent(Class<? extends Component> component) {
+  public Set<Entity> getEntitiesByComponent(Class<? extends Component> component) {
     return entityGroups.values().stream()
         .flatMap(Set::stream)
         .filter(e -> e.hasComponent(component))
         .collect(Collectors.toSet());
   }
 
-  protected <T extends Entity> Set<T> getEntities(Class<T> entity) {
+  public <T extends Entity> Set<T> getEntities(Class<T> entity) {
     if (!hasEntity(entity)) {
       throw new IllegalArgumentException(entity.getName() + " not found!");
     }
@@ -68,7 +61,7 @@ public class EntityComponentSystem {
         .collect(Collectors.toSet());
   }
 
-  protected <T extends Entity> Set<T> getEntitiesWithInherited(Class<T> entity) {
+  public <T extends Entity> Set<T> getEntitiesWithInherited(Class<T> entity) {
     return entityGroups.values().stream()
         .flatMap(Set::stream)
         .filter(e -> entity.isAssignableFrom(e.getClass()))
@@ -76,7 +69,7 @@ public class EntityComponentSystem {
         .collect(Collectors.toSet());
   }
 
-  protected Set<Entity> getAllEntities() {
+  public Set<Entity> getAllEntities() {
     if (entityGroups.isEmpty()) {
       return Collections.emptySet();
     }
@@ -90,24 +83,31 @@ public class EntityComponentSystem {
     return result;
   }
 
-  protected <T extends InvokableSystem> void addSystem(T system) {
+  public <T extends InvokableSystem> void addSystem(T system) {
     systems.put(system.getClass(), system);
   }
 
-  protected <T extends InvokableSystem> void removeSystem(T system) {
+  public <T extends InvokableSystem> void removeSystem(T system) {
     systems.remove(system.getClass());
   }
 
-  protected <T extends InvokableSystem> boolean hasSystem(Class<T> system) {
+  public <T extends InvokableSystem> boolean hasSystem(Class<T> system) {
     return systems.containsKey(system);
   }
 
-  protected <T extends InvokableSystem> T getSystem(Class<T> system) {
+  public <T extends InvokableSystem> T getSystem(Class<T> system) {
     if (!hasSystem(system)) {
       throw new IllegalArgumentException(system.getName() + " not found!");
     }
 
     return system.cast(systems.get(system));
+  }
+
+  protected void tick() {
+    for (Class<? extends InvokableSystem> system : systems.keySet()) {
+      InvokableSystem instance = systems.get(system);
+      instance.invoke();
+    }
   }
 
   private void invokeEntityAddedEvent(Entity entity) {
