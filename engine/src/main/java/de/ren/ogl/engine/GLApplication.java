@@ -1,12 +1,11 @@
 package de.ren.ogl.engine;
 
-import de.ren.ogl.engine.camera.Camera;
+import de.ren.ogl.engine.camera.CameraManager;
 import de.ren.ogl.engine.context.GLContext;
 import de.ren.ogl.engine.objects.GLVertexArrayManager;
 import de.ren.ogl.engine.objects.sampler.GLSamplerManager;
 import de.ren.ogl.engine.objects.shader.GLShaderManager;
 import de.ren.ogl.engine.objects.shader.Shader;
-import org.joml.Matrix4f;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -24,22 +23,18 @@ public class GLApplication {
 
   private final GLVertexArrayManager vaoManager;
 
+  private final CameraManager cameraManager;
+
   private float currentTime;
-
-  private Camera camera;
-
-  private Matrix4f view;
-
-  private Matrix4f projection;
 
   private final List<Shader> shaders;
 
-  public GLApplication(GLContext context, GLShaderManager shaderManager, GLSamplerManager samplerManager, GLVertexArrayManager vaoManager, Camera camera) {
+  public GLApplication(GLContext context, GLShaderManager shaderManager, GLSamplerManager samplerManager, GLVertexArrayManager vaoManager, CameraManager cameraManager) {
     this.context = context;
     this.shaderManager = shaderManager;
     this.samplerManager = samplerManager;
     this.vaoManager = vaoManager;
-    this.camera = camera;
+    this.cameraManager = cameraManager;
     shaders = new ArrayList<>();
   }
 
@@ -49,10 +44,6 @@ public class GLApplication {
 
   public float getCurrentTime() {
     return currentTime;
-  }
-
-  public Camera getCamera() {
-    return camera;
   }
 
   public Shader createShaderWithAppContext(Path vertexFile, Path fragmentFile) throws IOException {
@@ -67,20 +58,13 @@ public class GLApplication {
     return shader;
   }
 
-  public void useCamera(Camera camera) {
-    this.camera = camera;
-  }
-
   public void beginFrame() {
     currentTime = (float) glfwGetTime();
-    setupViewProjection();
     setupShader();
   }
 
   public void endFrame() {
-    if (cameraInUse()) {
-      camera.update(context.getDeltaTime(), !context.isMouseCursorToggled());
-    }
+    cameraManager.update();
     context.update();
   }
 
@@ -103,22 +87,11 @@ public class GLApplication {
       shader.setInt("iWindowHeight", context.getWindowHeight());
       shader.setFloat("iAspectRatio", context.getAspectRatio());
 
-      if (cameraInUse()) {
-        shader.setMatrix4("iView", view);
-        shader.setMatrix4("iProjection", projection);
-        shader.setVec3("iCameraPosition", camera.getPosition());
+      if (cameraManager.cameraUsed()) {
+        shader.setMatrix4("iView", cameraManager.getViewMatrix());
+        shader.setMatrix4("iProjection", cameraManager.getProjectionMatrix());
+        shader.setVec3("iCameraPosition", cameraManager.getCameraPosition());
       }
     }
-  }
-
-  private void setupViewProjection() {
-    if (cameraInUse()) {
-      view = camera.getViewMatrix();
-      projection = new Matrix4f().perspective((float) Math.toRadians(camera.getFieldOfView()), context.getAspectRatio(), 0.01f, 1000.0f);
-    }
-  }
-
-  private boolean cameraInUse() {
-    return camera != null;
   }
 }

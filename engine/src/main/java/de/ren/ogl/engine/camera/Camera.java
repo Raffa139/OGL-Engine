@@ -4,11 +4,17 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public interface Camera {
-  void update(float deltaTime, boolean allowTurn);
+  void update();
+
+  void turn();
+
+  void move(float deltaTime);
 
   Vector3f getPosition();
 
   Matrix4f getViewMatrix();
 
   float getFieldOfView();
+
+  boolean isActive();
 }

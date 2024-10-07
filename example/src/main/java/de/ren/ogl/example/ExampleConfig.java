@@ -31,4 +31,9 @@ public class ExampleConfig {
   public Camera starterCamera() {
     return new StarterCamera(mouse, new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
   }
+
+  @Bean("secondCamera")
+  public Camera secondCamera() {
+    return new StarterCamera(mouse, new Vector3f(0.0f, 0.0f, -2.0f), 85.0f, false);
+  }
 }

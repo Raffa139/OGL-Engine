@@ -5,11 +5,13 @@ import de.ren.ogl.engine.controller.keyboard.Keyboard;
 import de.ren.ogl.engine.ecs.ECSApplication;
 import de.ren.ogl.engine.ecs.EntityComponentSystem;
 import de.ren.ogl.engine.objects.shader.Shader;
+import de.ren.ogl.starter.camera.StarterCamera;
 import de.ren.ogl.starter.entities.MeshedEntity;
 import de.ren.ogl.starter.geometry.Polygon;
 import org.joml.Vector3f;
+import org.springframework.beans.factory.annotation.Qualifier;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
+import static org.lwjgl.glfw.GLFW.*;
 
 @GLApplication
 public class ExampleApp {
@@ -18,12 +20,18 @@ public class ExampleApp {
 
   private final EntityComponentSystem ecs;
 
+  private final StarterCamera firstCamera;
+
+  private final StarterCamera secondCamera;
+
   @TestShader
   private Shader shader;
 
-  public ExampleApp(ECSApplication application, EntityComponentSystem ecs) {
+  public ExampleApp(ECSApplication application, EntityComponentSystem ecs, @Qualifier("starterCamera") StarterCamera firstCamera, @Qualifier("secondCamera") StarterCamera secondCamera) {
     this.application = application;
     this.ecs = ecs;
+    this.firstCamera = firstCamera;
+    this.secondCamera = secondCamera;
   }
 
   public void run() {
@@ -58,6 +66,18 @@ public class ExampleApp {
           ecs.removeEntity(triangle2);
           removed = true;
         }
+      }
+
+      if (Keyboard.keyPressed(GLFW_KEY_1) && application.getCurrentTime() > lastPressed + 0.25f) {
+        lastPressed = application.getCurrentTime();
+        firstCamera.activate();
+        secondCamera.deactivate();
+      }
+
+      if (Keyboard.keyPressed(GLFW_KEY_2) && application.getCurrentTime() > lastPressed + 0.25f) {
+        lastPressed = application.getCurrentTime();
+        secondCamera.activate();
+        firstCamera.deactivate();
       }
 
       application.endFrame();

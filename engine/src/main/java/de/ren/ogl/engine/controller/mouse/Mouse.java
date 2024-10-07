@@ -14,7 +14,8 @@ public class Mouse {
   private double lastPosX;
   private double lastPosY;
 
-  private boolean mouseEverMoved = false;
+  private boolean everMoved = false;
+  private boolean cursorToggled = false;
 
   public Mouse() {
     scrollCallbacks = new ArrayList<>();
@@ -30,8 +31,16 @@ public class Mouse {
     return lastPosY;
   }
 
-  public boolean hasMouseEverMoved() {
-    return mouseEverMoved;
+  public boolean hasEverMoved() {
+    return everMoved;
+  }
+
+  public boolean isCursorToggled() {
+    return cursorToggled;
+  }
+
+  public void toggleCursor() {
+    cursorToggled = !cursorToggled;
   }
 
   public void onMove(MouseMoveCallback callback) {
@@ -49,7 +58,7 @@ public class Mouse {
   public void cursorPosCallback(long window, double xPos, double yPos) {
     lastPosX = xPos;
     lastPosY = yPos;
-    mouseEverMoved = true;
+    everMoved = true;
 
     moveCallbacks.forEach(callback -> callback.run(window, xPos, yPos));
   }

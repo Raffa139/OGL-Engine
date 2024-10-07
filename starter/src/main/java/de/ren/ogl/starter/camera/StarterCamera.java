@@ -14,6 +14,9 @@ import static org.lwjgl.glfw.GLFW.*;
 public class StarterCamera implements Camera {
   // TODO: Separate keybindings and camera position change
 
+  private static final float TURN_SPEED = 0.075f;
+  private static final float MOVE_SPEED = 25.0f;
+
   private final Mouse mouse;
 
   protected Vector3f pos;
@@ -27,6 +30,13 @@ public class StarterCamera implements Camera {
   protected float lastPosX;
   protected float lastPosY;
 
+  protected boolean active;
+
+  public StarterCamera(Mouse mouse, Vector3f pos, float fov, boolean active) {
+    this(mouse, pos, fov);
+    this.active = active;
+  }
+
   public StarterCamera(Mouse mouse, Vector3f pos, float fov) {
     this.mouse = mouse;
     this.pos = pos;
@@ -35,58 +45,25 @@ public class StarterCamera implements Camera {
     this.pitch = 0.0f;
     this.yaw = 0.0f;
     this.fov = fov;
+    this.active = true;
   }
 
   @Override
-  public Vector3f getPosition() {
-    return pos;
+  public void update() {
+    lastPosX = (float) mouse.getLastPosX() * TURN_SPEED;
+    lastPosY = (float) mouse.getLastPosY() * TURN_SPEED;
   }
 
   @Override
-  public float getFieldOfView() {
-    return fov;
-  }
+  public void turn() {
+    double xCurrent = mouse.getLastPosX() * TURN_SPEED;
+    double yCurrent = mouse.getLastPosY() * TURN_SPEED;
 
-  @Override
-  public void update(float deltaTime, boolean allowTurn) {
-    float speed = 0.075f;
-
-    double xCurrent = mouse.getLastPosX() * speed;
-    double yCurrent = mouse.getLastPosY() * speed;
-
-    if (!mouse.hasMouseEverMoved()) {
+    if (!mouse.hasEverMoved()) {
       lastPosX = (float) xCurrent;
       lastPosY = (float) yCurrent;
     }
 
-    if (allowTurn) {
-      turn(xCurrent, yCurrent);
-    }
-
-    lastPosX = (float) xCurrent;
-    lastPosY = (float) yCurrent;
-
-    move(deltaTime);
-  }
-
-  @Override
-  public Matrix4f getViewMatrix() {
-    return new Matrix4f().lookAt(pos, add(pos, front), up);
-  }
-
-  public Vector3f getFront() {
-    return front;
-  }
-
-  public float getPitch() {
-    return pitch;
-  }
-
-  public float getYaw() {
-    return yaw;
-  }
-
-  private void turn(double xCurrent, double yCurrent) {
     float xOffset = (float) (xCurrent - lastPosX);
     float yOffset = (float) (lastPosY - yCurrent);
 
@@ -108,8 +85,9 @@ public class StarterCamera implements Camera {
     front = new Vector3f(dir);
   }
 
-  private void move(float deltaTime) {
-    float speed = 25.0f * deltaTime;
+  @Override
+  public void move(float deltaTime) {
+    float speed = MOVE_SPEED * deltaTime;
 
     if (Keyboard.keyPressed(GLFW_KEY_W)) {
       pos.add(mul(new Vector3f(front.x, 0.0f, front.z), speed));
@@ -130,5 +108,33 @@ public class StarterCamera implements Camera {
     } else if (Keyboard.keyPressed(GLFW_KEY_LEFT_CONTROL)) {
       pos.sub(mul(up, speed));
     }
+  }
+
+  @Override
+  public Matrix4f getViewMatrix() {
+    return new Matrix4f().lookAt(pos, add(pos, front), up);
+  }
+
+  @Override
+  public Vector3f getPosition() {
+    return pos;
+  }
+
+  @Override
+  public float getFieldOfView() {
+    return fov;
+  }
+
+  @Override
+  public boolean isActive() {
+    return active;
+  }
+
+  public void activate() {
+    active = true;
+  }
+
+  public void deactivate() {
+    active = false;
   }
 }

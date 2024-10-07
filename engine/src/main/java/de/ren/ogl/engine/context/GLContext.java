@@ -31,14 +31,11 @@ public class GLContext {
   private float lastFrame;
   private float last;
 
-  private boolean mouseCursorToggled;
-
   public GLContext(Mouse mouse, @WindowWidth int width, @WindowHeight int height, @WindowTitle String title) {
     this.mouse = mouse;
     windowWidth = width;
     windowHeight = height;
     windowTitle = title;
-    mouseCursorToggled = false;
     window = setup(width, height, title);
   }
 
@@ -67,16 +64,13 @@ public class GLContext {
   }
 
   public void toggleMouseCursor() {
-    if (!mouseCursorToggled) {
+    if (!mouse.isCursorToggled()) {
       glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     } else {
       glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     }
-    mouseCursorToggled = !mouseCursorToggled;
-  }
 
-  public boolean isMouseCursorToggled() {
-    return mouseCursorToggled;
+    mouse.toggleCursor();
   }
 
   public void terminate() {
