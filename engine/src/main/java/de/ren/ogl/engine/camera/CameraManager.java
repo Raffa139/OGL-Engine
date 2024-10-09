@@ -20,11 +20,7 @@ public class CameraManager {
   }
 
   public void update() {
-    getActiveCameras().forEach(camera -> {
-      camera.move(context.getDeltaTime());
-    });
-
-    cameras.forEach(Camera::update);
+    cameras.forEach(camera -> camera.update(context.getDeltaTime()));
   }
 
   public boolean cameraUsed() {

@@ -89,7 +89,14 @@ public class StarterCamera implements Camera {
   }
 
   @Override
-  public void move(float deltaTime) {
+  public void update(float deltaTime) {
+    lastPosX = (float) mouse.getLastPosX() * TURN_SPEED;
+    lastPosY = (float) mouse.getLastPosY() * TURN_SPEED;
+
+    if (!active) {
+      return;
+    }
+
     float speed = MOVE_SPEED * deltaTime;
 
     if (keyboard.keyDown(GLFW_KEY_W)) {
@@ -111,12 +118,6 @@ public class StarterCamera implements Camera {
     } else if (keyboard.keyDown(GLFW_KEY_LEFT_CONTROL)) {
       pos.sub(mul(up, speed));
     }
-  }
-
-  @Override
-  public void update() {
-    lastPosX = (float) mouse.getLastPosX() * TURN_SPEED;
-    lastPosY = (float) mouse.getLastPosY() * TURN_SPEED;
   }
 
   @Override

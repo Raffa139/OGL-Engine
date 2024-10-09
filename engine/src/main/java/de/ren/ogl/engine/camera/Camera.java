@@ -4,9 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public interface Camera {
-  void update();
-
-  void move(float deltaTime);
+  void update(float deltaTime);
 
   Vector3f getPosition();
 
