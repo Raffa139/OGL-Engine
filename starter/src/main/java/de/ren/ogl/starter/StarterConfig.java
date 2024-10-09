@@ -1,6 +1,7 @@
 package de.ren.ogl.starter;
 
 import de.ren.ogl.engine.camera.Camera;
+import de.ren.ogl.engine.controller.keyboard.Keyboard;
 import de.ren.ogl.engine.controller.mouse.Mouse;
 import de.ren.ogl.starter.camera.StarterCamera;
 import org.joml.Vector3f;
@@ -13,12 +14,15 @@ import org.springframework.context.annotation.Configuration;
 public class StarterConfig {
   private final Mouse mouse;
 
-  public StarterConfig(Mouse mouse) {
+  private final Keyboard keyboard;
+
+  public StarterConfig(Mouse mouse, Keyboard keyboard) {
     this.mouse = mouse;
+    this.keyboard = keyboard;
   }
 
   @Bean
   public Camera starterCamera() {
-    return new StarterCamera(mouse, new Vector3f(0.0f), 65.0f);
+    return new StarterCamera(mouse, keyboard, new Vector3f(0.0f), 65.0f);
   }
 }

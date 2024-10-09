@@ -1,23 +1,37 @@
 package de.ren.ogl.engine.controller.keyboard;
 
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
+import static org.lwjgl.glfw.GLFW.*;
+
+@Component
 public final class Keyboard {
-  private static final boolean[] KEYS = new boolean[350];
+  private final ApplicationEventPublisher eventPublisher;
 
-  private Keyboard() {
+  private final boolean[] keysDown = new boolean[350];
+
+  public Keyboard(ApplicationEventPublisher eventPublisher) {
+    this.eventPublisher = eventPublisher;
   }
 
-  public static boolean keyPressed(int key) {
-    return KEYS[key];
+  public boolean keyDown(int key) {
+    return keysDown[key];
   }
 
-  public static void keyCallback(long window, int key, int scancode, int action, int mods) {
+  public boolean keyUp(int key) {
+    return !keyDown(key);
+  }
+
+  public void keyCallback(long window, int key, int scancode, int action, int mods) {
     if (action == GLFW_PRESS) {
-      KEYS[key] = true;
+      keysDown[key] = true;
+      eventPublisher.publishEvent(new KeyDownEvent(this, window, key, scancode, mods));
     } else if (action == GLFW_RELEASE) {
-      KEYS[key] = false;
+      keysDown[key] = false;
+      eventPublisher.publishEvent(new KeyUpEvent(this, window, key, scancode, mods));
+    } else if (action == GLFW_REPEAT) {
+      eventPublisher.publishEvent(new KeyHoldEvent(this, window, key, scancode, mods));
     }
   }
 }

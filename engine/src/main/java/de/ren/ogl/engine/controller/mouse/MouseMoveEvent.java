@@ -1,6 +1,8 @@
 package de.ren.ogl.engine.controller.mouse;
 
-public class MouseMoveEvent extends MouseEvent {
+import de.ren.ogl.engine.controller.WindowEvent;
+
+public class MouseMoveEvent extends WindowEvent {
   private final double xPos;
 
   private final double yPos;

@@ -1,6 +1,9 @@
 package de.ren.ogl.engine.controller.mouse;
 
-public class MouseButtonEvent extends MouseEvent {
+import de.ren.ogl.engine.controller.WindowEvent;
+
+// TODO: Differentiate between MouseButtonDown- and -Up Events
+public class MouseButtonEvent extends WindowEvent {
   private final int button;
 
   private final int action;

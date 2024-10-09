@@ -1,6 +1,8 @@
 package de.ren.ogl.engine.controller.mouse;
 
-public class MouseScrollEvent extends MouseEvent {
+import de.ren.ogl.engine.controller.WindowEvent;
+
+public class MouseScrollEvent extends WindowEvent {
   private final double xOffset;
 
   private final double yOffset;

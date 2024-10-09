@@ -2,6 +2,7 @@ package de.ren.ogl.example;
 
 import de.ren.ogl.engine.camera.Camera;
 import de.ren.ogl.engine.context.WindowTitle;
+import de.ren.ogl.engine.controller.keyboard.Keyboard;
 import de.ren.ogl.engine.controller.mouse.Mouse;
 import de.ren.ogl.starter.StarterConfig;
 import de.ren.ogl.starter.camera.StarterCamera;
@@ -17,8 +18,11 @@ import org.springframework.context.annotation.Import;
 public class ExampleConfig {
   private final Mouse mouse;
 
-  public ExampleConfig(Mouse mouse) {
+  private final Keyboard keyboard;
+
+  public ExampleConfig(Mouse mouse, Keyboard keyboard) {
     this.mouse = mouse;
+    this.keyboard = keyboard;
   }
 
   @Bean
@@ -29,11 +33,11 @@ public class ExampleConfig {
 
   @Bean
   public Camera starterCamera() {
-    return new StarterCamera(mouse, new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
+    return new StarterCamera(mouse, keyboard, new Vector3f(0.0f, 0.0f, -2.0f), 65.0f);
   }
 
   @Bean("secondCamera")
   public Camera secondCamera() {
-    return new StarterCamera(mouse, new Vector3f(0.0f, 0.0f, -2.0f), 85.0f, false);
+    return new StarterCamera(mouse, keyboard, new Vector3f(0.0f, 0.0f, -2.0f), 85.0f, false);
   }
 }

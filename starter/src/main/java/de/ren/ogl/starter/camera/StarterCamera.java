@@ -21,6 +21,8 @@ public class StarterCamera implements Camera {
 
   private final Mouse mouse;
 
+  private final Keyboard keyboard;
+
   protected Vector3f pos;
   protected Vector3f up;
   protected Vector3f front;
@@ -34,13 +36,14 @@ public class StarterCamera implements Camera {
 
   protected boolean active;
 
-  public StarterCamera(Mouse mouse, Vector3f pos, float fov, boolean active) {
-    this(mouse, pos, fov);
+  public StarterCamera(Mouse mouse, Keyboard keyboard, Vector3f pos, float fov, boolean active) {
+    this(mouse, keyboard, pos, fov);
     this.active = active;
   }
 
-  public StarterCamera(Mouse mouse, Vector3f pos, float fov) {
+  public StarterCamera(Mouse mouse, Keyboard keyboard, Vector3f pos, float fov) {
     this.mouse = mouse;
+    this.keyboard = keyboard;
     this.pos = pos;
     this.up = new Vector3f(0.0f, 1.0f, 0.0f);
     this.front = new Vector3f(0.0f, 0.0f, 0.0f);
@@ -89,23 +92,23 @@ public class StarterCamera implements Camera {
   public void move(float deltaTime) {
     float speed = MOVE_SPEED * deltaTime;
 
-    if (Keyboard.keyPressed(GLFW_KEY_W)) {
+    if (keyboard.keyDown(GLFW_KEY_W)) {
       pos.add(mul(new Vector3f(front.x, 0.0f, front.z), speed));
-    } else if (Keyboard.keyPressed(GLFW_KEY_S)) {
+    } else if (keyboard.keyDown(GLFW_KEY_S)) {
       pos.sub(mul(new Vector3f(front.x, 0.0f, front.z), speed));
     }
 
-    if (Keyboard.keyPressed(GLFW_KEY_A)) {
+    if (keyboard.keyDown(GLFW_KEY_A)) {
       Vector3f move = cross(front, up).normalize();
       pos.sub(mul(move, speed));
-    } else if (Keyboard.keyPressed(GLFW_KEY_D)) {
+    } else if (keyboard.keyDown(GLFW_KEY_D)) {
       Vector3f move = cross(front, up).normalize();
       pos.add(mul(move, speed));
     }
 
-    if (Keyboard.keyPressed(GLFW_KEY_SPACE)) {
+    if (keyboard.keyDown(GLFW_KEY_SPACE)) {
       pos.add(mul(up, speed));
-    } else if (Keyboard.keyPressed(GLFW_KEY_LEFT_CONTROL)) {
+    } else if (keyboard.keyDown(GLFW_KEY_LEFT_CONTROL)) {
       pos.sub(mul(up, speed));
     }
   }

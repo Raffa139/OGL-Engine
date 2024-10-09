@@ -19,6 +19,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class GLContext {
   private final Mouse mouse;
 
+  private final Keyboard keyboard;
+
   private final long window;
 
   private int windowWidth;
@@ -31,8 +33,9 @@ public class GLContext {
   private float lastFrame;
   private float last;
 
-  public GLContext(Mouse mouse, @WindowWidth int width, @WindowHeight int height, @WindowTitle String title) {
+  public GLContext(Mouse mouse, Keyboard keyboard, @WindowWidth int width, @WindowHeight int height, @WindowTitle String title) {
     this.mouse = mouse;
+    this.keyboard = keyboard;
     windowWidth = width;
     windowHeight = height;
     windowTitle = title;
@@ -130,7 +133,7 @@ public class GLContext {
     }
 
     // Setup input callback
-    glfwSetKeyCallback(window, Keyboard::keyCallback);
+    glfwSetKeyCallback(window, keyboard::keyCallback);
     glfwSetCursorPosCallback(window, mouse::cursorPosCallback);
     glfwSetMouseButtonCallback(window, mouse::mouseButtonCallback);
     glfwSetScrollCallback(window, mouse::scrollCallback);

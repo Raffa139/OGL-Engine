@@ -1,11 +1,11 @@
-package de.ren.ogl.engine.controller.mouse;
+package de.ren.ogl.engine.controller;
 
 import org.springframework.context.ApplicationEvent;
 
-public abstract class MouseEvent extends ApplicationEvent {
+public abstract class WindowEvent extends ApplicationEvent {
   private final long window;
 
-  public MouseEvent(Object source, long window) {
+  public WindowEvent(Object source, long window) {
     super(source);
     this.window = window;
   }
