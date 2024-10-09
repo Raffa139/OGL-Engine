@@ -3,8 +3,10 @@ package de.ren.ogl.starter.camera;
 import de.ren.ogl.engine.camera.Camera;
 import de.ren.ogl.engine.controller.keyboard.Keyboard;
 import de.ren.ogl.engine.controller.mouse.Mouse;
+import de.ren.ogl.engine.controller.mouse.MouseMoveEvent;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import static de.ren.ogl.engine.util.Vectors.*;
@@ -48,16 +50,14 @@ public class StarterCamera implements Camera {
     this.active = true;
   }
 
-  @Override
-  public void update() {
-    lastPosX = (float) mouse.getLastPosX() * TURN_SPEED;
-    lastPosY = (float) mouse.getLastPosY() * TURN_SPEED;
-  }
+  @EventListener(condition = "!@mouse.isCursorToggled()")
+  public void onMouseMove(MouseMoveEvent event) {
+    if (!active) {
+      return;
+    }
 
-  @Override
-  public void turn() {
-    double xCurrent = mouse.getLastPosX() * TURN_SPEED;
-    double yCurrent = mouse.getLastPosY() * TURN_SPEED;
+    double xCurrent = event.getXPos() * TURN_SPEED;
+    double yCurrent = event.getYPos() * TURN_SPEED;
 
     if (!mouse.hasEverMoved()) {
       lastPosX = (float) xCurrent;
@@ -108,6 +108,12 @@ public class StarterCamera implements Camera {
     } else if (Keyboard.keyPressed(GLFW_KEY_LEFT_CONTROL)) {
       pos.sub(mul(up, speed));
     }
+  }
+
+  @Override
+  public void update() {
+    lastPosX = (float) mouse.getLastPosX() * TURN_SPEED;
+    lastPosY = (float) mouse.getLastPosY() * TURN_SPEED;
   }
 
   @Override

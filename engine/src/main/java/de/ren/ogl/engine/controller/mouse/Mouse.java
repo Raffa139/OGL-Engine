@@ -1,15 +1,11 @@
 package de.ren.ogl.engine.controller.mouse;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class Mouse {
-  private final List<MouseScrollCallback> scrollCallbacks;
-  private final List<MouseMoveCallback> moveCallbacks;
-  private final List<MouseButtonCallback> buttonCallbacks;
+  private final ApplicationEventPublisher eventPublisher;
 
   private double lastPosX;
   private double lastPosY;
@@ -17,10 +13,8 @@ public class Mouse {
   private boolean everMoved = false;
   private boolean cursorToggled = false;
 
-  public Mouse() {
-    scrollCallbacks = new ArrayList<>();
-    moveCallbacks = new ArrayList<>();
-    buttonCallbacks = new ArrayList<>();
+  public Mouse(ApplicationEventPublisher eventPublisher) {
+    this.eventPublisher = eventPublisher;
   }
 
   public double getLastPosX() {
@@ -43,31 +37,19 @@ public class Mouse {
     cursorToggled = !cursorToggled;
   }
 
-  public void onMove(MouseMoveCallback callback) {
-    moveCallbacks.add(callback);
-  }
-
-  public void onButtonPress(MouseButtonCallback callback) {
-    buttonCallbacks.add(callback);
-  }
-
-  public void onScroll(MouseScrollCallback callback) {
-    scrollCallbacks.add(callback);
-  }
-
   public void cursorPosCallback(long window, double xPos, double yPos) {
     lastPosX = xPos;
     lastPosY = yPos;
     everMoved = true;
 
-    moveCallbacks.forEach(callback -> callback.run(window, xPos, yPos));
+    eventPublisher.publishEvent(new MouseMoveEvent(this, window, xPos, yPos));
   }
 
   public void mouseButtonCallback(long window, int button, int action, int mods) {
-    buttonCallbacks.forEach(callback -> callback.run(window, button, action, mods));
+    eventPublisher.publishEvent(new MouseButtonEvent(this, window, button, action, mods));
   }
 
   public void scrollCallback(long window, double xOffset, double yOffset) {
-    scrollCallbacks.forEach(callback -> callback.run(window, xOffset, yOffset));
+    eventPublisher.publishEvent(new MouseScrollEvent(this, window, xOffset, yOffset));
   }
 }

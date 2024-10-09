@@ -6,8 +6,6 @@ import org.joml.Vector3f;
 public interface Camera {
   void update();
 
-  void turn();
-
   void move(float deltaTime);
 
   Vector3f getPosition();

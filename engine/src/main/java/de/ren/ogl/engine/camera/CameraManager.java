@@ -1,7 +1,6 @@
 package de.ren.ogl.engine.camera;
 
 import de.ren.ogl.engine.context.GLContext;
-import de.ren.ogl.engine.controller.mouse.Mouse;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.springframework.stereotype.Component;
@@ -13,22 +12,15 @@ import java.util.stream.Collectors;
 public class CameraManager {
   private final GLContext context;
 
-  private final Mouse mouse;
-
   private final List<Camera> cameras;
 
-  public CameraManager(GLContext context, Mouse mouse, List<Camera> cameras) {
+  public CameraManager(GLContext context, List<Camera> cameras) {
     this.context = context;
-    this.mouse = mouse;
     this.cameras = cameras;
   }
 
   public void update() {
     getActiveCameras().forEach(camera -> {
-      if (!mouse.isCursorToggled()) {
-        camera.turn();
-      }
-
       camera.move(context.getDeltaTime());
     });
 
