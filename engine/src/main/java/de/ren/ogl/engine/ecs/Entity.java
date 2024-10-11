@@ -3,9 +3,20 @@ package de.ren.ogl.engine.ecs;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public abstract class Entity {
+  private final String id;
+
   private final Map<Class<? extends Component>, Component> components = new HashMap<>();
+
+  public Entity() {
+    this(UUID.randomUUID().toString());
+  }
+
+  public Entity(String id) {
+    this.id = id;
+  }
 
   public <T extends Component> T addComponent(Class<T> component) {
     if (!hasComponent(component)) {
@@ -53,5 +64,34 @@ public abstract class Entity {
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
       throw new FailedInstantiationException(e);
     }
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Entity entity = (Entity) o;
+
+    return id.equals(entity.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "Entity{" + id + "}";
   }
 }

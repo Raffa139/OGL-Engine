@@ -1,16 +1,12 @@
 package de.ren.ogl.example;
 
 import de.ren.ogl.engine.cdi.meta.GLApplication;
-import de.ren.ogl.engine.controller.keyboard.KeyDownEvent;
 import de.ren.ogl.engine.ecs.ECSApplication;
 import de.ren.ogl.engine.ecs.EntityComponentSystem;
 import de.ren.ogl.engine.objects.shader.Shader;
 import de.ren.ogl.starter.entities.MeshedEntity;
 import de.ren.ogl.starter.geometry.Polygon;
 import org.joml.Vector3f;
-import org.springframework.context.event.EventListener;
-
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 
 @GLApplication
 public class ExampleApp {
@@ -19,15 +15,13 @@ public class ExampleApp {
 
   private final EntityComponentSystem ecs;
 
-  private final RotatingEntity triangle =
-      new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
+  private final RotatingEntity triangle1 =
+      new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true, "triangle1");
   private final RotatingEntity triangle2 =
-      new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true);
+      new RotatingEntity(Polygon.TRIANGLE_TEXTURED, new Vector3f(0.0f), "container_box.png", true, "triangle2");
 
   @TestShader
   private Shader shader;
-
-  private boolean trianglesPresent;
 
   public ExampleApp(ECSApplication application, EntityComponentSystem ecs) {
     this.application = application;
@@ -56,30 +50,8 @@ public class ExampleApp {
     application.quit();
   }
 
-  // TODO: Move to ExampleControls
-  @EventListener
-  public void onKeyDown(KeyDownEvent event) {
-    switch (event.getKey()) {
-      case GLFW_KEY_R:
-        if (trianglesPresent) {
-          removeTriangles();
-        } else {
-          addTriangles();
-        }
-
-        break;
-    }
-  }
-
   private void addTriangles() {
-    ecs.addEntity(triangle);
+    ecs.addEntity(triangle1);
     ecs.addEntity(triangle2);
-    trianglesPresent = true;
-  }
-
-  private void removeTriangles() {
-    ecs.removeEntity(triangle);
-    ecs.removeEntity(triangle2);
-    trianglesPresent = false;
   }
 }

@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 @org.springframework.stereotype.Component
 public class EntityComponentSystem {
+  // TODO: Try to make entities injectable by providing them in some config via ecs
+
   private final Map<Class<? extends Entity>, Set<Entity>> entityGroups;
 
   private final Map<Class<? extends InvokableSystem>, InvokableSystem> systems;
@@ -44,6 +46,32 @@ public class EntityComponentSystem {
     return entityGroups.containsKey(entity);
   }
 
+  public <T extends Entity> boolean hasEntity(T entity) {
+    Class<? extends Entity> type = entity.getClass();
+    if (!hasEntity(type)) {
+      return false;
+    }
+
+    return getEntitiesByClass(type).contains(entity);
+  }
+
+  public <T extends Entity> Optional<T> getEntityById(String id, Class<T> entity) {
+    return entityGroups.values().stream()
+        .flatMap(Set::stream)
+        .filter(e -> e.getId().equals(id))
+        .map(entity::cast)
+        .findFirst();
+  }
+
+  public Set<Entity> getEntitiesByIds(String... ids) {
+    List<String> idList = Arrays.asList(ids);
+
+    return entityGroups.values().stream()
+        .flatMap(Set::stream)
+        .filter(e -> idList.contains(e.getId()))
+        .collect(Collectors.toSet());
+  }
+
   public Set<Entity> getEntitiesByComponent(Class<? extends Component> component) {
     return entityGroups.values().stream()
         .flatMap(Set::stream)
@@ -51,9 +79,9 @@ public class EntityComponentSystem {
         .collect(Collectors.toSet());
   }
 
-  public <T extends Entity> Set<T> getEntities(Class<T> entity) {
+  public <T extends Entity> Set<T> getEntitiesByClass(Class<T> entity) {
     if (!hasEntity(entity)) {
-      throw new IllegalArgumentException(entity.getName() + " not found!");
+      return Collections.emptySet();
     }
 
     return entityGroups.get(entity).stream()
@@ -61,7 +89,7 @@ public class EntityComponentSystem {
         .collect(Collectors.toSet());
   }
 
-  public <T extends Entity> Set<T> getEntitiesWithInherited(Class<T> entity) {
+  public <T extends Entity> Set<T> getEntitiesByClassWithInherited(Class<T> entity) {
     return entityGroups.values().stream()
         .flatMap(Set::stream)
         .filter(e -> entity.isAssignableFrom(e.getClass()))
@@ -111,10 +139,12 @@ public class EntityComponentSystem {
   }
 
   private void invokeEntityAddedEvent(Entity entity) {
+    System.out.printf("%s added\n", entity);
     eventPublisher.publishEvent(new EntityAddedEvent(this, entity));
   }
 
   private void invokeEntityRemovedEvent(Entity entity) {
+    System.out.printf("%s removed\n", entity);
     eventPublisher.publishEvent(new EntityRemovedEvent(this, entity));
   }
 }

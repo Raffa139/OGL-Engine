@@ -27,7 +27,7 @@ public class ExampleSystem implements InvokableSystem {
 
   @Override
   public void invoke() {
-    Set<RotatingEntity> entities = ecs.getEntities(RotatingEntity.class);
+    Set<RotatingEntity> entities = ecs.getEntitiesByClass(RotatingEntity.class);
     for (RotatingEntity entity : entities) {
       if (entity.isRotating()) {
         entity.increaseRotation(new Vector3f(0.0f, 0.03f, 0.0f));

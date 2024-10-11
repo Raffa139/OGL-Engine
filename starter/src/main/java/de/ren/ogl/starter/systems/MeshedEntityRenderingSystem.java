@@ -23,7 +23,7 @@ public class MeshedEntityRenderingSystem implements InvokableSystem {
   public void invoke() {
     renderer.prepare();
 
-    Set<MeshedEntity> entities = ecs.getEntitiesWithInherited(MeshedEntity.class);
+    Set<MeshedEntity> entities = ecs.getEntitiesByClassWithInherited(MeshedEntity.class);
     for (MeshedEntity entity : entities) {
       if (entity.getMesh().isViewable()) {
         renderer.render(entity);

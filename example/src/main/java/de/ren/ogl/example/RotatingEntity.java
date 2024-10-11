@@ -7,13 +7,13 @@ import org.joml.Vector3f;
 public class RotatingEntity extends MeshedEntity {
   private boolean rotating;
 
-  public RotatingEntity(Polygon polygon, Vector3f position, String texture, boolean rotating) {
-    super(polygon, position, texture);
+  public RotatingEntity(Polygon polygon, Vector3f position, String texture, boolean rotating, String id) {
+    super(polygon, position, texture, id);
     this.rotating = rotating;
   }
 
-  public RotatingEntity(float[] vertices, Vector3f position, String texture, boolean rotating) {
-    super(vertices, position, texture);
+  public RotatingEntity(Polygon polygon, Vector3f position, String texture, boolean rotating) {
+    super(polygon, position, texture);
     this.rotating = rotating;
   }
 

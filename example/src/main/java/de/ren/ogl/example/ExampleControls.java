@@ -17,7 +17,10 @@ public class ExampleControls {
 
   private final StarterCamera secondCamera;
 
-  private boolean trianglesPresent;
+  private boolean trianglesPresent = true;
+
+  private RotatingEntity triangle1;
+  private RotatingEntity triangle2;
 
   public ExampleControls(EntityComponentSystem ecs, @Qualifier("starterCamera") StarterCamera firstCamera, StarterCamera secondCamera) {
     this.ecs = ecs;
@@ -47,16 +50,24 @@ public class ExampleControls {
     }
   }
 
-  // TODO: Add functionality to query ECS for specific entity instances
   private void addTriangles() {
-    //ecs.addEntity(triangle);
-    //ecs.addEntity(triangle2);
+    ecs.addEntity(triangle1);
+    ecs.addEntity(triangle2);
     trianglesPresent = true;
   }
 
   private void removeTriangles() {
-    //ecs.removeEntity(triangle);
-    //ecs.removeEntity(triangle2);
+    if (this.triangle1 == null || this.triangle2 == null) {
+      RotatingEntity triangle1 = ecs.getEntityById("triangle1", RotatingEntity.class).orElseThrow();
+      RotatingEntity triangle2 = ecs.getEntityById("triangle2", RotatingEntity.class).orElseThrow();
+
+      this.triangle1 = triangle1;
+      this.triangle2 = triangle2;
+    }
+
+    ecs.removeEntity(triangle1);
+    ecs.removeEntity(triangle2);
+
     trianglesPresent = false;
   }
 }
