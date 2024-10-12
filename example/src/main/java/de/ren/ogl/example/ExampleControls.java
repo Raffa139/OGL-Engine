@@ -1,6 +1,9 @@
 package de.ren.ogl.example;
 
 import de.ren.ogl.engine.controller.keyboard.KeyDownEvent;
+import de.ren.ogl.engine.controller.mouse.MouseButtonUpEvent;
+import de.ren.ogl.engine.controller.mouse.MouseLeftDownEvent;
+import de.ren.ogl.engine.controller.mouse.MouseRightDownEvent;
 import de.ren.ogl.engine.ecs.EntityComponentSystem;
 import de.ren.ogl.starter.camera.StarterCamera;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +16,8 @@ import static org.lwjgl.glfw.GLFW.*;
 public class ExampleControls {
   private final EntityComponentSystem ecs;
 
+  private final ExampleSystem exampleSystem;
+
   private final StarterCamera firstCamera;
 
   private final StarterCamera secondCamera;
@@ -22,8 +27,9 @@ public class ExampleControls {
   private RotatingEntity triangle1;
   private RotatingEntity triangle2;
 
-  public ExampleControls(EntityComponentSystem ecs, @Qualifier("starterCamera") StarterCamera firstCamera, StarterCamera secondCamera) {
+  public ExampleControls(EntityComponentSystem ecs, ExampleSystem exampleSystem, @Qualifier("starterCamera") StarterCamera firstCamera, StarterCamera secondCamera) {
     this.ecs = ecs;
+    this.exampleSystem = exampleSystem;
     this.firstCamera = firstCamera;
     this.secondCamera = secondCamera;
   }
@@ -40,14 +46,47 @@ public class ExampleControls {
 
         break;
       case GLFW_KEY_1:
-        firstCamera.activate();
-        secondCamera.deactivate();
+        switchToFirstCamera();
         break;
       case GLFW_KEY_2:
-        secondCamera.activate();
-        firstCamera.deactivate();
+        switchToSecondCamera();
         break;
     }
+  }
+
+  @EventListener
+  public void onMouseButtonUp(MouseButtonUpEvent event) {
+    if (event.getButton() == GLFW_MOUSE_BUTTON_MIDDLE) {
+      switchCamera();
+    }
+  }
+
+  @EventListener
+  public void onMouseLeftDown(MouseLeftDownEvent event) {
+    exampleSystem.increaseRotationSpeed();
+  }
+
+  @EventListener
+  public void onMouseRightDown(MouseRightDownEvent event) {
+    exampleSystem.decreaseRotationSpeed();
+  }
+
+  private void switchCamera() {
+    if (firstCamera.isActive()) {
+      switchToSecondCamera();
+    } else {
+      switchToFirstCamera();
+    }
+  }
+
+  private void switchToFirstCamera() {
+    firstCamera.activate();
+    secondCamera.deactivate();
+  }
+
+  private void switchToSecondCamera() {
+    secondCamera.activate();
+    firstCamera.deactivate();
   }
 
   private void addTriangles() {

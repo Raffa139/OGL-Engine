@@ -13,12 +13,24 @@ import java.util.Set;
 public class ExampleSystem implements InvokableSystem {
   private final EntityComponentSystem ecs;
 
+  private float rotationSpeed = 0.03f;
+
   @TestShader
   private Shader shader;
 
   @Autowired
   public ExampleSystem(EntityComponentSystem ecs) {
     this.ecs = ecs;
+  }
+
+  public void increaseRotationSpeed() {
+    rotationSpeed += 0.01f;
+  }
+
+  public void decreaseRotationSpeed() {
+    if (rotationSpeed > 0.0f) {
+      rotationSpeed -= 0.01f;
+    }
   }
 
   public Shader getShader() {
@@ -30,7 +42,7 @@ public class ExampleSystem implements InvokableSystem {
     Set<RotatingEntity> entities = ecs.getEntitiesByClass(RotatingEntity.class);
     for (RotatingEntity entity : entities) {
       if (entity.isRotating()) {
-        entity.increaseRotation(new Vector3f(0.0f, 0.03f, 0.0f));
+        entity.increaseRotation(new Vector3f(0.0f, rotationSpeed, 0.0f));
       }
     }
   }

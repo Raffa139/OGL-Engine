@@ -24,14 +24,18 @@ public final class Keyboard {
   }
 
   public void keyCallback(long window, int key, int scancode, int action, int mods) {
-    if (action == GLFW_PRESS) {
-      keysDown[key] = true;
-      eventPublisher.publishEvent(new KeyDownEvent(this, window, key, scancode, mods));
-    } else if (action == GLFW_RELEASE) {
-      keysDown[key] = false;
-      eventPublisher.publishEvent(new KeyUpEvent(this, window, key, scancode, mods));
-    } else if (action == GLFW_REPEAT) {
-      eventPublisher.publishEvent(new KeyHoldEvent(this, window, key, scancode, mods));
+    switch (action) {
+      case GLFW_PRESS:
+        keysDown[key] = true;
+        eventPublisher.publishEvent(new KeyDownEvent(this, window, key, scancode, mods));
+        break;
+      case GLFW_RELEASE:
+        keysDown[key] = false;
+        eventPublisher.publishEvent(new KeyUpEvent(this, window, key, scancode, mods));
+        break;
+      case GLFW_REPEAT:
+        eventPublisher.publishEvent(new KeyHoldEvent(this, window, key, scancode, mods));
+        break;
     }
   }
 }
