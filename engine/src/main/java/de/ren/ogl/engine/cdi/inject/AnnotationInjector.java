@@ -60,6 +60,8 @@ public class AnnotationInjector {
   }
 
   private void injectAnnotationShaders() {
+    // TODO: Dont use reflection to get shaders, find them via spring & make the beans
+    //       e.g. I dont want to include shaders from starter if starter config not imported
     Set<AnnotationShader> annotationShaders = reflectUtils.getAnnotationShaders();
     log("Annotated GL programs found: %s%n", annotationShaders.size());
 
@@ -120,6 +122,7 @@ public class AnnotationInjector {
 
         return application.createShaderWithAppContext(vertPath, fragPath);
       } catch (IOException e) {
+        // TODO: Cannot find resources if used as library
         throw new IllegalArgumentException(String.format("Sources of shader %s could not be found.", reflectedShader.getShaderName()));
       }
     } else if (reflectedShader.isContentDefined()) {

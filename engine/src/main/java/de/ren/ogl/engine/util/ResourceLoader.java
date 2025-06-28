@@ -36,6 +36,7 @@ public final class ResourceLoader {
     }
 
     public Path toPath() {
+      // TODO: This causes a FileSystemNotFoundException if imported module uses it to get some resources
       return Paths.get(uri);
     }
 
